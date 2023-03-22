@@ -3,27 +3,48 @@
 /*                                                        :::      ::::::::   */
 /*   thread.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: math <math@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: mroy <mroy@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/18 08:44:52 by math              #+#    #+#             */
-/*   Updated: 2023/03/20 13:14:39 by math             ###   ########.fr       */
+/*   Updated: 2023/03/22 13:07:33 by mroy             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philosopher.h"
 
-inline pthread_t	*get_thread(void)
-{
-	static pthread_t	dispatchers[MAX_PHILOSOPHER];
-
-	return (&dispatchers[0]);
-}
-
-void	init_dispatchers(void)
+void	*init_threads(void)
 {
 	pthread_t	*threads;
+	int32_t		i;
+	t_philo		**phs;
 
-	threads = get_thread();
-	memset(threads, 0, MAX_PHILOSOPHER);
+	phs = get_philosophers();
+	i = 0;
+	threads = malloc(get_params()->num_philo * sizeof(pthread_t));
+	while (i < get_params()->num_philo)
+	{
+		pthread_create(&threads[i], NULL, philo_work, &phs[i]);
+		i++;
+	}
+	get_data()->thread_ids = threads;
+}
+
+void	*detach_threads(void)
+{
+	int32_t		i;
+	pthread_t	*threads;
+
+	i = 0;
+	threads = get_data()->thread_ids;
+	while (i < get_params()->num_philo)
+	{	
+		pthread_detach(threads[i]);
+		i++;
+	}
+}
+
+void	*free_threads(void)
+{
+	free(get_data()->thread_ids);
 }
 

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   work_distribution.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: math <math@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: mroy <mroy@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/18 08:44:52 by math              #+#    #+#             */
-/*   Updated: 2023/03/22 07:08:20 by math             ###   ########.fr       */
+/*   Updated: 2023/03/22 09:38:59 by mroy             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ inline static uint64_t	authorize_forks_take(t_philo *ph, uint64_t last_meal)
 {
 	pthread_mutex_t	*authorized;
 
-	authorized = get_data()->authorization;
+	authorized = get_data()->forks_authorization;
 	pthread_mutex_lock(authorized);
 	ph->is_authorized = true;
 	pthread_mutex_unlock(authorized);

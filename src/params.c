@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   params.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: math <math@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: mroy <mroy@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/18 08:44:52 by math              #+#    #+#             */
-/*   Updated: 2023/03/20 13:22:09 by math             ###   ########.fr       */
+/*   Updated: 2023/03/22 11:40:25 by mroy             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ inline t_param	*get_params(void)
 	return (&params[0]);
 }
 
-void	init_params(int32_t argc, char **argv, int32_t min_sleep_time)
+void	init_params(int32_t argc, char **argv)
 {
 	t_param	*params;
 
@@ -30,5 +30,4 @@ void	init_params(int32_t argc, char **argv, int32_t min_sleep_time)
 	params->time_to_sleep = argv[4];
 	if (argc == 6)
 		params->eat_at_least = argv[5];
-	params->min_sleep_time = min_sleep_time;
 }
