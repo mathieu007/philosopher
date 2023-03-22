@@ -6,7 +6,7 @@
 /*   By: math <math@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/28 15:21:35 by mroy              #+#    #+#             */
-/*   Updated: 2023/03/20 20:53:36 by math             ###   ########.fr       */
+/*   Updated: 2023/03/21 20:27:27 by math             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,8 +52,7 @@ typedef struct s_philo
 	pthread_mutex_t	*right_fork;
 	bool			**l_fork;
 	bool			**r_fork;
-	pthread_mutex_t	*take_forks;
-	bool			priority;
+	bool			is_authorized;
 	uint64_t		estimate_wait_time;
 	uint64_t		*base_time;
 	pthread_t		thread_id;
@@ -64,12 +63,6 @@ typedef struct s_philo
 	int32_t			position;
 }					t_philo;
 
-typedef struct s_dispatcher
-{
-	int32_t				count;
-	t_philo				**philos;
-	pthread_t			thread_id;
-}						t_dispatcher;
 
 typedef struct s_counter
 {
@@ -80,21 +73,23 @@ typedef struct s_counter
 
 typedef struct s_data
 {
+	pthread_mutex_t	*authorization;
+	bool			auth_val;
 	bool			*forks;
-	t_dispatcher	**dispatchers;
 	t_philo			**philos;
 	t_param			*param;
 	pthread_t		**thread_ids;
-}					t_data;
+}				t_data;
 
 void				*free_all(void);
-inline t_dispatcher	**get_dispatchers();
-inline bool			*get_forks();
-inline t_philo		**get_philosophers();
+inline bool			*get_forks(void);
+inline t_philo		**get_philosophers(void);
 inline t_param		*get_params(void);
 inline uint64_t		get_time_stamp();
 inline int32_t		next_ph(const int32_t i, const int32_t philo_count);
 inline int32_t		prev_ph(const int32_t i, const int32_t philo_count);
+inline t_data		*get_data(void);
+void				take_forks(t_philo *ph);
 
 void			*init_forks(void);
 void			init_params(int32_t argc, char **argv);

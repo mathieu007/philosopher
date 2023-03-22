@@ -6,73 +6,71 @@
 /*   By: math <math@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/18 08:44:52 by math              #+#    #+#             */
-/*   Updated: 2023/03/20 21:09:02 by math             ###   ########.fr       */
+/*   Updated: 2023/03/22 07:08:20 by math             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philosopher.h"
 
-inline t_dispatcher	*get_dispatchers(void)
+inline static uint64_t	authorize_forks_take(t_philo *ph, uint64_t last_meal)
 {
-	static t_dispatcher	dispatchers[MAX_PHILOSOPHER];
+	pthread_mutex_t	*authorized;
 
-	return (&dispatchers[0]);
+	authorized = get_data()->authorization;
+	pthread_mutex_lock(authorized);
+	ph->is_authorized = true;
+	pthread_mutex_unlock(authorized);
+	if (ph->last_meal > last_meal)
+		return (ph->last_meal);
+	return (last_meal);
 }
 
-void	init_dispatchers(void)
+inline static void	work_sleep(uint64_t last_meal)
 {
-	t_dispatcher	*dispatchers;
+	uint64_t	wait_time;
 
-	dispatchers = get_dispatcher();
-	memset(dispatchers, 0, MAX_PHILOSOPHER);
+	wait_time = (((get_params()->time_to_eat + get_params()->time_to_sleep))
+			- (get_time_stamp() - last_meal) * 1000) - 1000;
+	if (wait_time < 0)
+		return ;
+	usleep(wait_time);
 }
 
-void	authorize_forks_take(t_philo *ph)
+static void	work_loop(t_philo **phs, const int32_t ph_cnt, uint64_t last_meal)
 {
-	pthread_mutex_lock(ph->take_forks);
-	ph->priority = true;
-	pthread_mutex_unlock(ph->take_forks);
-}
-
-static void	dispatch_work_loop(t_philo **phs, const int32_t ph_cnt)
-{
-	t_philo	*ph;
-	t_philo	*nxt_ph;
-	t_philo	*prv_ph;
-	int32_t	i;
+	int32_t		i;
+	t_philo		*ph;
 
 	i = 0;
 	while (i < ph_cnt)
 	{
 		ph = phs[i];
-		nxt_ph = phs[next_ph(i, ph_cnt)];
-		prv_ph = phs[prev_ph(i, ph_cnt)];
-		if (nxt_ph->priority)
+		if (phs[next_ph(i, ph_cnt)]->is_authorized)
 			i += 3;
-		else if (ph->priority)
+		else if (ph->is_authorized)
 			i += 2;
-		else if (prv_ph->priority)
+		else if (phs[prev_ph(i, ph_cnt)]->is_authorized)
 			i++;
-		else if (ph->last_meal <= prv_ph->last_meal && ph->last_meal <= nxt_ph->last_meal)
+		else if (ph->last_meal <= phs[prev_ph(i, ph_cnt)]->last_meal
+			&& ph->last_meal <= phs[next_ph(i, ph_cnt)]->last_meal)
 		{
-			authorize_forks_take(ph);
+			last_meal = authorize_forks_take(ph, last_meal);
 			i += 2;
 		}
 		else
 			i++;
 	}
+	work_sleep(last_meal);
 }
 
-void	dispatch_work_distrib(void)
+void	work_distribution(void)
 {
 	t_philo			**phs;
 	const int32_t	ph_cnt = get_params()->num_philo;
+	uint64_t		last_meal;
 
+	last_meal = 0;
 	phs = get_philosophers();
 	while (true)
-	{
-		dispatch_work_loop(phs, ph_cnt);
-		if (usleep(1) != 0)
-			return (free_all());
-	}
+		work_loop(phs, ph_cnt, last_meal);
 }
