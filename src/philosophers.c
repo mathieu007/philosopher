@@ -6,7 +6,7 @@
 /*   By: mroy <mroy@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/18 08:44:52 by math              #+#    #+#             */
-/*   Updated: 2023/03/23 14:12:03 by mroy             ###   ########.fr       */
+/*   Updated: 2023/03/23 14:51:48 by mroy             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,22 +64,12 @@ void	*philo_work(void *philo)
 
 	ph = (t_philo *) philo;
 	while (true)
-	{
-		pthread_mutex_lock(ph->forks_auth);
-		if (ph->is_authorized)
-		{
-			pthread_mutex_lock(ph->left_fork_auth);
-			pthread_mutex_lock(ph->right_fork_auth);
-			prev_meal = ph->last_meal;
-			take_forks(ph);
-			ph->is_authorized = false;
-		}
-		else 
-		{
-			pthread_mutex_lock(ph->right_fork_auth);
-			continue ;
-		}
-		pthread_mutex_unlock(ph->forks_auth);
+	{		
+		if (!ph->is_authorized)
+			pthread_mutex_lock(ph->forks_auth);
+		prev_meal = ph->last_meal;
+		take_forks(ph);
+		ph->is_authorized = false;
 		eating(ph, prev_meal);
 		sleeping(ph);
 		thinking(ph);

@@ -6,7 +6,7 @@
 /*   By: mroy <mroy@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/28 15:21:35 by mroy              #+#    #+#             */
-/*   Updated: 2023/03/23 13:56:04 by mroy             ###   ########.fr       */
+/*   Updated: 2023/03/23 14:41:40 by mroy             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,8 +47,6 @@ typedef struct s_philo
 	int32_t			name;
 	t_param			*param;
 	pthread_mutex_t	*forks_auth;
-	pthread_mutex_t	*left_fork_auth;
-	pthread_mutex_t	*right_fork_auth;
 	pthread_mutex_t	*left_fork;
 	pthread_mutex_t	*right_fork;
 	bool			is_authorized;
