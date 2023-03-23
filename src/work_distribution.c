@@ -6,7 +6,7 @@
 /*   By: mroy <mroy@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/18 08:44:52 by math              #+#    #+#             */
-/*   Updated: 2023/03/23 14:49:06 by mroy             ###   ########.fr       */
+/*   Updated: 2023/03/23 15:44:19 by mroy             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,9 @@
 
 inline static uint64_t	authorize_forks_take(t_philo *ph, uint64_t last_meal)
 {
-	pthread_mutex_unlock(ph->forks_auth);
 	ph->is_authorized = true;
+	pthread_mutex_unlock(ph->forks_auth);
+	usleep(100);
 	pthread_mutex_lock(ph->forks_auth);
 	if (ph->last_meal > last_meal)
 		return (ph->last_meal);
@@ -60,6 +61,18 @@ static void	work_loop(t_philo **phs, const int32_t ph_cnt, uint64_t last_meal)
 	work_sleep(last_meal);
 }
 
+void	lock_all(t_philo **phs, const int32_t ph_cnt)
+{
+	int32_t	 i;
+	
+	i = 0;
+	while (i < ph_cnt)
+	{	
+		pthread_mutex_lock(phs[i]->forks_auth);
+		i++;	
+	}
+}
+
 void	work_distribution(void)
 {
 	t_philo			**phs;
@@ -67,7 +80,8 @@ void	work_distribution(void)
 	uint64_t		last_meal;
 
 	last_meal = 0;
-	phs = get_philosophers();
+	phs = get_philosophers();	
+	lock_all(phs, ph_cnt);
 	while (true)
 		work_loop(phs, ph_cnt, last_meal);
 }

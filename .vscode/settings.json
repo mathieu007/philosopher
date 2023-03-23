@@ -1,10 +1,11 @@
 {
     "files.associations": {
-        "bitset": "c",
-        "functional": "c",
-        "iterator": "c",
-        "memory": "c"
-    },
+		"bitset": "c",
+		"functional": "c",
+		"iterator": "c",
+		"memory": "c",
+		"cstdio": "c"
+	},
     "files.autoSave": "afterDelay",
     "editor.defaultFormatter": "ms-vscode.cpptools",
 	"editor.detectIndentation": false,
