@@ -6,7 +6,7 @@
 /*   By: mroy <mroy@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/18 08:44:52 by math              #+#    #+#             */
-/*   Updated: 2023/03/23 15:44:19 by mroy             ###   ########.fr       */
+/*   Updated: 2023/03/23 15:53:21 by mroy             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ inline static uint64_t	authorize_forks_take(t_philo *ph, uint64_t last_meal)
 {
 	ph->is_authorized = true;
 	pthread_mutex_unlock(ph->forks_auth);
-	usleep(100);
+	usleep(10);
 	pthread_mutex_lock(ph->forks_auth);
 	if (ph->last_meal > last_meal)
 		return (ph->last_meal);
