@@ -6,7 +6,7 @@
 /*   By: mroy <mroy@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/18 08:44:52 by math              #+#    #+#             */
-/*   Updated: 2023/03/22 13:07:33 by mroy             ###   ########.fr       */
+/*   Updated: 2023/03/23 07:48:39 by mroy             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@ void	*init_threads(void)
 	while (i < get_params()->num_philo)
 	{
 		pthread_create(&threads[i], NULL, philo_work, &phs[i]);
+		phs[i]->thread_id = threads[i];
 		i++;
 	}
 	get_data()->thread_ids = threads;
@@ -47,4 +48,3 @@ void	*free_threads(void)
 {
 	free(get_data()->thread_ids);
 }
-

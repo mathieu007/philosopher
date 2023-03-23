@@ -6,7 +6,7 @@
 /*   By: mroy <mroy@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/28 15:21:35 by mroy              #+#    #+#             */
-/*   Updated: 2023/03/22 13:22:22 by mroy             ###   ########.fr       */
+/*   Updated: 2023/03/23 11:54:46 by mroy             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,8 +23,6 @@
 # include <sys/time.h>
 # include <unistd.h>
 # include <pthread.h>
-
-# define MAX_PHILOSOPHER 200
 
 typedef enum e_philo_state
 {
@@ -48,12 +46,11 @@ typedef struct s_philo
 {
 	int32_t			name;
 	t_param			*param;
+	pthread_mutex_t	*left_fork_auth;
+	pthread_mutex_t	*right_fork_auth;
 	pthread_mutex_t	*left_fork;
 	pthread_mutex_t	*right_fork;
-	bool			**l_fork;
-	bool			**r_fork;
 	bool			is_authorized;
-	uint64_t		*base_time;
 	pthread_t		thread_id;
 	t_philo_state	state;
 	uint64_t		last_meal;
@@ -77,6 +74,7 @@ typedef struct s_data
 	t_philo			**philos;
 	t_param			*param;
 	pthread_t		*thread_ids;
+	bool			*forks;
 }				t_data;
 
 void				*free_all(void);

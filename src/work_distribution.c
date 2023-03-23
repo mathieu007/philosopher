@@ -6,22 +6,24 @@
 /*   By: mroy <mroy@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/18 08:44:52 by math              #+#    #+#             */
-/*   Updated: 2023/03/22 09:38:59 by mroy             ###   ########.fr       */
+/*   Updated: 2023/03/23 13:38:41 by mroy             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philosopher.h"
 
-inline static uint64_t	authorize_forks_take(t_philo *ph, uint64_t last_meal)
+inline static uint64_t	authorize_forks_take(t_philo **phs,
+	int32_t i, uint64_t last_meal, int32_t ph_cnt)
 {
-	pthread_mutex_t	*authorized;
-
-	authorized = get_data()->forks_authorization;
-	pthread_mutex_lock(authorized);
-	ph->is_authorized = true;
-	pthread_mutex_unlock(authorized);
-	if (ph->last_meal > last_meal)
-		return (ph->last_meal);
+	pthread_mutex_lock(phs[i]->left_fork_auth);
+	phs[prev_ph(i, ph_cnt)]->is_authorized = false;
+	pthread_mutex_unlock(phs[i]->left_fork_auth);
+	pthread_mutex_lock(phs[i]->right_fork_auth);	
+	phs[next_ph(i, ph_cnt)]->is_authorized = false;
+	pthread_mutex_unlock(phs[i]->right_fork_auth);
+	phs[i]->is_authorized = true;
+	if (phs[i]->last_meal > last_meal)
+		return (phs[i]->last_meal);
 	return (last_meal);
 }
 
@@ -54,7 +56,7 @@ static void	work_loop(t_philo **phs, const int32_t ph_cnt, uint64_t last_meal)
 		else if (ph->last_meal <= phs[prev_ph(i, ph_cnt)]->last_meal
 			&& ph->last_meal <= phs[next_ph(i, ph_cnt)]->last_meal)
 		{
-			last_meal = authorize_forks_take(ph, last_meal);
+			last_meal = authorize_forks_take(phs, i, last_meal, ph_cnt);
 			i += 2;
 		}
 		else

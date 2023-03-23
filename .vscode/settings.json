@@ -4,5 +4,9 @@
         "functional": "c",
         "iterator": "c",
         "memory": "c"
-    }
+    },
+    "files.autoSave": "afterDelay",
+    "editor.defaultFormatter": "ms-vscode.cpptools",
+	"editor.detectIndentation": false,
+	"editor.insertSpaces": false
 }
