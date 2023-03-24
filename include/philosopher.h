@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philosopher.h                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mroy <mroy@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: math <math@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/28 15:21:35 by mroy              #+#    #+#             */
-/*   Updated: 2023/03/23 14:41:40 by mroy             ###   ########.fr       */
+/*   Updated: 2023/03/23 20:24:19 by math             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,27 +57,18 @@ typedef struct s_philo
 	int32_t			position;
 }					t_philo;
 
-
-typedef struct s_counter
-{
-	int32_t		count;
-	t_philo		*philo;
-	pthread_t	thread_id;
-}				t_counter;
-
 typedef struct s_data
 {
 	pthread_mutex_t	*forks_authorization;
 	pthread_mutex_t	*meal_authorization;
+	pthread_mutex_t	*forks;
 	pthread_mutex_t	*write;
 	t_philo			**philos;
 	t_param			*param;
 	pthread_t		*thread_ids;
-	bool			*forks;
 }				t_data;
 
 void				*free_all(void);
-inline t_philo		**get_philosophers(void);
 inline t_param		*get_params(void);
 inline uint64_t		get_time_stamp();
 inline int32_t		next_ph(const int32_t i, const int32_t philo_count);
@@ -88,12 +79,13 @@ inline uint64_t		get_relative_time(void);
 inline uint64_t		get_base_time(void);
 inline uint64_t		print_msg(const char *msg, t_philo *ph);
 void				*philo_work(void *philo);
+void				lock_all_philos(t_philo **phs, const int32_t ph_cnt);
 
-void			*init_forks(void);
-void			init_params(int32_t argc, char **argv);
-void			*init_philosophers(void);
-void			*init_dispatchers(void);
-void			work_distribution(void);
-void			*free_forks(void);
+void				*init_forks(void);
+void				init_params(int32_t argc, char **argv);
+void				*init_philosophers(void);
+void				*init_dispatchers(void);
+void				work_load(void);
+void				*free_forks(void);
 
 #endif

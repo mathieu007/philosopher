@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philosophers.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mroy <mroy@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: math <math@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/18 08:44:52 by math              #+#    #+#             */
-/*   Updated: 2023/03/23 15:51:15 by mroy             ###   ########.fr       */
+/*   Updated: 2023/03/23 18:57:55 by math             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,9 +18,9 @@ void	*init_philosophers(void)
 	t_philo	**philos;
 	int32_t	i;
 
-	params = get_params();
 	i = 0;
-	philos = get_philosophers();
+	params = get_params();
+	philos = malloc(sizeof(t_philo *) * params->num_philo);
 	while (i < params->num_philo)
 	{
 		philos[i] = malloc(sizeof(t_philo));
@@ -28,6 +28,7 @@ void	*init_philosophers(void)
 			return (NULL);
 		i++;
 	}
+	get_data()->philos = philos;
 	return ((void *)philos);
 }
 

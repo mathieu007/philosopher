@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   work_distribution.c                                :+:      :+:    :+:   */
+/*   work_load.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mroy <mroy@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: math <math@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/18 08:44:52 by math              #+#    #+#             */
-/*   Updated: 2023/03/23 15:53:21 by mroy             ###   ########.fr       */
+/*   Updated: 2023/03/23 20:23:00 by math             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,27 +61,26 @@ static void	work_loop(t_philo **phs, const int32_t ph_cnt, uint64_t last_meal)
 	work_sleep(last_meal);
 }
 
-void	lock_all(t_philo **phs, const int32_t ph_cnt)
+void	lock_all_philos(t_philo **phs, const int32_t ph_cnt)
 {
-	int32_t	 i;
-	
+	int32_t	i;
+
 	i = 0;
 	while (i < ph_cnt)
 	{	
 		pthread_mutex_lock(phs[i]->forks_auth);
-		i++;	
+		i++;
 	}
 }
 
-void	work_distribution(void)
+void	work_load(void)
 {
 	t_philo			**phs;
 	const int32_t	ph_cnt = get_params()->num_philo;
 	uint64_t		last_meal;
 
 	last_meal = 0;
-	phs = get_philosophers();	
-	lock_all(phs, ph_cnt);
+	phs = get_philosophers();
 	while (true)
 		work_loop(phs, ph_cnt, last_meal);
 }
