@@ -3,21 +3,21 @@
 /*                                                        :::      ::::::::   */
 /*   free.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mroy <mroy@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: math <math@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/18 08:44:52 by math              #+#    #+#             */
-/*   Updated: 2023/03/22 13:20:04 by mroy             ###   ########.fr       */
+/*   Updated: 2023/03/24 09:33:38 by math             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philosopher.h"
 
-void	*free_exit(void)
+void	*free_exit_all_threads(void)
 {
 	return (NULL);
 }
 
 void	*free_all(void)
 {
-	free_threads();
+	return (NULL);
 }

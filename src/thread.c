@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   thread.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mroy <mroy@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: math <math@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/18 08:44:52 by math              #+#    #+#             */
-/*   Updated: 2023/03/23 07:48:39 by mroy             ###   ########.fr       */
+/*   Updated: 2023/03/24 15:45:30 by math             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,34 +17,26 @@ void	*init_threads(void)
 	pthread_t	*threads;
 	int32_t		i;
 	t_philo		**phs;
+	int32_t		num_philo;
 
 	phs = get_philosophers();
 	i = 0;
-	threads = malloc(get_params()->num_philo * sizeof(pthread_t));
-	while (i < get_params()->num_philo)
-	{
-		pthread_create(&threads[i], NULL, philo_work, &phs[i]);
-		phs[i]->thread_id = threads[i];
-		i++;
-	}
+	num_philo = get_params()->num_philo;
+	threads = malloc(num_philo * sizeof(pthread_t));
 	get_data()->thread_ids = threads;
-}
-
-void	*detach_threads(void)
-{
-	int32_t		i;
-	pthread_t	*threads;
-
-	i = 0;
-	threads = get_data()->thread_ids;
-	while (i < get_params()->num_philo)
-	{	
-		pthread_detach(threads[i]);
+	while (i < num_philo)
+	{
+		pthread_create(&threads[i], NULL, philo_work, phs[i]);
+		phs[i]->thread_id = threads[i];
+		// if (pthread_join(threads[i], NULL) == -1)
+		// 	get_data()->exit_threads = true;
 		i++;
 	}
+	return (NULL);
 }
 
 void	*free_threads(void)
 {
 	free(get_data()->thread_ids);
+	return (NULL);
 }
