@@ -3,36 +3,52 @@
 /*                                                        :::      ::::::::   */
 /*   put.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: math <math@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: mroy <mroy@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/18 08:44:52 by math              #+#    #+#             */
-/*   Updated: 2023/04/02 18:08:22 by math             ###   ########.fr       */
+/*   Updated: 2023/04/03 15:29:17 by mroy             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "circular_fifo.h"
-#include "philosopher.h"
 
-inline void	fifo_put(t_fifo *fifo, void *value)
+inline void	fifo_put(t_fifo *fifo, void *value, int32_t timestamp)
 {	
 	fifo->_head = prev(fifo, fifo->_head);
-	fifo->_data[fifo->_head] = value;
+	fifo->items[fifo->_head]->data = value;
+	fifo->items[fifo->_head]->timestamp = timestamp;
+	fifo->last_timestamp = timestamp;
 	fifo->_count++;
 }
 
-inline void	fifo_concurrent_put(t_fifo *fifo, void *value)
+inline void	fifo_concurrent_put(t_fifo *fifo, void *value, int32_t timestamp)
 {	
-	int32_t	head;
+	int32_t	prev_head;
+	t_item	*item;
+	int32_t i;
 
-	pthread_mutex_lock(fifo->_head_lock);
-	head = prev(fifo, fifo->_head);
-	fifo->_head = head;
-	fifo->_data[head] = value;
-	pthread_mutex_unlock(fifo->_head_lock);
-	pthread_mutex_lock(fifo->_count_lock);
+	pthread_mutex_lock(fifo->_lock);
+	prev_head = prev(fifo, fifo->_head);	
+	if (fifo->last_timestamp > timestamp)
+	{
+		i = prev_head;
+		item = fifo->items[fifo->_head];
+		while (item->timestamp != fifo->last_timestamp)
+		{
+			item = fifo->items[next(fifo, i)];
+			fifo->items[i] = item;
+			i++;
+		}
+		fifo->items[prev_head]->data = value;
+		fifo->items[prev_head]->timestamp = timestamp;
+	}
+	fifo->_head = prev_head;
+	fifo->items[prev_head]->data = value;
+	fifo->items[prev_head]->timestamp = timestamp;
 	fifo->_count++;
-	pthread_mutex_unlock(fifo->_count_lock);
+	pthread_mutex_unlock(fifo->_lock);
 }
+
 /// @brief On linux and windows mutex are not implemented as "fair" mutex,
 /// mutex are not guaranteed to be dispatched in the order they enter.
 /// they are much faster on linux and windows, but are not ordered.

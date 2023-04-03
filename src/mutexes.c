@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   mutexes.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: math <math@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: mroy <mroy@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/18 08:44:52 by math              #+#    #+#             */
-/*   Updated: 2023/04/01 18:13:29 by math             ###   ########.fr       */
+/*   Updated: 2023/04/03 14:38:21 by mroy             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,14 +28,14 @@ void	init_mutexes(void)
 	t_philo				**phs;
 	pthread_mutex_t		*forks_mutexes;
 	t_data				*data;
-	pthread_mutexattr_t	attr;
+	// pthread_mutexattr_t	attr;
 
 	data = get_data();
 	data->meal_authorization = malloc(sizeof(pthread_mutex_t));
 	data->write = malloc(sizeof(pthread_mutex_t));
-	attr = get_mutex_attr((int32_t)PTHREAD_MUTEX_TIMED_NP);
-	pthread_mutex_init(data->meal_authorization, &attr);
-	pthread_mutex_init(data->write, &attr);
+	// attr = get_mutex_attr((int32_t)PTHREAD_MUTEX_TIMED_NP);
+	pthread_mutex_init(data->meal_authorization, NULL);
+	pthread_mutex_init(data->write, NULL);
 	i = 0;
 	forks_mutexes = malloc(sizeof(pthread_mutex_t) * get_params()->num_philo);
 	data->wait_queue = new_fifo(get_params()->num_philo, sizeof(t_philo *));

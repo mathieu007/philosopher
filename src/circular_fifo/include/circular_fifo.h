@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   circular_fifo.h                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: math <math@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: mroy <mroy@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/28 15:21:35 by mroy              #+#    #+#             */
-/*   Updated: 2023/04/03 06:52:47 by math             ###   ########.fr       */
+/*   Updated: 2023/04/03 14:43:26 by mroy             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,16 +19,22 @@
 # include <stdlib.h>
 # include <pthread.h>
 
+typedef struct s_item
+{
+	void			*data;
+	int32_t			timestamp;
+	int32_t			index;
+}				t_item;
+
 typedef struct s_fifo
 {
 	int32_t			_count;
 	int32_t			_max_len;
 	int32_t			_head;
-	pthread_mutex_t	*_head_lock;
-	pthread_mutex_t	*_tail_lock;
-	pthread_mutex_t	*_count_lock;
+	pthread_mutex_t	*_lock;
 	int32_t			_tail;
-	void			**_data;
+	t_item			**items;
+	int32_t			last_timestamp;
 }					t_fifo;
 
 int32_t		next(t_fifo *fifo, const int32_t i);

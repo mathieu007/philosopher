@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: math <math@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: mroy <mroy@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/18 08:44:52 by math              #+#    #+#             */
-/*   Updated: 2023/04/02 16:07:19 by math             ###   ########.fr       */
+/*   Updated: 2023/04/03 14:43:13 by mroy             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,14 +16,14 @@ inline void	*fifo_get(t_fifo *fifo)
 {
 	if (fifo->_count <= 0)
 		return (NULL);
-	return (fifo->_data[fifo->_tail]);
+	return (fifo->items[fifo->_tail]);
 }
 
 inline void	*fifo_get_at(t_fifo *fifo, int32_t i)
 {
 	if (fifo->_count <= 0)
 		return (NULL);
-	return (fifo->_data[at_index(fifo, i)]);
+	return (fifo->items[at_index(fifo, i)]);
 }
 
 inline void	*fifo_get_pop(t_fifo *fifo)
@@ -34,7 +34,7 @@ inline void	*fifo_get_pop(t_fifo *fifo)
 		return (NULL);
 	index = fifo->_tail;
 	fifo->_tail = prev(fifo, index);
-	return (fifo->_data[index]);
+	return (fifo->items[index]);
 }
 
 inline void	*fifo_concurent_get_pop(t_fifo *fifo)
@@ -44,11 +44,11 @@ inline void	*fifo_concurent_get_pop(t_fifo *fifo)
 
 	if (fifo->_count <= 0)
 		return (NULL);
-	pthread_mutex_lock(fifo->_tail_lock);
+	pthread_mutex_lock(fifo->_lock);
 	index = fifo->_tail;
 	fifo->_tail = prev(fifo, index);
-	val = fifo->_data[index];
-	pthread_mutex_unlock(fifo->_tail_lock);
+	val = fifo->items[index];
+	pthread_mutex_unlock(fifo->_lock);
 	return (val);
 }
 
@@ -58,9 +58,9 @@ inline void	*fifo_concurent_get(t_fifo *fifo)
 
 	if (fifo->_count <= 0)
 		return (NULL);
-	pthread_mutex_lock(fifo->_tail_lock);
-	val = fifo->_data[fifo->_tail];
-	pthread_mutex_unlock(fifo->_tail_lock);
+	pthread_mutex_lock(fifo->_lock);
+	val = fifo->items[fifo->_tail];
+	pthread_mutex_unlock(fifo->_lock);
 	return (val);
 }
 
@@ -70,8 +70,8 @@ inline void	*fifo_concurent_get_at(t_fifo *fifo, int32_t i)
 
 	if (fifo->_count <= 0 || fifo->_count <= i)
 		return (NULL);
-	pthread_mutex_lock(fifo->_tail_lock);
-	val = fifo->_data[at_index(fifo, i)];
-	pthread_mutex_unlock(fifo->_tail_lock);
+	pthread_mutex_lock(fifo->_lock);
+	val = fifo->items[at_index(fifo, i)];
+	pthread_mutex_unlock(fifo->_lock);
 	return (val);
 }
