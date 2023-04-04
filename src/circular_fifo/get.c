@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: math <math@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: mroy <mroy@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/18 08:44:52 by math              #+#    #+#             */
-/*   Updated: 2023/04/03 20:53:33 by math             ###   ########.fr       */
+/*   Updated: 2023/04/04 15:11:44 by mroy             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,7 @@ inline void	*fifo_concurent_get_pop(t_fifo *fifo)
 	index = fifo->_tail;
 	fifo->_tail = prev(fifo, index);
 	val = fifo->_data[index];
+	fifo->_count--;
 	pthread_mutex_unlock(fifo->_lock);
 	return (val);
 }

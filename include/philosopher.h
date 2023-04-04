@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philosopher.h                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: math <math@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: mroy <mroy@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/28 15:21:35 by mroy              #+#    #+#             */
-/*   Updated: 2023/04/03 20:55:59 by math             ###   ########.fr       */
+/*   Updated: 2023/04/04 16:32:49 by mroy             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,15 +45,12 @@ typedef struct s_philo
 	pthread_mutex_t		*forks_take;
 	pthread_mutex_t		*left_fork;
 	pthread_mutex_t		*right_fork;
-	bool				is_eating;
 	bool				forks_taken;
-	bool				in_queue;
 	pthread_t			thread_id;
 	int32_t				last_meal;
 	int32_t				eat_count;
 	int32_t				position;
 	t_param				*params;
-	void				(*update_state)(void *, bool);
 	struct s_data		*data;
 }						t_philo;
 
@@ -65,6 +62,8 @@ typedef struct s_data
 	pthread_t		*thread_ids;
 	t_fifo			*odd_queue;
 	t_fifo			*even_queue;
+	int32_t			odd_count;
+	int32_t			even_count;
 	t_param			*params;
 	bool			exit_threads;
 }				t_data;
@@ -81,7 +80,7 @@ void			put_forks_on_table(t_philo *ph);
 uint64_t		get_time_stamp_ms(void);
 uint64_t		get_time_stamp_mc(void);
 uint64_t		get_base_time(void);
-void			print_msg(const char *msg, t_philo *ph);
+int32_t			print_msg(const char *msg, t_philo *ph);
 void			print_msg_time(const char *msg, t_philo *ph, int32_t time);
 void			*philo_work_odd(void *philo);
 bool			should_exit(void);

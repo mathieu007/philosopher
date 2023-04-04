@@ -12,6 +12,8 @@
 			"args": ["200", "410", "200", "200"],
 			"environment": [{ "name": "config", "value": "Debug" }],
 			"cwd": "${workspaceFolder}",
+			"externalConsole": false,
+            "MIMode": "lldb",
 			"preLaunchTask": "philo"
 		  }
 	]

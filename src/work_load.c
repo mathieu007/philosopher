@@ -3,100 +3,108 @@
 /*                                                        :::      ::::::::   */
 /*   work_load.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: math <math@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: mroy <mroy@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/18 08:44:52 by math              #+#    #+#             */
-/*   Updated: 2023/04/04 07:08:37 by math             ###   ########.fr       */
+/*   Updated: 2023/04/04 16:49:39 by mroy             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philosopher.h"
 
-static void	authorize_forks_take(t_philo *ph)
+static void	authorize_forks_take(t_philo *ph, t_philo **phs,
+	t_fifo *fifo, int32_t ph_cnt)
 {
-	pthread_mutex_unlock(ph->forks_auth);
-	usleep(1);
-	pthread_mutex_lock(ph->forks_auth);
-}
+	t_philo	*ph_prev;
+	t_philo	*ph_next;
 
-inline static void	work_sleep(int32_t wait_time)
-{
-	if (wait_time < 0)
-		return ;
-	usleep(wait_time);
+	ph_prev = phs[prev_ph(ph->position, ph_cnt)];
+	ph_next = phs[next_ph(ph->position, ph_cnt)];
+	while (ph_prev->forks_taken && ph_next->forks_taken)
+		usleep(1);
+	fifo_concurrent_pop(fifo);
+	pthread_mutex_unlock(ph->forks_auth);
+	while (true)
+	{
+		usleep(1);
+		if (ph->forks_taken)
+		{
+			pthread_mutex_lock(ph->forks_auth);
+			break ;
+		}		
+	}
 }
 
 void	process_even_wait_list(t_philo **phs, int32_t ph_cnt)
 {
-	t_philo			*ph;
-	int32_t			count;
-	static t_fifo	*even_fifo;
+	t_philo		*ph;
+	int32_t		count;
+	t_fifo		*even_fifo;
 
-	if (even_fifo == NULL)
-		even_fifo = get_data()->even_queue;
-	count = get_params()->num_philo / 2;
-	while (count != 0)
+	even_fifo = get_data()->even_queue;
+	count = get_data()->even_count;
+	while (count > 0)
 	{	
-		ph = fifo_concurent_get_pop(even_fifo);
+		ph = fifo_concurent_get(even_fifo);
 		if (ph == NULL)
 		{
-			usleep(10);
+			usleep(100);
 			continue ;
 		}
-		authorize_forks_take(ph);
 		count--;
+		authorize_forks_take(ph, phs, even_fifo, ph_cnt);
 	}
-	// usleep(get_params()->time_to_eat * 1000 - 10000);
+	usleep(get_params()->time_to_eat * 1000 - 10000);
 	process_odd_wait_list(phs, ph_cnt);
 }
 
 void	process_odd_wait_list(t_philo **phs, int32_t ph_cnt)
 {
-	t_philo			*ph;
-	int32_t			count;
-	static t_fifo	*odd_fifo;
+	t_philo	*ph;
+	int32_t	count;
+	t_fifo	*odd_fifo;
 
-	if (odd_fifo == NULL)
-		odd_fifo = get_data()->odd_queue;
-	count = get_params()->num_philo / 2;
-	while (count != 0)
+	odd_fifo = get_data()->odd_queue;
+	count = get_data()->odd_count;
+	while (count > 0)
 	{	
-		ph = fifo_concurent_get_pop(odd_fifo);
+		ph = fifo_concurent_get(odd_fifo);
 		if (ph == NULL)
 		{
-			usleep(10);
+			usleep(100);
 			continue ;
 		}
-		authorize_forks_take(ph);
 		count--;
+		authorize_forks_take(ph, phs, odd_fifo, ph_cnt);
 	}
-	// usleep(get_params()->time_to_eat * 1000 - 10000);
+	usleep(get_params()->time_to_eat * 1000 - 10000);
 	process_even_wait_list(phs, ph_cnt);
 }
 
 static void	work_loop(t_philo **phs, int32_t ph_cnt)
 {
-	int32_t	li;
+	int32_t	i;
 	t_fifo	*odd_fifo;
 	t_fifo	*even_fifo;
 
-	li = 0;
+	i = 0;
 	odd_fifo = get_data()->odd_queue;
 	even_fifo = get_data()->even_queue;
-	while (li < ph_cnt)
+	while (i < ph_cnt)
 	{
-		fifo_put(odd_fifo, (void *)phs[li]);
-		li += 2;
+		fifo_put(odd_fifo, (void *)phs[i]);
+		i += 2;
 	}
-	li = 1;
-	while (li < ph_cnt)
+	i = 1;
+	while (i < ph_cnt)
 	{
-		fifo_put(even_fifo, (void *)phs[li]);
-		li += 2;
+		fifo_put(even_fifo, (void *)phs[i]);
+		i += 2;
 	}
+	get_data()->even_count = even_fifo->_count;
+	get_data()->odd_count = odd_fifo->_count;
 	process_odd_wait_list(phs, ph_cnt);
 }
-
 
 void	lock_all_philos(void)
 {
@@ -120,7 +128,5 @@ void	start_work_load(void)
 
 	ph_cnt = get_params()->num_philo;
 	phs = get_philosophers();
-	//prepare_queues(phs);
-	while (true)
-		work_loop(phs, ph_cnt);
+	work_loop(phs, ph_cnt);
 }

@@ -3,22 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   philosophers.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: math <math@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: mroy <mroy@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/18 08:44:52 by math              #+#    #+#             */
-/*   Updated: 2023/04/04 07:10:03 by math             ###   ########.fr       */
+/*   Updated: 2023/04/04 16:33:21 by mroy             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philosopher.h"
-
-static void	update_state(void *philo, bool value)
-{
-	t_philo			*ph;
-
-	ph = (t_philo *)philo;
-	ph->forks_taken = value;
-}
 
 void	*init_philosophers(void)
 {
@@ -36,17 +28,27 @@ void	*init_philosophers(void)
 			return (NULL);
 		phs[i]->params = get_params();
 		phs[i]->data = get_data();
-		phs[i]->is_eating = false;
 		phs[i]->position = i;
 		phs[i]->name = i + 1;
 		phs[i]->eat_count = 0;
 		phs[i]->last_meal = -1;
 		phs[i]->forks_taken = false;
-		phs[i]->update_state = &update_state;
 		i++;
 	}
 	get_data()->philos = phs;
 	return (NULL);
+}
+
+static inline void	two_stage_sleep(int32_t time_to_sleep, int32_t end_time)
+{	
+	int32_t	total2;
+	int32_t	cur_time;
+
+	usleep(time_to_sleep - 10000);
+	cur_time = get_relative_time_mc();
+	total2 = end_time - cur_time;
+	if (total2 > 0)
+		usleep(total2);
 }
 
 static void	eating(t_philo *ph)
@@ -55,49 +57,45 @@ static void	eating(t_philo *ph)
 	static int32_t			time_to_die;
 	static int32_t			time_to_eat;
 	int32_t					prev_meal;
+	int32_t					last_meal;
 
+	last_meal = 0;
 	if (meal_authorization == NULL)
 	{
 		meal_authorization = ph->data->meal_authorization;
 		time_to_die = ph->params->time_to_die * 1000;
 		time_to_eat = ph->params->time_to_eat * 1000;
-	}
+	}	
 	pthread_mutex_lock(meal_authorization);
+	last_meal = get_relative_time_ms();
 	prev_meal = ph->last_meal;
-	ph->last_meal = get_relative_time_mc();
 	if (time_to_die < ph->last_meal - prev_meal)
 	{
 		print_msg("%i %i died\n", ph);
 		ph->data->exit_threads = true;
 	}
 	else
-		print_msg("%i %i is eating\n", ph);
+		print_msg_time("%i %i is eating\n", ph, last_meal);
 	pthread_mutex_unlock(meal_authorization);
-	usleep(time_to_eat);
+	ph->last_meal = last_meal;
+	two_stage_sleep(time_to_eat, (last_meal * 1000) + time_to_eat);
 }
 
 static inline void	sleeping(t_philo *ph)
 {
 	static int32_t	time_to_sleep;
+	int32_t			time;
 
 	if (time_to_sleep == 0)
 		time_to_sleep = (ph->params->time_to_sleep * 1000);
-	print_msg("%i %i is sleeping\n", ph);
-	usleep(time_to_sleep);
+	time = get_relative_time_ms();
+	print_msg_time("%i %i is sleeping\n", ph, time);
+	two_stage_sleep(time_to_sleep, (time * 1000) + time_to_sleep);
 }
 
 static inline void	thinking(t_philo *ph)
 {
-	print_msg("%i %i is thinking\n", ph);
-}
-
-static inline bool	should_swap(void *current_head, void *new_value)
-{
-	if (((t_philo *)current_head)->last_meal > ((t_philo *)new_value)->last_meal)
-	{
-		return (true);
-	}
-	return (false);
+	print_msg_time("%i %i is thinking\n", ph, get_relative_time_ms());
 }
 
 void	*philo_work_even(void *philo)
@@ -114,13 +112,15 @@ void	*philo_work_even(void *philo)
 		wait_queue = ph->data->odd_queue;
 	while (i < must_eat && !should_exit())
 	{
-		pthread_mutex_lock(ph->forks_auth);
+		pthread_mutex_lock(ph->forks_auth);	
 		take_forks(ph);
 		pthread_mutex_unlock(ph->forks_auth);
+		ph->forks_taken = true;
 		eating(ph);
-		fifo_concurrent_put(wait_queue, (void *)ph);
+		ph->forks_taken = false;
 		sleeping(ph);
 		thinking(ph);
+		fifo_concurrent_put(wait_queue, (void *)ph);
 		i++;
 	}
 	return (NULL);
@@ -141,12 +141,14 @@ void	*philo_work_odd(void *philo)
 	while (i < must_eat && !should_exit())
 	{
 		pthread_mutex_lock(ph->forks_auth);
+		ph->forks_taken = true;
 		take_forks(ph);
 		pthread_mutex_unlock(ph->forks_auth);
 		eating(ph);
-		fifo_concurrent_put(wait_queue, (void *)ph);
-		sleeping(ph);
+		ph->forks_taken = false;		
+		sleeping(ph);		
 		thinking(ph);
+		fifo_concurrent_put(wait_queue, (void *)ph);
 		i++;
 	}
 	return (NULL);
