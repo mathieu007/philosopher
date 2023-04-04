@@ -6,7 +6,7 @@
 /*   By: math <math@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/28 15:21:35 by mroy              #+#    #+#             */
-/*   Updated: 2023/04/01 18:03:39 by math             ###   ########.fr       */
+/*   Updated: 2023/04/03 20:55:59 by math             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,8 +63,8 @@ typedef struct s_data
 	pthread_mutex_t	*write;
 	t_philo			**philos;
 	pthread_t		*thread_ids;
-	t_fifo			*wait_queue;
-	t_fifo			*urgent_queue;
+	t_fifo			*odd_queue;
+	t_fifo			*even_queue;
 	t_param			*params;
 	bool			exit_threads;
 }				t_data;
@@ -83,9 +83,12 @@ uint64_t		get_time_stamp_mc(void);
 uint64_t		get_base_time(void);
 void			print_msg(const char *msg, t_philo *ph);
 void			print_msg_time(const char *msg, t_philo *ph, int32_t time);
-void			*philo_work(void *philo);
+void			*philo_work_odd(void *philo);
 bool			should_exit(void);
 t_philo			**get_philosophers(void);
+void			*philo_work_even(void *philo);
+void			process_odd_wait_list(t_philo **phs, int32_t ph_cnt);
+void			process_even_wait_list(t_philo **phs, int32_t ph_cnt);
 
 pthread_mutexattr_t	get_mutex_attr(int32_t type);
 

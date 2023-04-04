@@ -3,48 +3,30 @@
 /*                                                        :::      ::::::::   */
 /*   put.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mroy <mroy@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: math <math@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/18 08:44:52 by math              #+#    #+#             */
-/*   Updated: 2023/04/03 15:29:17 by mroy             ###   ########.fr       */
+/*   Updated: 2023/04/03 20:50:28 by math             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "circular_fifo.h"
 
-inline void	fifo_put(t_fifo *fifo, void *value, int32_t timestamp)
+inline void	fifo_put(t_fifo *fifo, void *value)
 {	
 	fifo->_head = prev(fifo, fifo->_head);
-	fifo->items[fifo->_head]->data = value;
-	fifo->items[fifo->_head]->timestamp = timestamp;
-	fifo->last_timestamp = timestamp;
+	fifo->_data[fifo->_head] = value;
 	fifo->_count++;
 }
 
-inline void	fifo_concurrent_put(t_fifo *fifo, void *value, int32_t timestamp)
+inline void	fifo_concurrent_put(t_fifo *fifo, void *value)
 {	
-	int32_t	prev_head;
-	t_item	*item;
-	int32_t i;
+	int32_t	head;
 
 	pthread_mutex_lock(fifo->_lock);
-	prev_head = prev(fifo, fifo->_head);	
-	if (fifo->last_timestamp > timestamp)
-	{
-		i = prev_head;
-		item = fifo->items[fifo->_head];
-		while (item->timestamp != fifo->last_timestamp)
-		{
-			item = fifo->items[next(fifo, i)];
-			fifo->items[i] = item;
-			i++;
-		}
-		fifo->items[prev_head]->data = value;
-		fifo->items[prev_head]->timestamp = timestamp;
-	}
-	fifo->_head = prev_head;
-	fifo->items[prev_head]->data = value;
-	fifo->items[prev_head]->timestamp = timestamp;
+	head = prev(fifo, fifo->_head);
+	fifo->_head = head;
+	fifo->_data[head] = value;
 	fifo->_count++;
 	pthread_mutex_unlock(fifo->_lock);
 }

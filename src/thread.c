@@ -6,7 +6,7 @@
 /*   By: math <math@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/18 08:44:52 by math              #+#    #+#             */
-/*   Updated: 2023/03/24 15:45:30 by math             ###   ########.fr       */
+/*   Updated: 2023/04/03 20:38:38 by math             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,11 +26,16 @@ void	*init_threads(void)
 	get_data()->thread_ids = threads;
 	while (i < num_philo)
 	{
-		pthread_create(&threads[i], NULL, philo_work, phs[i]);
+		pthread_create(&threads[i], NULL, philo_work_even, phs[i]);
 		phs[i]->thread_id = threads[i];
-		// if (pthread_join(threads[i], NULL) == -1)
-		// 	get_data()->exit_threads = true;
-		i++;
+		i += 2;
+	}
+	i = 1;
+	while (i < num_philo)
+	{
+		pthread_create(&threads[i], NULL, philo_work_odd, phs[i]);
+		phs[i]->thread_id = threads[i];
+		i += 2;
 	}
 	return (NULL);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   circular_fifo.h                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mroy <mroy@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: math <math@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/28 15:21:35 by mroy              #+#    #+#             */
-/*   Updated: 2023/04/03 14:43:26 by mroy             ###   ########.fr       */
+/*   Updated: 2023/04/03 20:50:22 by math             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,13 +19,6 @@
 # include <stdlib.h>
 # include <pthread.h>
 
-typedef struct s_item
-{
-	void			*data;
-	int32_t			timestamp;
-	int32_t			index;
-}				t_item;
-
 typedef struct s_fifo
 {
 	int32_t			_count;
@@ -33,13 +26,12 @@ typedef struct s_fifo
 	int32_t			_head;
 	pthread_mutex_t	*_lock;
 	int32_t			_tail;
-	t_item			**items;
-	int32_t			last_timestamp;
+	void			**_data;
 }					t_fifo;
 
 int32_t		next(t_fifo *fifo, const int32_t i);
 int32_t		prev(t_fifo *fifo, const int32_t i);
-t_fifo		*new_fifo(size_t elem_count, size_t elem_size);
+t_fifo		*new_fifo(size_t elem_count);
 void		*fifo_get(t_fifo *fifo);
 void		*fifo_get_pop(t_fifo *fifo);
 void		fifo_put(t_fifo *fifo, void *value);
