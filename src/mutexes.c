@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   mutexes.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mroy <mroy@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: math <math@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/18 08:44:52 by math              #+#    #+#             */
-/*   Updated: 2023/04/03 14:38:21 by mroy             ###   ########.fr       */
+/*   Updated: 2023/04/03 20:56:29 by math             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,8 @@ void	init_mutexes(void)
 	pthread_mutex_init(data->write, NULL);
 	i = 0;
 	forks_mutexes = malloc(sizeof(pthread_mutex_t) * get_params()->num_philo);
-	data->wait_queue = new_fifo(get_params()->num_philo, sizeof(t_philo *));
+	data->odd_queue = new_fifo(get_params()->num_philo / 2);
+	data->even_queue = new_fifo(get_params()->num_philo / 2);
 	phs = get_philosophers();
 	while (i < get_params()->num_philo)
 	{

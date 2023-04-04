@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   helper.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mroy <mroy@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: math <math@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/18 08:44:52 by math              #+#    #+#             */
-/*   Updated: 2023/04/03 15:08:43 by mroy             ###   ########.fr       */
+/*   Updated: 2023/04/03 20:52:58 by math             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,14 +34,5 @@ inline int32_t	at_index(t_fifo *fifo, const int32_t i)
 
 inline void	*get(t_fifo *fifo)
 {
-	return (fifo->items[fifo->_tail]);
-}
-
-inline void	*get_pop(t_fifo *fifo)
-{
-	int32_t	index;
-
-	index = fifo->_tail;
-	fifo->_tail = prev(fifo, index);
-	return (fifo->items[index]);
+	return (fifo->_data[fifo->_tail]);
 }
