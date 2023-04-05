@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   circular_fifo.h                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: math <math@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: mroy <mroy@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/28 15:21:35 by mroy              #+#    #+#             */
-/*   Updated: 2023/04/03 20:50:22 by math             ###   ########.fr       */
+/*   Updated: 2023/04/05 17:18:36 by mroy             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,5 +48,6 @@ void		fifo_concurrent_put_exec(t_fifo *fifo, void *value, void (*func)(t_fifo *,
 void		*fifo_get_at(t_fifo *fifo, int32_t i);
 void		fifo_concurrent_put_swap(t_fifo *fifo, void *value, bool (*should_swap)(void *, void *));
 void		fifo_concurrent_swap_tail(t_fifo *fifo, void *value, bool (*should_swap)(void *, void *));
+void		*free_fifo(t_fifo *fifo);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: mroy <mroy@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/28 15:21:35 by mroy              #+#    #+#             */
-/*   Updated: 2023/04/05 08:15:57 by mroy             ###   ########.fr       */
+/*   Updated: 2023/04/05 15:18:20 by mroy             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,8 +58,9 @@ typedef struct s_data
 {
 	pthread_mutex_t	*meal_authorization;
 	pthread_mutex_t	*write;
+	pthread_mutex_t	*forks;
 	t_philo			**philos;
-	pthread_t		*thread_ids;
+	pthread_t		*thread_ids;	
 	t_fifo			*odd_queue;
 	t_fifo			*even_queue;
 	int32_t			odd_count;
@@ -80,7 +81,6 @@ void			put_forks_on_table(t_philo *ph);
 uint64_t		get_time_stamp_ms(void);
 uint64_t		get_time_stamp_mc(void);
 int32_t			print_msg(const char *msg, t_philo *ph);
-void			print_msg_time(const char *msg, t_philo *ph, int32_t time);
 void			*philo_work_odd(void *philo);
 bool			should_exit(void);
 t_philo			**get_philosophers(void);
@@ -89,7 +89,10 @@ void			process_odd_wait_list(t_philo **phs, int32_t ph_cnt);
 void			process_even_wait_list(t_philo **phs, int32_t ph_cnt);
 t_philo			**get_thread_philo(void);
 uint64_t		get_base_time(void);
-pthread_mutexattr_t	get_mutex_attr(int32_t type);
+void			print_msg_time(const char *msg, t_philo *ph, int32_t time);
+void			*free_threads(void);
+void			*free_mutexes(void);
+void			*free_all(void);
 
 void	lock_all_philos(void);
 bool	try_init_params(int32_t argc, char **argv);

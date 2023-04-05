@@ -1,42 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   thread.c                                           :+:      :+:    :+:   */
+/*   free_fifo.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mroy <mroy@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/18 08:44:52 by math              #+#    #+#             */
-/*   Updated: 2023/04/05 14:54:35 by mroy             ###   ########.fr       */
+/*   Updated: 2023/04/05 17:18:40 by mroy             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "philosopher.h"
+#include "circular_fifo.h"
 
-void	*init_threads(void)
+void	*free_fifo(t_fifo *fifo)
 {
-	pthread_t	*threads;
-	int32_t		i;
-	t_philo		**phs;
-	int32_t		num_philo;
-
-	phs = get_philosophers();
-	i = 0;
-	num_philo = get_params()->num_philo;
-	threads = malloc(num_philo * sizeof(pthread_t));
-	get_data()->thread_ids = threads;
-	while (i < num_philo)
-	{
-		pthread_create(&threads[i], NULL, philo_work_even, phs[i]);
-		phs[i]->thread_id = threads[i];
-		i += 2;
-	}
-	i = 1;
-	while (i < num_philo)
-	{
-		pthread_create(&threads[i], NULL, philo_work_odd, phs[i]);
-		phs[i]->thread_id = threads[i];
-		i += 2;
-	}
+	fifo = malloc(sizeof(t_fifo));
+	pthread_mutex_destroy(fifo->_lock);
+	free(fifo->_lock);
+	free(fifo->_data);
 	return (NULL);
 }
 

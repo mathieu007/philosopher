@@ -6,7 +6,7 @@
 /*   By: mroy <mroy@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/18 08:44:52 by math              #+#    #+#             */
-/*   Updated: 2023/04/05 09:13:49 by mroy             ###   ########.fr       */
+/*   Updated: 2023/04/05 16:50:10 by mroy             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,25 +37,31 @@ void	process_even_wait_list(t_philo **phs, int32_t ph_cnt)
 {
 	t_philo		*ph;
 	int32_t		count;
-	// int32_t		diff;
-	t_fifo		*even_fifo;
-
-	even_fifo = get_data()->even_queue;
+	static t_fifo	*even_fifo;
+	static int32_t	time_to_eat;
+	static int32_t	time_to_think;
+	
+	if (time_to_eat == 0)
+	{
+		time_to_eat = get_params()->time_to_eat * 1000;
+		time_to_think = get_params()->time_to_think * 1000;
+		even_fifo = get_data()->even_queue;		
+	}
 	count = get_data()->even_count;
-	// diff = get_relative_time_mc();
-	while (count > 0)
+	while (count > 0 && !should_exit())
 	{	
 		ph = fifo_concurent_get_pop(even_fifo);
 		if (ph == NULL)
 		{
-			usleep(10);
+			usleep(1);
 			continue ;
 		}
-		count--;
 		authorize_forks_take(ph, phs, ph_cnt);
+		count--;
 	}
-	// diff = get_relative_time_mc() - diff;
-	usleep(get_params()->time_to_eat * 1000 - 10000);
+	if (should_exit())
+		return ;
+	usleep(time_to_eat - time_to_think);
 	process_odd_wait_list(phs, ph_cnt);
 }
 
@@ -63,25 +69,31 @@ void	process_odd_wait_list(t_philo **phs, int32_t ph_cnt)
 {
 	t_philo	*ph;
 	int32_t	count;
-	// int32_t	diff;
-	t_fifo	*odd_fifo;
-
-	odd_fifo = get_data()->odd_queue;
+	static t_fifo	*odd_fifo;
+	static int32_t	time_to_eat;
+	static int32_t	time_to_think;
+	
+	if (time_to_eat == 0)
+	{
+		time_to_eat = get_params()->time_to_eat * 1000;
+		time_to_think = get_params()->time_to_think * 1000;
+		odd_fifo = get_data()->odd_queue;		
+	}
 	count = get_data()->odd_count;
-	// diff = get_relative_time_mc();
-	while (count > 0)
+	while (count > 0 && !should_exit())
 	{	
 		ph = fifo_concurent_get_pop(odd_fifo);
 		if (ph == NULL)
 		{
-			usleep(10);
+			usleep(1);
 			continue ;
-		}
-		count--;
+		}		
 		authorize_forks_take(ph, phs, ph_cnt);
+		count--;
 	}
-	// diff = get_relative_time_mc() - diff;
-	usleep(get_params()->time_to_eat * 1000 - 10000);
+	if (should_exit())
+		return ;
+	usleep(time_to_eat - time_to_think);
 	process_even_wait_list(phs, ph_cnt);
 }
 
@@ -90,23 +102,19 @@ static void	work_loop(t_philo **phs, int32_t ph_cnt)
 	int32_t		i;
 	t_fifo		*odd_fifo;
 	t_fifo		*even_fifo;
-	// uint32_t	base_time;
 
 	i = 0;
 	odd_fifo = get_data()->odd_queue;
 	even_fifo = get_data()->even_queue;
-	// base_time = get_base_time();
 	while (i < ph_cnt)
 	{
-		fifo_put(odd_fifo, (void *)phs[i]);
-		// phs[i]->base_time = base_time;
+		fifo_put(even_fifo, (void *)phs[i]);
 		i += 2;
 	}
 	i = 1;
 	while (i < ph_cnt)
 	{
-		fifo_put(even_fifo, (void *)phs[i]);
-		// phs[i]->base_time = base_time;
+		fifo_put(odd_fifo, (void *)phs[i]);
 		i += 2;
 	}
 	get_data()->even_count = even_fifo->_count;
@@ -137,4 +145,6 @@ void	start_work_load(void)
 	ph_cnt = get_params()->num_philo;
 	phs = get_philosophers();
 	work_loop(phs, ph_cnt);
+	free_all();
+	exit(0);
 }
