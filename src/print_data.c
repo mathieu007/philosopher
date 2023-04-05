@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   print_data.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: math <math@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: mroy <mroy@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/18 08:44:52 by math              #+#    #+#             */
-/*   Updated: 2023/04/04 21:20:41 by math             ###   ########.fr       */
+/*   Updated: 2023/04/05 08:37:48 by mroy             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,9 +21,9 @@ inline int32_t	print_msg(const char *msg, t_philo *ph)
 		write = ph->data->write;
 	time = 0;
 	if (!should_exit())
-	{	
-		time = get_relative_time_ms();
+	{		
 		pthread_mutex_lock(write);
+		time = get_relative_time_ms();
 		printf(msg, time, ph->name);
 		pthread_mutex_unlock(write);
 	}
