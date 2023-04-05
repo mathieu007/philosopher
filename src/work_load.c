@@ -3,17 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   work_load.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mroy <mroy@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: math <math@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/18 08:44:52 by math              #+#    #+#             */
-/*   Updated: 2023/04/04 16:49:39 by mroy             ###   ########.fr       */
+/*   Updated: 2023/04/04 20:11:05 by math             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philosopher.h"
 
-static void	authorize_forks_take(t_philo *ph, t_philo **phs,
-	t_fifo *fifo, int32_t ph_cnt)
+static void	authorize_forks_take(t_philo *ph, t_philo **phs, t_fifo *fifo,
+	int32_t ph_cnt)
 {
 	t_philo	*ph_prev;
 	t_philo	*ph_next;
@@ -31,7 +31,7 @@ static void	authorize_forks_take(t_philo *ph, t_philo **phs,
 		{
 			pthread_mutex_lock(ph->forks_auth);
 			break ;
-		}		
+		}
 	}
 }
 
@@ -39,10 +39,12 @@ void	process_even_wait_list(t_philo **phs, int32_t ph_cnt)
 {
 	t_philo		*ph;
 	int32_t		count;
+	int32_t		diff;
 	t_fifo		*even_fifo;
 
 	even_fifo = get_data()->even_queue;
 	count = get_data()->even_count;
+	diff = get_relative_time_mc();
 	while (count > 0)
 	{	
 		ph = fifo_concurent_get(even_fifo);
@@ -54,7 +56,8 @@ void	process_even_wait_list(t_philo **phs, int32_t ph_cnt)
 		count--;
 		authorize_forks_take(ph, phs, even_fifo, ph_cnt);
 	}
-	usleep(get_params()->time_to_eat * 1000 - 10000);
+	diff = get_relative_time_mc() - diff;
+	usleep(get_params()->time_to_eat * 1000 - diff - 10000);
 	process_odd_wait_list(phs, ph_cnt);
 }
 
@@ -62,10 +65,12 @@ void	process_odd_wait_list(t_philo **phs, int32_t ph_cnt)
 {
 	t_philo	*ph;
 	int32_t	count;
+	int32_t	diff;
 	t_fifo	*odd_fifo;
 
 	odd_fifo = get_data()->odd_queue;
 	count = get_data()->odd_count;
+	diff = get_relative_time_mc();
 	while (count > 0)
 	{	
 		ph = fifo_concurent_get(odd_fifo);
@@ -77,6 +82,7 @@ void	process_odd_wait_list(t_philo **phs, int32_t ph_cnt)
 		count--;
 		authorize_forks_take(ph, phs, odd_fifo, ph_cnt);
 	}
+	diff = get_relative_time_mc() - diff;
 	usleep(get_params()->time_to_eat * 1000 - 10000);
 	process_even_wait_list(phs, ph_cnt);
 }
