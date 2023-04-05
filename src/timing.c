@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   timing.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mroy <mroy@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: math <math@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/18 08:44:52 by math              #+#    #+#             */
-/*   Updated: 2023/04/04 15:08:55 by mroy             ###   ########.fr       */
+/*   Updated: 2023/04/05 07:19:32 by math             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,19 +30,14 @@ inline uint64_t	get_time_stamp_mc(void)
 
 inline int32_t	get_relative_time_mc(void)
 {
-	return ((int32_t)(get_time_stamp_mc() - get_base_time()));
+	static uint64_t	base_time;
+
+	if (base_time == 0)
+		base_time = (*get_thread_philo())->base_time;
+	return ((int32_t)(get_time_stamp_mc() - base_time));
 }
 
 inline int32_t	get_relative_time_ms(void)
 {
-	return ((int32_t)(get_time_stamp_ms() - (get_base_time() / 1000)));
-}
-
-inline uint64_t	get_base_time(void)
-{
-	static uint64_t			val;
-
-	if (val == 0)
-		val = get_time_stamp_mc();
-	return (val);
+	return (get_relative_time_mc() / 1000);
 }

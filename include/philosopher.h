@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philosopher.h                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mroy <mroy@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: math <math@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/28 15:21:35 by mroy              #+#    #+#             */
-/*   Updated: 2023/04/04 16:32:49 by mroy             ###   ########.fr       */
+/*   Updated: 2023/04/05 07:18:39 by math             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,9 +42,9 @@ typedef struct s_philo
 {
 	int32_t				name;
 	pthread_mutex_t		*forks_auth;
-	pthread_mutex_t		*forks_take;
 	pthread_mutex_t		*left_fork;
 	pthread_mutex_t		*right_fork;
+	int32_t				base_time;
 	bool				forks_taken;
 	pthread_t			thread_id;
 	int32_t				last_meal;
@@ -79,7 +79,6 @@ void			take_forks(t_philo *ph);
 void			put_forks_on_table(t_philo *ph);
 uint64_t		get_time_stamp_ms(void);
 uint64_t		get_time_stamp_mc(void);
-uint64_t		get_base_time(void);
 int32_t			print_msg(const char *msg, t_philo *ph);
 void			print_msg_time(const char *msg, t_philo *ph, int32_t time);
 void			*philo_work_odd(void *philo);
@@ -88,6 +87,7 @@ t_philo			**get_philosophers(void);
 void			*philo_work_even(void *philo);
 void			process_odd_wait_list(t_philo **phs, int32_t ph_cnt);
 void			process_even_wait_list(t_philo **phs, int32_t ph_cnt);
+t_philo			**get_thread_philo(void);
 
 pthread_mutexattr_t	get_mutex_attr(int32_t type);
 

@@ -6,7 +6,7 @@
 /*   By: math <math@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/18 08:44:52 by math              #+#    #+#             */
-/*   Updated: 2023/04/03 20:38:38 by math             ###   ########.fr       */
+/*   Updated: 2023/04/05 07:09:25 by math             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,13 @@ void	*init_threads(void)
 		i += 2;
 	}
 	return (NULL);
+}
+
+t_philo	**get_thread_philo(void)
+{
+	static t_philo	*ph;
+
+	return (&ph);
 }
 
 void	*free_threads(void)
