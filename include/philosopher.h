@@ -6,7 +6,7 @@
 /*   By: mroy <mroy@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/28 15:21:35 by mroy              #+#    #+#             */
-/*   Updated: 2023/04/05 08:15:57 by mroy             ###   ########.fr       */
+/*   Updated: 2023/04/05 10:47:43 by mroy             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,14 +79,14 @@ void			take_forks(t_philo *ph);
 void			put_forks_on_table(t_philo *ph);
 uint64_t		get_time_stamp_ms(void);
 uint64_t		get_time_stamp_mc(void);
-int32_t			print_msg(const char *msg, t_philo *ph);
-void			print_msg_time(const char *msg, t_philo *ph, int32_t time);
+
+void			print_msg(const char *msg, t_philo *ph, int32_t time);
 void			*philo_work_odd(void *philo);
 bool			should_exit(void);
 t_philo			**get_philosophers(void);
 void			*philo_work_even(void *philo);
-void			process_odd_wait_list(t_philo **phs, int32_t ph_cnt);
-void			process_even_wait_list(t_philo **phs, int32_t ph_cnt);
+void			process_odd_philos(t_philo **phs, int32_t ph_cnt);
+void			process_even_philos(t_philo **phs, int32_t ph_cnt);
 t_philo			**get_thread_philo(void);
 uint64_t		get_base_time(void);
 pthread_mutexattr_t	get_mutex_attr(int32_t type);
