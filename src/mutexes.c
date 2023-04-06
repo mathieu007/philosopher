@@ -3,14 +3,24 @@
 /*                                                        :::      ::::::::   */
 /*   mutexes.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mroy <mroy@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: math <math@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/18 08:44:52 by math              #+#    #+#             */
-/*   Updated: 2023/04/05 15:08:22 by mroy             ###   ########.fr       */
+/*   Updated: 2023/04/05 20:50:22 by math             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philosopher.h"
+
+pthread_mutexattr_t	*get_mutex_attr(void)
+{
+	pthread_mutexattr_t	*attr;
+
+	attr = malloc(sizeof(pthread_mutexattr_t));
+	pthread_mutexattr_init(attr);
+	pthread_mutexattr_settype(attr, PTHREAD_MUTEX_TIMED_NP);
+	return (attr);
+}
 
 void	init_mutexes(void)
 {
@@ -22,8 +32,8 @@ void	init_mutexes(void)
 	data = get_data();
 	data->meal_authorization = malloc(sizeof(pthread_mutex_t));
 	data->write = malloc(sizeof(pthread_mutex_t));
-	pthread_mutex_init(data->meal_authorization, NULL);
-	pthread_mutex_init(data->write, NULL);
+	pthread_mutex_init(data->meal_authorization, get_mutex_attr());
+	pthread_mutex_init(data->write, get_mutex_attr());
 	i = 0;
 	forks_mutexes = malloc(sizeof(pthread_mutex_t) * get_params()->num_philo);
 	data->odd_queue = new_fifo(1 + get_params()->num_philo / 2);
@@ -33,8 +43,8 @@ void	init_mutexes(void)
 	while (i < get_params()->num_philo)
 	{
 		phs[i]->forks_auth = malloc(sizeof(pthread_mutex_t));
-		pthread_mutex_init(phs[i]->forks_auth, NULL);
-		pthread_mutex_init(&forks_mutexes[i], NULL);
+		pthread_mutex_init(phs[i]->forks_auth, get_mutex_attr());
+		pthread_mutex_init(&forks_mutexes[i], get_mutex_attr());
 		phs[i]->left_fork = &forks_mutexes[i];
 		phs[prev_ph(i, get_params()->num_philo)]->right_fork = &forks_mutexes[i];
 		i++;
@@ -58,6 +68,7 @@ void	*free_mutexes(void)
 	while (i < get_params()->num_philo)
 	{
 		pthread_mutex_destroy(phs[i]->forks_auth);
+		pthread_mutex_destroy(phs[i]->left_fork);
 		free(phs[i]->forks_auth);
 		i++;
 	}

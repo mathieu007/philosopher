@@ -1,23 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   philo.c                                            :+:      :+:    :+:   */
+/*   free.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: math <math@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/18 08:44:52 by math              #+#    #+#             */
-/*   Updated: 2023/03/26 10:06:20 by math             ###   ########.fr       */
+/*   Updated: 2023/04/05 21:19:25 by math             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "philosopher.h"
+#include "circular_fifo.h"
 
-inline int32_t	next_ph(const int32_t i, const int32_t philo_count)
+void	*free_fifo(t_fifo *fifo)
 {
-	return ((i + 1) % philo_count);
+	pthread_mutex_destroy(fifo->_tail_lock);
+	free(fifo->_tail_lock);
+	free(fifo->_data);
+	free(fifo);
+	return (NULL);
 }
 
-inline int32_t	prev_ph(const int32_t i, const int32_t philo_count)
-{
-	return (((i - 1) + philo_count) % philo_count);
-}

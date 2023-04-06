@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   circular_fifo.h                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mroy <mroy@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: math <math@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/28 15:21:35 by mroy              #+#    #+#             */
-/*   Updated: 2023/04/05 17:18:36 by mroy             ###   ########.fr       */
+/*   Updated: 2023/04/05 21:11:54 by math             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,9 @@ typedef struct s_fifo
 	int32_t			_count;
 	int32_t			_max_len;
 	int32_t			_head;
-	pthread_mutex_t	*_lock;
+	pthread_mutex_t	*_head_lock;
+	pthread_mutex_t	*_tail_lock;
+	pthread_mutex_t	*_count_lock;
 	int32_t			_tail;
 	void			**_data;
 }					t_fifo;
@@ -49,5 +51,6 @@ void		*fifo_get_at(t_fifo *fifo, int32_t i);
 void		fifo_concurrent_put_swap(t_fifo *fifo, void *value, bool (*should_swap)(void *, void *));
 void		fifo_concurrent_swap_tail(t_fifo *fifo, void *value, bool (*should_swap)(void *, void *));
 void		*free_fifo(t_fifo *fifo);
+pthread_mutexattr_t	*get_mutex_attr(void);
 
 #endif

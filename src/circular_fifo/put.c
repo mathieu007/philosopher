@@ -6,7 +6,7 @@
 /*   By: math <math@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/18 08:44:52 by math              #+#    #+#             */
-/*   Updated: 2023/04/03 20:50:28 by math             ###   ########.fr       */
+/*   Updated: 2023/04/05 21:15:41 by math             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,12 +23,14 @@ inline void	fifo_concurrent_put(t_fifo *fifo, void *value)
 {	
 	int32_t	head;
 
-	pthread_mutex_lock(fifo->_lock);
+	pthread_mutex_lock(fifo->_head_lock);
 	head = prev(fifo, fifo->_head);
 	fifo->_head = head;
 	fifo->_data[head] = value;
+	pthread_mutex_unlock(fifo->_head_lock);
+	pthread_mutex_lock(fifo->_count_lock);
 	fifo->_count++;
-	pthread_mutex_unlock(fifo->_lock);
+	pthread_mutex_unlock(fifo->_count_lock);
 }
 
 /// @brief On linux and windows mutex are not implemented as "fair" mutex,

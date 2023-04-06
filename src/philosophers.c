@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philosophers.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mroy <mroy@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: math <math@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/18 08:44:52 by math              #+#    #+#             */
-/*   Updated: 2023/04/05 17:11:32 by mroy             ###   ########.fr       */
+/*   Updated: 2023/04/06 06:48:26 by math             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,6 @@ static void	eating(t_philo *ph)
 	static int32_t			time_to_eat;
 	int32_t					prev_meal;
 	int32_t					last_meal;
-
 
 	if (meal_authorization == NULL)
 	{
@@ -116,14 +115,14 @@ void	*philo_work_even(void *philo)
 		pthread_mutex_lock(ph->forks_auth);
 		take_forks(ph);
 		pthread_mutex_unlock(ph->forks_auth);
-		ph->forks_taken = true;					
+		ph->forks_taken = true;
+		if (i + 1 < must_eat)
+			fifo_concurrent_put(wait_queue, (void *)ph);
 		eating(ph);
-		ph->forks_taken = false;		
-		sleeping(ph);		
+		ph->forks_taken = false;
+		sleeping(ph);
 		thinking(ph);
 		i++;
-		if (i < must_eat)
-			fifo_concurrent_put(wait_queue, (void *)ph);
 	}
 	data->even_count--;
 	if (data->odd_count == 0 && data->even_count == 0)
@@ -151,13 +150,13 @@ void	*philo_work_odd(void *philo)
 		take_forks(ph);
 		pthread_mutex_unlock(ph->forks_auth);
 		ph->forks_taken = true;
+		if (i + 1 < must_eat)
+			fifo_concurrent_put(wait_queue, (void *)ph);
 		eating(ph);
 		ph->forks_taken = false;
 		sleeping(ph);
 		thinking(ph);
 		i++;
-		if (i < must_eat)
-			fifo_concurrent_put(wait_queue, (void *)ph);
 	}
 	data->odd_count--;
 	if (data->odd_count == 0 && data->even_count == 0)

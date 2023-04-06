@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philosopher.h                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mroy <mroy@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: math <math@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/28 15:21:35 by mroy              #+#    #+#             */
-/*   Updated: 2023/04/05 15:18:20 by mroy             ###   ########.fr       */
+/*   Updated: 2023/04/05 20:40:31 by math             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,6 +93,7 @@ void			print_msg_time(const char *msg, t_philo *ph, int32_t time);
 void			*free_threads(void);
 void			*free_mutexes(void);
 void			*free_all(void);
+pthread_mutexattr_t	*get_mutex_attr(void);
 
 void	lock_all_philos(void);
 bool	try_init_params(int32_t argc, char **argv);

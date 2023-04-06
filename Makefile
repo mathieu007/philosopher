@@ -25,11 +25,12 @@ SOURCES     :=	src/free.c	\
 				src/circular_fifo/helper.c	\
 				src/circular_fifo/get.c	\
 				src/circular_fifo/swap.c	\
+				src/circular_fifo/free.c	\
 				src/philosophers.c	\
-				src/helpers/philo.c	\
 				src/utils.c	\
 				src/data.c	\
 				src/forks.c	\
+				src/helper.c	\
 				src/print_data.c	\
 				src/timing.c	\
 				src/work_load.c	\
