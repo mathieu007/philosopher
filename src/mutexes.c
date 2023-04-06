@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   mutexes.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: math <math@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: mroy <mroy@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/18 08:44:52 by math              #+#    #+#             */
-/*   Updated: 2023/04/05 20:50:22 by math             ###   ########.fr       */
+/*   Updated: 2023/04/06 08:24:48 by mroy             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ pthread_mutexattr_t	*get_mutex_attr(void)
 
 	attr = malloc(sizeof(pthread_mutexattr_t));
 	pthread_mutexattr_init(attr);
-	pthread_mutexattr_settype(attr, PTHREAD_MUTEX_TIMED_NP);
+	pthread_mutexattr_settype(attr, PTHREAD_MUTEX_POLICY_FIRSTFIT_NP);
 	return (attr);
 }
 
