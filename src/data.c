@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   data.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: math <math@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: mroy <mroy@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/18 08:44:52 by math              #+#    #+#             */
-/*   Updated: 2023/03/31 15:54:06 by math             ###   ########.fr       */
+/*   Updated: 2023/04/06 17:57:19 by mroy             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,5 +27,18 @@ inline t_philo	**get_philosophers(void)
 
 inline bool	should_exit(void)
 {
-	return (get_data()->exit_threads);
+	static t_data	*data;
+
+	if (data == NULL)
+		data = get_data();
+	return (data->exit_threads || (data->even_count == 0 && data->odd_count == 0));
+}
+
+inline bool	should_exit_ph(t_philo *ph)
+{
+	static __thread t_data	*data;
+
+	if (data == NULL)
+		data = ph->data;
+	return (data->exit_threads || (data->even_count == 0 && data->odd_count == 0));
 }

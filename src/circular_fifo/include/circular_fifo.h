@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   circular_fifo.h                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: math <math@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: mroy <mroy@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/28 15:21:35 by mroy              #+#    #+#             */
-/*   Updated: 2023/04/05 21:11:54 by math             ###   ########.fr       */
+/*   Updated: 2023/04/06 09:52:35 by mroy             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,9 +24,7 @@ typedef struct s_fifo
 	int32_t			_count;
 	int32_t			_max_len;
 	int32_t			_head;
-	pthread_mutex_t	*_head_lock;
-	pthread_mutex_t	*_tail_lock;
-	pthread_mutex_t	*_count_lock;
+	pthread_mutex_t	*_lock;
 	int32_t			_tail;
 	void			**_data;
 }					t_fifo;

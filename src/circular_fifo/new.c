@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   new.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: math <math@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: mroy <mroy@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/18 08:44:52 by math              #+#    #+#             */
-/*   Updated: 2023/04/05 21:13:11 by math             ###   ########.fr       */
+/*   Updated: 2023/04/06 14:28:12 by mroy             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,9 +20,7 @@ t_fifo	*new_fifo(size_t elem_count)
 	// pthread_mutexattr_init(&attr);
 	// pthread_mutexattr_settype(&attr, NULL);
 	fifo = malloc(sizeof(t_fifo));
-	fifo->_head_lock = malloc(sizeof(pthread_mutex_t));
-	fifo->_tail_lock = malloc(sizeof(pthread_mutex_t));
-	fifo->_count_lock = malloc(sizeof(pthread_mutex_t));
+	fifo->_lock = malloc(sizeof(pthread_mutex_t));
 	if (!fifo)
 		return (NULL);
 	fifo->_data = malloc(elem_count * sizeof(void *));
@@ -32,8 +30,6 @@ t_fifo	*new_fifo(size_t elem_count)
 	fifo->_max_len = elem_count;
 	fifo->_tail = elem_count - 1;
 	fifo->_head = elem_count;
-	pthread_mutex_init(fifo->_head_lock, get_mutex_attr());
-	pthread_mutex_init(fifo->_tail_lock, get_mutex_attr());
-	pthread_mutex_init(fifo->_count_lock, get_mutex_attr());
+	pthread_mutex_init(fifo->_lock, NULL);
 	return (fifo);
 }

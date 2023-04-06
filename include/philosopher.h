@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philosopher.h                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: math <math@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: mroy <mroy@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/28 15:21:35 by mroy              #+#    #+#             */
-/*   Updated: 2023/04/05 20:40:31 by math             ###   ########.fr       */
+/*   Updated: 2023/04/06 17:56:43 by mroy             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,6 @@
 # include <sys/time.h>
 # include <unistd.h>
 # include <pthread.h>
-# include <stdatomic.h>
 # include "circular_fifo.h"
 
 
@@ -50,6 +49,7 @@ typedef struct s_philo
 	int32_t				last_meal;
 	int32_t				eat_count;
 	int32_t				position;
+	int32_t				last_msg;
 	t_param				*params;
 	struct s_data		*data;
 }						t_philo;
@@ -94,6 +94,8 @@ void			*free_threads(void);
 void			*free_mutexes(void);
 void			*free_all(void);
 pthread_mutexattr_t	*get_mutex_attr(void);
+void			*join_threads(void);
+bool			should_exit_ph(t_philo *ph);
 
 void	lock_all_philos(void);
 bool	try_init_params(int32_t argc, char **argv);

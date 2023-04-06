@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   work_load.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: math <math@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: mroy <mroy@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/18 08:44:52 by math              #+#    #+#             */
-/*   Updated: 2023/04/06 07:01:27 by math             ###   ########.fr       */
+/*   Updated: 2023/04/06 17:26:20 by mroy             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,110 +20,85 @@ static void	authorize_forks_take(t_philo *ph, t_philo **phs, int32_t ph_cnt)
 	ph_prev = phs[prev_ph(ph->position, ph_cnt)];
 	ph_next = phs[next_ph(ph->position, ph_cnt)];
 	while (ph_prev->forks_taken || ph_next->forks_taken)
-		usleep(1);
-	printf("before forks unlock ph: %i\n", ph->name);
+		usleep(100);
 	pthread_mutex_unlock(ph->forks_auth);
-	while (true)
-	{
-		usleep(1);
-		if (ph->forks_taken)
-		{
-			pthread_mutex_lock(ph->forks_auth);
-			break ;
-		}
-	}
+	usleep(100);
+	pthread_mutex_lock(ph->forks_auth);
 }
 
 void	process_even_wait_list(t_philo **phs, int32_t ph_cnt)
 {
-	t_philo		*ph;
-	int32_t		count;
+	t_philo			*ph;
+	int32_t			count;
 	static t_fifo	*even_fifo;
 	static int32_t	time_to_eat;
-	// static int32_t	time_to_think;
+	static int32_t	time_to_think;
 
 	if (time_to_eat == 0)
 	{
 		time_to_eat = get_params()->time_to_eat * 1000;
-		// time_to_think = get_params()->time_to_think * 1000;
+		time_to_think = get_params()->time_to_think * 1000;
 		even_fifo = get_data()->even_queue;
 	}
 	count = get_data()->even_count;
 	while (count > 0 && !should_exit())
 	{	
-		ph = fifo_concurent_get_pop(even_fifo);
-		printf("even loop ph: %i\n", ph->name);
+		ph = fifo_concurent_get(even_fifo);
 		if (ph == NULL)
 		{
-			usleep(10);
+			usleep(1000);
 			continue ;
 		}
+		if (ph->eat_count == get_params()->must_eat)
+		{
+			get_data()->odd_count--;
+			fifo_concurrent_pop(even_fifo);
+		}
 		authorize_forks_take(ph, phs, ph_cnt);
+		fifo_concurrent_pop(even_fifo);
 		count--;
 	}
 	if (should_exit())
 		return ;
-	// usleep(time_to_eat - time_to_think);
 	process_odd_wait_list(phs, ph_cnt);
 }
 
 void	process_odd_wait_list(t_philo **phs, int32_t ph_cnt)
 {
-	t_philo	*ph;
-	int32_t	count;
+	t_philo			*ph;
+	int32_t			count;
 	static t_fifo	*odd_fifo;
 	static int32_t	time_to_eat;
-	// static int32_t	time_to_think;
-	
+	static int32_t	time_to_think;
+
 	if (time_to_eat == 0)
 	{
 		time_to_eat = get_params()->time_to_eat * 1000;
-		// time_to_think = get_params()->time_to_think * 1000;
+		time_to_think = get_params()->time_to_think * 1000;
 		odd_fifo = get_data()->odd_queue;
 	}
 	count = get_data()->odd_count;
 	while (count > 0 && !should_exit())
 	{	
-		ph = fifo_concurent_get_pop(odd_fifo);
+		ph = fifo_get(odd_fifo);			
 		if (ph == NULL)
 		{
-			usleep(1);
+			usleep(1000);
 			continue ;
-		}		
+		}
+		if (ph->eat_count == get_params()->must_eat)
+		{
+			get_data()->odd_count--;
+			fifo_concurrent_pop(odd_fifo);
+		}
 		authorize_forks_take(ph, phs, ph_cnt);
+		fifo_concurrent_pop(odd_fifo);
 		count--;
 	}
 	if (should_exit())
 		return ;
-	// usleep(time_to_eat - time_to_think);
 	process_even_wait_list(phs, ph_cnt);
 }
-
-static void	work_loop(t_philo **phs, int32_t ph_cnt)
-{
-	int32_t		i;
-	t_fifo		*odd_fifo;
-	t_fifo		*even_fifo;
-
-	i = 0;
-	odd_fifo = get_data()->odd_queue;
-	even_fifo = get_data()->even_queue;
-	while (i < ph_cnt)
-	{
-		fifo_put(even_fifo, (void *)phs[i]);
-		i += 2;
-	}
-	i = 1;
-	while (i < ph_cnt)
-	{
-		fifo_put(odd_fifo, (void *)phs[i]);
-		i += 2;
-	}
-	get_data()->even_count = even_fifo->_count;
-	get_data()->odd_count = odd_fifo->_count;
-	process_odd_wait_list(phs, ph_cnt);
-}
-
 void	lock_all_philos(void)
 {
 	int32_t			i;
@@ -141,12 +116,14 @@ void	lock_all_philos(void)
 
 void	start_work_load(void)
 {
-	t_philo		**phs;
-	int32_t		ph_cnt;
+	t_philo					**phs;
+	int32_t					ph_cnt;
+	static __thread t_data	*data;	
 
+	data = get_data();
 	ph_cnt = get_params()->num_philo;
 	phs = get_philosophers();
-	work_loop(phs, ph_cnt);
+	process_odd_wait_list(phs, ph_cnt);
 	free_all();
 	exit(0);
 }

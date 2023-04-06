@@ -13,7 +13,8 @@ SRCEXT			:= c
 OBJEXT			:= o
 
 #Flags, Libraries and Includes
-CFLAGS      := -Wall -Wextra -Werror -g -O2
+# CFLAGS      := -Wall -Wextra -Werror -g -fsanitize=thread
+CFLAGS      := -Wall -Wextra -Werror -g -fsanitize=thread
 INCDEP      := -I$(INCDIR) -I$(SRCDIR)/circular_fifo/$(INCDIR)
 
 

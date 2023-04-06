@@ -29,5 +29,6 @@
     "files.autoSave": "afterDelay",
     "editor.defaultFormatter": "ms-vscode.cpptools",
 	"editor.detectIndentation": false,
-	"editor.insertSpaces": false
+	"editor.insertSpaces": false,
+	"codam-norminette-3.displayErrorName": true
 }
