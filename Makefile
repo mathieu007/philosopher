@@ -1,5 +1,5 @@
 #Compiler and Linker
-CC          	:= gcc
+CC          	:= cc
 
 #The Target Binary Program
 NAME			:= bin/philo
@@ -14,7 +14,7 @@ OBJEXT			:= o
 
 #Flags, Libraries and Includes
 # CFLAGS      := -Wall -Wextra -Werror -g -fsanitize=thread
-CFLAGS      := -Wall -Wextra -Werror -g -fsanitize=thread
+CFLAGS      := -Wall -Wextra -Werror -g -O2
 INCDEP      := -I$(INCDIR) -I$(SRCDIR)/circular_fifo/$(INCDIR)
 
 

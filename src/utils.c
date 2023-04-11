@@ -6,7 +6,7 @@
 /*   By: math <math@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/24 09:51:17 by math              #+#    #+#             */
-/*   Updated: 2023/03/24 10:50:57 by math             ###   ########.fr       */
+/*   Updated: 2023/04/08 07:31:37 by math             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,4 +57,18 @@ int	ft_atoi(const char *str)
 	while (ft_isdigit(*str) == 1)
 		n = (n * 10) + (*str++ - 48);
 	return (n * neg);
+}
+
+bool	is_odd(int32_t num)
+{
+	if (num % 2 == 0)
+		return (false);
+	return (true);
+}
+
+bool	is_even(int32_t num)
+{
+	if (num % 2 == 0)
+		return (true);
+	return (false);
 }

@@ -3,17 +3,11 @@
 /*                                                        :::      ::::::::   */
 /*   forks.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mroy <mroy@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: math <math@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/18 08:44:52 by math              #+#    #+#             */
-/*   Updated: 2023/04/06 16:59:13 by mroy             ###   ########.fr       */
+/*   Updated: 2023/04/07 10:39:03 by math             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philosopher.h"
-
-void	take_forks(t_philo *ph)
-{
-	print_msg("%i %i has taken a fork\n", ph);
-	print_msg("%i %i has taken a fork\n", ph);	
-}

@@ -6,7 +6,7 @@
 /*   By: math <math@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/18 08:44:52 by math              #+#    #+#             */
-/*   Updated: 2023/04/06 06:49:48 by math             ###   ########.fr       */
+/*   Updated: 2023/04/08 15:47:57 by math             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,8 +57,9 @@ bool	try_init_params(int32_t argc, char **argv)
 	params->time_to_die = ft_atoi(argv[2]);
 	params->time_to_eat = ft_atoi(argv[3]);
 	params->time_to_sleep = ft_atoi(argv[4]);
-	params->time_to_think = params->time_to_die - params->time_to_sleep - params->time_to_eat
-		- params->time_to_eat;
+	params->time_to_think = params->time_to_die - params->time_to_sleep - params->time_to_eat;
+	params->time_cycle = ((params->time_to_think / 2)
+			+ params->time_to_eat + params->time_to_sleep) * 1000;
 	if (argc == 6)
 	{
 		if (!is_valid(argv[5]))

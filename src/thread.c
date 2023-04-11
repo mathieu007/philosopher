@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   thread.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mroy <mroy@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: math <math@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/18 08:44:52 by math              #+#    #+#             */
-/*   Updated: 2023/04/06 16:37:03 by mroy             ###   ########.fr       */
+/*   Updated: 2023/04/10 13:05:12 by math             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,51 +20,65 @@ void	*init_threads(void)
 	int32_t		num_philo;
 
 	phs = get_philosophers();
-	i = 0;
 	num_philo = get_params()->num_philo;
 	threads = malloc(num_philo * sizeof(pthread_t));
 	get_data()->thread_ids = threads;
+	i = 0;
 	while (i < num_philo)
 	{
-		pthread_create(&threads[i], NULL, philo_work_even, phs[i]);			
+		pthread_create(&threads[i], NULL, philo_even_work, phs[i]);
 		phs[i]->thread_id = threads[i];
 		i += 2;
 	}
 	i = 1;
 	while (i < num_philo)
 	{
-		pthread_create(&threads[i], NULL, philo_work_odd, phs[i]);
+		pthread_create(&threads[i], NULL, philo_odd_work, phs[i]);
 		phs[i]->thread_id = threads[i];
 		i += 2;
 	}
 	return (NULL);
 }
 
-// void	*join_threads(void)
-// {
-// 	pthread_t	*threads;
-// 	int32_t		i;
-// 	t_data		*data;
-// 	int32_t		num_philo;
-// 	void		*ret;
+void 	*detach_all_philos(void)
+{
+	t_philo		**phs;
+	int32_t		i;
+	int32_t		num_philo;
 
-// 	i = 0;
-// 	ret = NULL;
-// 	data = get_data();
-// 	num_philo = get_params()->num_philo;
-// 	threads = get_data()->thread_ids;
-// 	while (i < num_philo)
-// 	{
-// 		pthread_join(threads[i], &ret);
-// 		data->even_count--;
-// 		i += 2;
-// 	}
-// 	i = 1;
-// 	while (i < num_philo)
-// 	{
-// 		pthread_join(threads[i], &ret);
-// 		data->odd_count--;
-// 		i += 2;
-// 	}
-// 	return (NULL);
-// }
+	i = 0;
+	phs = get_philosophers();
+	num_philo = get_params()->num_philo;
+	while (i < num_philo)
+	{
+		pthread_detach(phs[i]->thread_id);
+		free_philo(phs[i]);
+		i++;
+	}
+	return (NULL);
+}
+
+void	*join_threads(void)
+{
+	pthread_t	*threads;
+	int32_t		i;
+	int32_t		num_philo;
+	void		*status;
+
+	i = 0;
+	status = NULL;
+	num_philo = get_params()->num_philo;
+	threads = get_data()->thread_ids;
+	while (i < num_philo)
+	{
+		if (pthread_join(threads[i], &status) != 0 || *((int32_t *)status) == 1)
+		{
+			detach_all_philos();
+			free_all();
+			exit(1);
+		}
+		i++;
+	}
+	free_all();
+	return (NULL);
+}

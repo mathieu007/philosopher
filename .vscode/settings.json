@@ -1,34 +1,12 @@
 {
-    "files.associations": {
-		"bitset": "c",
-		"functional": "c",
-		"iterator": "c",
-		"memory": "c",
-		"cstdio": "c",
-		"philosopher.h": "c",
-		"algorithm": "c",
+	"terminal.integrated.scrollback": 10000,
+	"files.associations": {
 		"array": "c",
 		"deque": "c",
 		"string": "c",
 		"unordered_map": "c",
 		"vector": "c",
 		"string_view": "c",
-		"initializer_list": "c",
-		"*.tcc": "c",
-		"exception": "c",
-		"memory_resource": "c",
-		"iosfwd": "c",
-		"new": "c",
-		"ostream": "c",
-		"streambuf": "c",
-		"system_error": "c",
-		"tuple": "c",
-		"type_traits": "c",
-		"utility": "c"
-	},
-    "files.autoSave": "afterDelay",
-    "editor.defaultFormatter": "ms-vscode.cpptools",
-	"editor.detectIndentation": false,
-	"editor.insertSpaces": false,
-	"codam-norminette-3.displayErrorName": true
+		"initializer_list": "c"
+	}
 }
