@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philosophers.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: math <math@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: mroy <mroy@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/18 08:44:52 by math              #+#    #+#             */
-/*   Updated: 2023/04/10 14:11:31 by math             ###   ########.fr       */
+/*   Updated: 2023/04/11 16:43:46 by mroy             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,10 +41,20 @@ void	*init_philosophers(void)
 	return (NULL);
 }
 
-static void	two_stage_sleep(t_data *data, int32_t time_to_sleep, int32_t end_time)
+static void	two_stage_sleep(t_data *data, int32_t time_to_sleep,
+	int32_t end_time)
 {	
-	usleep(time_to_sleep - 5000);
-	usleep(end_time - get_relative_time_mc(data));
+	int32_t	time;
+
+	time = time_to_sleep - 5000;
+	if (time > 0)
+		usleep(time);
+	// time = end_time - 2500 - get_relative_time_mc(data);
+	// if (time > 0)
+	// 	usleep(time);
+	time = end_time - get_relative_time_mc(data);
+	if (time > 0)
+		usleep(time);
 }
 
 static void	eating(t_philo *ph, t_data *data)
@@ -52,29 +62,18 @@ static void	eating(t_philo *ph, t_data *data)
 	const int32_t	time_to_die = ph->params->time_to_die * 1000;
 	const int32_t	time_to_eat = ph->params->time_to_eat * 1000;
 	int32_t			prev_meal;
+	bool			is_dead;
 
+	is_dead = false;
 	prev_meal = ph->last_meal;
 	if (time_to_die < get_relative_time_mc(data) - prev_meal)
-	{	
-		pthread_mutex_lock(data->meal_authorization);
-		if (!data->exit_threads)
-			print_msg("%i %i died\n", ph, data);
-		data->exit_threads = true;
-		ph->exit_status = 1;
-		pthread_mutex_unlock(data->meal_authorization);
-	}
+		print_die_msg("%i %i died\n", ph, data);
 	else
-	{
-		pthread_mutex_lock(data->meal_authorization);
-		ph->last_meal = print_msg("%i %i is eating\n", ph, data);
-		if (data->exit_threads)
-			ph->exit_status = 1;
-		pthread_mutex_unlock(data->meal_authorization);
-	}
+		ph->last_meal = print_msg("%i %i is eating\n", ph, data);		
 	two_stage_sleep(data, time_to_eat, ph->last_meal + time_to_eat);
 }
 
-static void	sleeping(const t_philo *ph, t_data *data)
+static void	sleeping(t_philo *ph, t_data *data)
 {
 	const int32_t	time_to_sleep = (ph->params->time_to_sleep * 1000);
 	int32_t			sleep_time;
@@ -86,10 +85,13 @@ static void	sleeping(const t_philo *ph, t_data *data)
 static void	thinking(t_philo *ph, t_data *data)
 {
 	const int32_t	time_cycle = ph->params->time_cycle;
+	int32_t			time;
 
 	print_msg("%i %i is thinking\n", ph, data);
 	ph->last_think += time_cycle;
-	usleep(ph->last_think - get_relative_time_mc(ph->data));
+	time = ph->last_think - get_relative_time_mc(ph->data);
+	if (time > 0)
+		usleep(time);
 }
 
 void	*philo_even_work(void *philo)

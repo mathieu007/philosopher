@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philosopher.h                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: math <math@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: mroy <mroy@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/28 15:21:35 by mroy              #+#    #+#             */
-/*   Updated: 2023/04/10 13:38:47 by math             ###   ########.fr       */
+/*   Updated: 2023/04/11 16:34:59 by mroy             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,6 @@ typedef struct s_philo
 	pthread_t			thread_id;
 	int32_t				last_meal;
 	int32_t				exit_status;
-	bool				exit_thread;
 	int32_t				last_think;
 	int32_t				eat_count;
 	int32_t				position;
@@ -82,7 +81,8 @@ void			take_forks(t_philo *ph);
 void			put_forks_on_table(t_philo *ph);
 uint64_t		get_time_stamp_ms(void);
 uint64_t		get_time_stamp_mc(void);
-int32_t			print_msg(const char *msg, const t_philo *ph, const t_data *data);
+int32_t			print_msg(const char *msg, t_philo *ph, t_data *data);
+int32_t			print_die_msg(const char *msg, t_philo *ph, t_data *data);
 bool			exit_threads(bool update_val);
 bool			should_exit(void);
 t_philo			**get_philosophers(void);

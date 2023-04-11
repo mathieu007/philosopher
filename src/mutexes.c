@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   mutexes.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: math <math@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: mroy <mroy@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/18 08:44:52 by math              #+#    #+#             */
-/*   Updated: 2023/04/10 12:47:46 by math             ###   ########.fr       */
+/*   Updated: 2023/04/11 08:15:45 by mroy             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,6 @@ void	init_mutexes(void)
 	pthread_mutex_t		*forks_mutexes;
 	t_data				*data;
 	t_param				*params;
-
 
 	data = get_data();
 	params = get_params();

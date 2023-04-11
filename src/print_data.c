@@ -3,27 +3,45 @@
 /*                                                        :::      ::::::::   */
 /*   print_data.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: math <math@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: mroy <mroy@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/18 08:44:52 by math              #+#    #+#             */
-/*   Updated: 2023/04/10 13:57:30 by math             ###   ########.fr       */
+/*   Updated: 2023/04/11 16:56:10 by mroy             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philosopher.h"
 
-int32_t	print_msg(const char *msg, const t_philo *ph, const t_data *data)
+int32_t	print_die_msg(const char *msg, t_philo *ph, t_data *data)
 {	
 	int32_t	time;
 
 	time = 0;
-	if (!ph->exit_thread)
+	ph->exit_status = 1;
+	pthread_mutex_lock(data->write);	
+	if (!data->exit_threads)
 	{
-		pthread_mutex_lock(data->write);
+		data->exit_threads = true;
 		time = get_relative_time_mc(data);
 		printf(msg, time / 1000, ph->name);
-		pthread_mutex_unlock(data->write);
 	}
+	pthread_mutex_unlock(data->write);
 	return (time);
 }
 
+int32_t	print_msg(const char *msg, t_philo *ph, t_data *data)
+{	
+	int32_t	time;
+
+	time = 0;
+	pthread_mutex_lock(data->write);
+	if (!data->exit_threads)
+	{
+		time = get_relative_time_mc(data);
+		printf(msg, time / 1000, ph->name);		
+	}
+	else
+		ph->exit_status = 1;
+	pthread_mutex_unlock(data->write);		
+	return (time);
+}
