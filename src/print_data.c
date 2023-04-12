@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   print_data.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mroy <mroy@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: math <math@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/18 08:44:52 by math              #+#    #+#             */
-/*   Updated: 2023/04/11 16:56:10 by mroy             ###   ########.fr       */
+/*   Updated: 2023/04/11 19:32:08 by math             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ int32_t	print_die_msg(const char *msg, t_philo *ph, t_data *data)
 
 	time = 0;
 	ph->exit_status = 1;
-	pthread_mutex_lock(data->write);	
+	pthread_mutex_lock(data->write);
 	if (!data->exit_threads)
 	{
 		data->exit_threads = true;
@@ -38,10 +38,10 @@ int32_t	print_msg(const char *msg, t_philo *ph, t_data *data)
 	if (!data->exit_threads)
 	{
 		time = get_relative_time_mc(data);
-		printf(msg, time / 1000, ph->name);		
+		printf(msg, time / 1000, ph->name);
 	}
 	else
 		ph->exit_status = 1;
-	pthread_mutex_unlock(data->write);		
+	pthread_mutex_unlock(data->write);
 	return (time);
 }

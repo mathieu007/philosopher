@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   mutexes.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mroy <mroy@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: math <math@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/18 08:44:52 by math              #+#    #+#             */
-/*   Updated: 2023/04/11 08:15:45 by mroy             ###   ########.fr       */
+/*   Updated: 2023/04/11 20:46:24 by math             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,15 +25,15 @@ pthread_mutexattr_t	*get_mutex_attr(void)
 }
 #elif __linux
 
-pthread_mutexattr_t	*get_mutex_attr(void)
-{
-	pthread_mutexattr_t	*attr;
+// pthread_mutexattr_t	*get_mutex_attr(void)
+// {
+// 	pthread_mutexattr_t	*attr;
 
-	attr = malloc(sizeof(pthread_mutexattr_t));
-	pthread_mutexattr_init(attr);
-	pthread_mutexattr_settype(attr, PTHREAD_MUTEX_DEFAULT);
-	return (attr);
-}
+// 	attr = malloc(sizeof(pthread_mutexattr_t));
+// 	pthread_mutexattr_init(attr);
+// 	pthread_mutexattr_settype(attr, NULL);
+// 	return (attr);
+// }
 #elif __unix
 
 #elif __posix
@@ -50,9 +50,7 @@ void	init_mutexes(void)
 
 	data = get_data();
 	params = get_params();
-	data->meal_authorization = malloc(sizeof(pthread_mutex_t));
 	data->write = malloc(sizeof(pthread_mutex_t));
-	pthread_mutex_init(data->meal_authorization, NULL);
 	pthread_mutex_init(data->write, NULL);
 	i = 0;
 	forks_mutexes = malloc(sizeof(pthread_mutex_t) * params->num_philo);
@@ -74,15 +72,15 @@ void	*free_mutexes(void)
 	t_philo		**phs;
 	t_data		*data;
 	int32_t		i;
+	int32_t		count;
 
 	i = 0;
 	data = get_data();
 	phs = get_philosophers();
-	pthread_mutex_destroy(data->meal_authorization);
 	pthread_mutex_destroy(data->write);
-	free(data->meal_authorization);
 	free(data->write);
-	while (i < get_params()->num_philo)
+	count = get_params()->num_philo;
+	while (i < count)
 	{
 		pthread_mutex_destroy(phs[i]->left_fork);
 		i++;

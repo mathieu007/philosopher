@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   work_load.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mroy <mroy@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: math <math@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/18 08:44:52 by math              #+#    #+#             */
-/*   Updated: 2023/04/11 17:14:00 by mroy             ###   ########.fr       */
+/*   Updated: 2023/04/11 20:06:56 by math             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,9 +60,7 @@ void	start_sim_lweq_800(t_philo **phs, int32_t ph_cnt)
 	while (i < ph_cnt / 2)
 	{
 		pthread_mutex_unlock(phs[i]->start_simulation);
-		// time = end_time - (interval / 2);
-		// if (time > 0)
-		// 	usleep(time);
+		usleep(50);
 		if (rev_i > i)
 			pthread_mutex_unlock(phs[rev_i]->start_simulation);
 		time = end_time - get_time_stamp_mc();

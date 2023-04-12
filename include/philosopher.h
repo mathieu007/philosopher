@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philosopher.h                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mroy <mroy@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: math <math@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/28 15:21:35 by mroy              #+#    #+#             */
-/*   Updated: 2023/04/11 16:34:59 by mroy             ###   ########.fr       */
+/*   Updated: 2023/04/11 20:46:58 by math             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,8 +24,6 @@
 # include <sys/time.h>
 # include <unistd.h>
 # include <pthread.h>
-# include "circular_fifo.h"
-
 
 typedef struct s_param
 {
@@ -56,16 +54,11 @@ typedef struct s_philo
 
 typedef struct s_data
 {
-	pthread_mutex_t	*meal_authorization;
 	pthread_mutex_t	*write;
 	pthread_mutex_t	*forks;
 	uint64_t		base_time;
 	t_philo			**philos;
-	pthread_t		*thread_ids;	
-	t_fifo			*odd_queue;
-	t_fifo			*even_queue;
-	int32_t			odd_count;
-	int32_t			even_count;
+	pthread_t		*thread_ids;
 	t_param			*params;
 	bool			exit_threads;
 }				t_data;

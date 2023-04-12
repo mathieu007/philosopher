@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   thread.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mroy <mroy@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: math <math@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/18 08:44:52 by math              #+#    #+#             */
-/*   Updated: 2023/04/11 08:15:21 by mroy             ###   ########.fr       */
+/*   Updated: 2023/04/11 20:17:54 by math             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,6 @@ void	*detach_all_philos(void)
 	while (i < num_philo)
 	{
 		pthread_detach(phs[i]->thread_id);
-		free_philo(phs[i]);
 		i++;
 	}
 	return (NULL);

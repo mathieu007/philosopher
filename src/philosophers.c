@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philosophers.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mroy <mroy@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: math <math@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/18 08:44:52 by math              #+#    #+#             */
-/*   Updated: 2023/04/11 16:43:46 by mroy             ###   ########.fr       */
+/*   Updated: 2023/04/11 20:04:18 by math             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,14 +62,12 @@ static void	eating(t_philo *ph, t_data *data)
 	const int32_t	time_to_die = ph->params->time_to_die * 1000;
 	const int32_t	time_to_eat = ph->params->time_to_eat * 1000;
 	int32_t			prev_meal;
-	bool			is_dead;
 
-	is_dead = false;
 	prev_meal = ph->last_meal;
 	if (time_to_die < get_relative_time_mc(data) - prev_meal)
 		print_die_msg("%i %i died\n", ph, data);
 	else
-		ph->last_meal = print_msg("%i %i is eating\n", ph, data);		
+		ph->last_meal = print_msg("%i %i is eating\n", ph, data);
 	two_stage_sleep(data, time_to_eat, ph->last_meal + time_to_eat);
 }
 
@@ -115,8 +113,6 @@ void	*philo_even_work(void *philo)
 		eating(ph, data);
 		pthread_mutex_unlock(ph->left_fork);
 		pthread_mutex_unlock(ph->right_fork);
-		if (ph->exit_status == 1)
-			break ;
 		sleeping(ph, data);
 		thinking(ph, data);
 		i++;
@@ -147,8 +143,6 @@ void	*philo_odd_work(void *philo)
 		eating(ph, data);
 		pthread_mutex_unlock(ph->right_fork);
 		pthread_mutex_unlock(ph->left_fork);
-		if (ph->exit_status == 1)
-			break ;
 		sleeping(ph, data);
 		thinking(ph, data);
 		i++;

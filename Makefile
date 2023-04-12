@@ -15,22 +15,14 @@ OBJEXT			:= o
 #Flags, Libraries and Includes
 # CFLAGS      := -Wall -Wextra -Werror -g -fsanitize=thread
 CFLAGS      := -Wall -Wextra -Werror -g -O2
-INCDEP      := -I$(INCDIR) -I$(SRCDIR)/circular_fifo/$(INCDIR)
+INCDEP      := -I$(INCDIR)
 
 
 SOURCES     :=	src/free.c	\
 				src/mutexes.c	\
-				src/circular_fifo/pop.c	\
-				src/circular_fifo/new.c	\
-				src/circular_fifo/put.c	\
-				src/circular_fifo/helper.c	\
-				src/circular_fifo/get.c	\
-				src/circular_fifo/swap.c	\
-				src/circular_fifo/free.c	\
 				src/philosophers.c	\
 				src/utils.c	\
 				src/data.c	\
-				src/forks.c	\
 				src/helper.c	\
 				src/print_data.c	\
 				src/timing.c	\
