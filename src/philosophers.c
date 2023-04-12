@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philosophers.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: math <math@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: mroy <mroy@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/18 08:44:52 by math              #+#    #+#             */
-/*   Updated: 2023/04/11 20:04:18 by math             ###   ########.fr       */
+/*   Updated: 2023/04/12 14:47:15 by mroy             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,12 +46,12 @@ static void	two_stage_sleep(t_data *data, int32_t time_to_sleep,
 {	
 	int32_t	time;
 
-	time = time_to_sleep - 5000;
+	time = time_to_sleep - 7000;
 	if (time > 0)
 		usleep(time);
-	// time = end_time - 2500 - get_relative_time_mc(data);
-	// if (time > 0)
-	// 	usleep(time);
+	time = (end_time - get_relative_time_mc(data)) / 2;
+	if (time > 0)
+		usleep(time);	
 	time = end_time - get_relative_time_mc(data);
 	if (time > 0)
 		usleep(time);
@@ -59,15 +59,9 @@ static void	two_stage_sleep(t_data *data, int32_t time_to_sleep,
 
 static void	eating(t_philo *ph, t_data *data)
 {
-	const int32_t	time_to_die = ph->params->time_to_die * 1000;
 	const int32_t	time_to_eat = ph->params->time_to_eat * 1000;
-	int32_t			prev_meal;
 
-	prev_meal = ph->last_meal;
-	if (time_to_die < get_relative_time_mc(data) - prev_meal)
-		print_die_msg("%i %i died\n", ph, data);
-	else
-		ph->last_meal = print_msg("%i %i is eating\n", ph, data);
+	print_msg_or_die(ph, data);
 	two_stage_sleep(data, time_to_eat, ph->last_meal + time_to_eat);
 }
 
@@ -85,9 +79,9 @@ static void	thinking(t_philo *ph, t_data *data)
 	const int32_t	time_cycle = ph->params->time_cycle;
 	int32_t			time;
 
-	print_msg("%i %i is thinking\n", ph, data);
+	time = print_msg("%i %i is thinking\n", ph, data);
 	ph->last_think += time_cycle;
-	time = ph->last_think - get_relative_time_mc(ph->data);
+	time = ph->last_think - time;
 	if (time > 0)
 		usleep(time);
 }
@@ -102,10 +96,9 @@ void	*philo_even_work(void *philo)
 	ph = (t_philo *) philo;
 	data = ph->data;
 	i = 0;
-	pthread_mutex_lock(ph->start_simulation);
-	ph->last_think = get_relative_time_mc(data);
+	pthread_mutex_lock(ph->start_simulation);	
 	while (i < eat_count && ph->exit_status != 1)
-	{
+	{		
 		pthread_mutex_lock(ph->left_fork);
 		print_msg("%i %i has taken a fork\n", ph, data);
 		pthread_mutex_lock(ph->right_fork);
@@ -132,10 +125,11 @@ void	*philo_odd_work(void *philo)
 	ph = (t_philo *) philo;
 	data = ph->data;
 	i = 0;
-	pthread_mutex_lock(ph->start_simulation);
-	ph->last_think = get_relative_time_mc(data);
+	pthread_mutex_lock(ph->start_simulation);	
 	while (i < eat_count && ph->exit_status != 1)
 	{
+		if (ph->last_think == 0)
+			ph->last_think = get_relative_time_mc(data);
 		pthread_mutex_lock(ph->right_fork);
 		print_msg("%i %i has taken a fork\n", ph, data);
 		pthread_mutex_lock(ph->left_fork);
