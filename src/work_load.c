@@ -6,7 +6,7 @@
 /*   By: mroy <mroy@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/18 08:44:52 by math              #+#    #+#             */
-/*   Updated: 2023/04/12 16:27:34 by mroy             ###   ########.fr       */
+/*   Updated: 2023/04/12 17:07:36 by mroy             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,7 @@ uint64_t	start_sim_odd(t_philo **phs, int32_t ph_cnt, uint64_t end_time)
 	int32_t		time;
 
 	i = 1;
-	rev_i = ph_cnt - 2;
+	rev_i = ph_cnt - 1;
 	data = get_data();
 	interval = get_interval();
 	while (i < ph_cnt / 2)
