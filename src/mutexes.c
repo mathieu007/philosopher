@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   mutexes.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: math <math@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: mroy <mroy@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/18 08:44:52 by math              #+#    #+#             */
-/*   Updated: 2023/04/12 21:09:09 by math             ###   ########.fr       */
+/*   Updated: 2023/04/13 09:08:30 by mroy             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,9 +58,9 @@ void	init_mutexes(void)
 	data->forks = forks_mutexes;
 	while (i < params->num_philo)
 	{
-		phs[i]->auth_forks = malloc(sizeof(pthread_mutex_t));
+		phs[i]->process_mutex = malloc(sizeof(pthread_mutex_t));
 		pthread_mutex_init(&(forks_mutexes[i]), NULL);
-		pthread_mutex_init(phs[i]->auth_forks, NULL);
+		pthread_mutex_init(phs[i]->process_mutex, NULL);
 		phs[i]->left_fork = &(forks_mutexes[i]);
 		phs[prev_ph(i, params->num_philo)]->right_fork = &(forks_mutexes[i]);
 		i++;

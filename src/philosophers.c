@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philosophers.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: math <math@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: mroy <mroy@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/18 08:44:52 by math              #+#    #+#             */
-/*   Updated: 2023/04/13 07:40:29 by math             ###   ########.fr       */
+/*   Updated: 2023/04/13 17:07:43 by mroy             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,8 @@ void	*init_philosophers(void)
 		phs[i]->eat_count = 0;
 		phs[i]->last_meal = 0;
 		phs[i]->exit_status = 0;
+		phs[i]->is_auth = false;
+		phs[i]->died = false;
 		i++;
 	}	
 	data->philos = phs;
@@ -87,22 +89,25 @@ void	*philo_even_work(void *philo)
 	t_philo			*ph;
 	int32_t			i;
 	t_data			*data;
+	int64_t			time;
 	const int32_t	eat_count = ((t_philo *)philo)->params->must_eat;
+	// const int64_t	time_cycle = ((t_philo *)philo)->params->time_cycle;
 
 	ph = (t_philo *) philo;
 	data = ph->data;
 	i = 0;
+	time = 0;
 	while (i < eat_count && ph->exit_status != 1)
 	{
-		pthread_mutex_lock(ph->auth_forks);
-		pthread_mutex_unlock(ph->auth_forks);
-		pthread_mutex_lock(ph->left_fork);
-		print_msg("%i %i has taken a fork\n", ph, data);
+		pthread_mutex_lock(ph->process_mutex);
 		pthread_mutex_lock(ph->right_fork);
 		print_msg("%i %i has taken a fork\n", ph, data);
+		pthread_mutex_lock(ph->left_fork);
+		print_msg("%i %i has taken a fork\n", ph, data);
 		eating(ph, data);
-		pthread_mutex_unlock(ph->left_fork);
 		pthread_mutex_unlock(ph->right_fork);
+		pthread_mutex_unlock(ph->left_fork);
+		pthread_mutex_unlock(ph->process_mutex);
 		sleeping(ph, data);
 		thinking(ph, data);
 		i++;
@@ -115,16 +120,20 @@ void	*philo_odd_work(void *philo)
 	t_philo			*ph;
 	int32_t			i;
 	t_data			*data;
+	int64_t			time;
 	const int32_t	eat_count = ((t_philo *)philo)->params->must_eat;
+	// const int64_t	time_cycle = ((t_philo *)philo)->params->time_cycle;
 
 	i = 0;
 	ph = (t_philo *) philo;
 	data = ph->data;
 	i = 0;
-	ph->process = false;
+	ph->is_auth = false;
+	time = 0;
 	while (i < eat_count && ph->exit_status != 1)
 	{
 		pthread_mutex_lock(ph->process_mutex);
+		pthread_mutex_unlock(ph->process_mutex);
 		pthread_mutex_lock(ph->right_fork);
 		print_msg("%i %i has taken a fork\n", ph, data);
 		pthread_mutex_lock(ph->left_fork);
@@ -134,8 +143,6 @@ void	*philo_odd_work(void *philo)
 		pthread_mutex_unlock(ph->left_fork);
 		sleeping(ph, data);
 		thinking(ph, data);
-		pthread_mutex_unlock(ph->process_mutex);
-		usleep(10);
 		i++;
 	}
 	return (&(ph->exit_status));

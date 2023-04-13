@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philosopher.h                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: math <math@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: mroy <mroy@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/28 15:21:35 by mroy              #+#    #+#             */
-/*   Updated: 2023/04/13 07:00:00 by math             ###   ########.fr       */
+/*   Updated: 2023/04/13 16:05:01 by mroy             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,11 +42,13 @@ typedef struct s_philo
 	pthread_mutex_t		*left_fork;
 	pthread_mutex_t		*right_fork;
 	pthread_mutex_t		*process_mutex;
-	bool				*process;
+	pthread_mutex_t		*worker_mutex;
+	bool				is_auth;
+	bool				died;
 	pthread_t			thread_id;
 	int32_t				last_meal;
 	int32_t				exit_status;
-	int32_t				last_think;
+	int64_t				last_think;
 	int32_t				eat_count;
 	int32_t				position;
 	t_param				*params;
