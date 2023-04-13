@@ -6,7 +6,7 @@
 /*   By: math <math@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/18 08:44:52 by math              #+#    #+#             */
-/*   Updated: 2023/04/11 20:08:31 by math             ###   ########.fr       */
+/*   Updated: 2023/04/12 21:08:56 by math             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 
 void	*free_philo(t_philo	*ph)
 {
-	free(ph->start_simulation);
+	free(ph->auth_forks);
 	free(ph);
 	return (NULL);
 }

@@ -6,7 +6,7 @@
 /*   By: math <math@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/28 15:21:35 by mroy              #+#    #+#             */
-/*   Updated: 2023/04/11 20:46:58 by math             ###   ########.fr       */
+/*   Updated: 2023/04/13 07:00:00 by math             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,8 @@ typedef struct s_philo
 	int32_t				name;
 	pthread_mutex_t		*left_fork;
 	pthread_mutex_t		*right_fork;
-	pthread_mutex_t		*start_simulation;
+	pthread_mutex_t		*process_mutex;
+	bool				*process;
 	pthread_t			thread_id;
 	int32_t				last_meal;
 	int32_t				exit_status;
@@ -71,7 +72,6 @@ int32_t			next_ph(const int32_t i, const int32_t philo_count);
 int32_t			prev_ph(const int32_t i, const int32_t philo_count);
 t_data			*get_data(void);
 void			take_forks(t_philo *ph);
-void			put_forks_on_table(t_philo *ph);
 uint64_t		get_time_stamp_ms(void);
 uint64_t		get_time_stamp_mc(void);
 int32_t			print_msg(const char *msg, t_philo *ph, t_data *data);
@@ -100,7 +100,7 @@ void	*init_philosophers(void);
 void	*init_dispatchers(void);
 void	*init_threads(void);
 void	init_mutexes(void);
-void	start_simulation(t_philo **phs, int32_t ph_cnt);
+void	start_simulation(int32_t ph_cnt);
 void	*free_forks(void);
 void	*free_exit_thread(void);
 void	*free_exit_all_threads(void);

@@ -6,7 +6,7 @@
 /*   By: math <math@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/18 08:44:52 by math              #+#    #+#             */
-/*   Updated: 2023/04/11 20:46:24 by math             ###   ########.fr       */
+/*   Updated: 2023/04/12 21:09:09 by math             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,9 +58,9 @@ void	init_mutexes(void)
 	data->forks = forks_mutexes;
 	while (i < params->num_philo)
 	{
-		phs[i]->start_simulation = malloc(sizeof(pthread_mutex_t));
+		phs[i]->auth_forks = malloc(sizeof(pthread_mutex_t));
 		pthread_mutex_init(&(forks_mutexes[i]), NULL);
-		pthread_mutex_init(phs[i]->start_simulation, NULL);
+		pthread_mutex_init(phs[i]->auth_forks, NULL);
 		phs[i]->left_fork = &(forks_mutexes[i]);
 		phs[prev_ph(i, params->num_philo)]->right_fork = &(forks_mutexes[i]);
 		i++;

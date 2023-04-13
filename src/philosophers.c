@@ -6,7 +6,7 @@
 /*   By: math <math@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/18 08:44:52 by math              #+#    #+#             */
-/*   Updated: 2023/04/11 20:04:18 by math             ###   ########.fr       */
+/*   Updated: 2023/04/13 07:40:29 by math             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,9 +49,6 @@ static void	two_stage_sleep(t_data *data, int32_t time_to_sleep,
 	time = time_to_sleep - 5000;
 	if (time > 0)
 		usleep(time);
-	// time = end_time - 2500 - get_relative_time_mc(data);
-	// if (time > 0)
-	// 	usleep(time);
 	time = end_time - get_relative_time_mc(data);
 	if (time > 0)
 		usleep(time);
@@ -82,14 +79,7 @@ static void	sleeping(t_philo *ph, t_data *data)
 
 static void	thinking(t_philo *ph, t_data *data)
 {
-	const int32_t	time_cycle = ph->params->time_cycle;
-	int32_t			time;
-
 	print_msg("%i %i is thinking\n", ph, data);
-	ph->last_think += time_cycle;
-	time = ph->last_think - get_relative_time_mc(ph->data);
-	if (time > 0)
-		usleep(time);
 }
 
 void	*philo_even_work(void *philo)
@@ -102,10 +92,10 @@ void	*philo_even_work(void *philo)
 	ph = (t_philo *) philo;
 	data = ph->data;
 	i = 0;
-	pthread_mutex_lock(ph->start_simulation);
-	ph->last_think = get_relative_time_mc(data);
 	while (i < eat_count && ph->exit_status != 1)
 	{
+		pthread_mutex_lock(ph->auth_forks);
+		pthread_mutex_unlock(ph->auth_forks);
 		pthread_mutex_lock(ph->left_fork);
 		print_msg("%i %i has taken a fork\n", ph, data);
 		pthread_mutex_lock(ph->right_fork);
@@ -117,7 +107,6 @@ void	*philo_even_work(void *philo)
 		thinking(ph, data);
 		i++;
 	}
-	pthread_mutex_unlock(ph->start_simulation);
 	return (&(ph->exit_status));
 }
 
@@ -132,10 +121,10 @@ void	*philo_odd_work(void *philo)
 	ph = (t_philo *) philo;
 	data = ph->data;
 	i = 0;
-	pthread_mutex_lock(ph->start_simulation);
-	ph->last_think = get_relative_time_mc(data);
+	ph->process = false;
 	while (i < eat_count && ph->exit_status != 1)
 	{
+		pthread_mutex_lock(ph->process_mutex);
 		pthread_mutex_lock(ph->right_fork);
 		print_msg("%i %i has taken a fork\n", ph, data);
 		pthread_mutex_lock(ph->left_fork);
@@ -145,8 +134,9 @@ void	*philo_odd_work(void *philo)
 		pthread_mutex_unlock(ph->left_fork);
 		sleeping(ph, data);
 		thinking(ph, data);
+		pthread_mutex_unlock(ph->process_mutex);
+		usleep(10);
 		i++;
 	}
-	pthread_mutex_unlock(ph->start_simulation);
 	return (&(ph->exit_status));
 }

@@ -6,7 +6,7 @@
 /*   By: math <math@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/18 08:44:52 by math              #+#    #+#             */
-/*   Updated: 2023/04/11 21:00:22 by math             ###   ########.fr       */
+/*   Updated: 2023/04/12 21:08:10 by math             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,6 @@
 
 int32_t	main(int32_t argc, char **argv)
 {
-	t_philo	**phs;
 	int32_t	ph_cnt;
 
 	if (argc < 5 || argc > 6 || !try_init_params(argc, argv))
@@ -41,8 +40,7 @@ int32_t	main(int32_t argc, char **argv)
 	lock_all_philos();
 	init_threads();
 	ph_cnt = get_params()->num_philo;
-	phs = get_philosophers();
-	start_simulation(phs, ph_cnt);
+	start_simulation(ph_cnt);
 	join_threads();
 	return (0);
 }
