@@ -6,7 +6,7 @@
 /*   By: math <math@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/28 15:21:35 by mroy              #+#    #+#             */
-/*   Updated: 2023/04/11 20:46:58 by math             ###   ########.fr       */
+/*   Updated: 2023/04/13 18:24:45 by math             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,6 +76,8 @@ uint64_t		get_time_stamp_ms(void);
 uint64_t		get_time_stamp_mc(void);
 int32_t			print_msg(const char *msg, t_philo *ph, t_data *data);
 int32_t			print_die_msg(const char *msg, t_philo *ph, t_data *data);
+int32_t			print_eat_or_die(t_philo *ph, t_data *data, int32_t prev_meal);
+void			two_stage_sleep(t_data *data, int32_t time_to_sleep, int32_t end_time);
 bool			exit_threads(bool update_val);
 bool			should_exit(void);
 t_philo			**get_philosophers(void);

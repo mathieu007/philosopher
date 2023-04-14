@@ -6,7 +6,7 @@
 /*   By: math <math@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/18 08:44:52 by math              #+#    #+#             */
-/*   Updated: 2023/04/11 21:00:22 by math             ###   ########.fr       */
+/*   Updated: 2023/04/13 20:39:04 by math             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ int32_t	main(int32_t argc, char **argv)
 			return (1);
 		return (1);
 	}
-	if (get_params()->num_philo == 0 || get_params()->num_philo > 1000)
+	if (get_params()->num_philo == 0 || get_params()->num_philo > 1500)
 	{
 		if (write(2, "error: invalid number of philosophers.\n", 40) == -1)
 			return (1);

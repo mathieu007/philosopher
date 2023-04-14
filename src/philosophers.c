@@ -6,7 +6,7 @@
 /*   By: math <math@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/18 08:44:52 by math              #+#    #+#             */
-/*   Updated: 2023/04/11 20:04:18 by math             ###   ########.fr       */
+/*   Updated: 2023/04/13 18:45:19 by math             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,17 +41,13 @@ void	*init_philosophers(void)
 	return (NULL);
 }
 
-static void	two_stage_sleep(t_data *data, int32_t time_to_sleep,
-	int32_t end_time)
+void	two_stage_sleep(t_data *data, int32_t time_to_sleep, int32_t end_time)
 {	
 	int32_t	time;
 
 	time = time_to_sleep - 5000;
 	if (time > 0)
 		usleep(time);
-	// time = end_time - 2500 - get_relative_time_mc(data);
-	// if (time > 0)
-	// 	usleep(time);
 	time = end_time - get_relative_time_mc(data);
 	if (time > 0)
 		usleep(time);
@@ -59,15 +55,11 @@ static void	two_stage_sleep(t_data *data, int32_t time_to_sleep,
 
 static void	eating(t_philo *ph, t_data *data)
 {
-	const int32_t	time_to_die = ph->params->time_to_die * 1000;
 	const int32_t	time_to_eat = ph->params->time_to_eat * 1000;
 	int32_t			prev_meal;
 
 	prev_meal = ph->last_meal;
-	if (time_to_die < get_relative_time_mc(data) - prev_meal)
-		print_die_msg("%i %i died\n", ph, data);
-	else
-		ph->last_meal = print_msg("%i %i is eating\n", ph, data);
+	ph->last_meal = print_eat_or_die(ph, data, prev_meal);
 	two_stage_sleep(data, time_to_eat, ph->last_meal + time_to_eat);
 }
 

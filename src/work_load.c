@@ -6,7 +6,7 @@
 /*   By: math <math@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/18 08:44:52 by math              #+#    #+#             */
-/*   Updated: 2023/04/11 20:06:56 by math             ###   ########.fr       */
+/*   Updated: 2023/04/13 21:05:59 by math             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,17 +31,17 @@ uint64_t	get_interval(void)
 {
 	uint64_t	interval;
 	uint64_t	time_to_eat;
-	uint64_t	time_to_think;
+	// uint64_t	time_to_think;
 	uint64_t	num_ph;
-	uint64_t	limit;
+	// uint64_t	limit;
 
 	time_to_eat = (uint64_t)get_params()->time_to_eat * 1000;
-	time_to_think = (uint64_t)get_params()->time_to_think * 1000;
+	// time_to_think = (uint64_t)get_params()->time_to_think * 1000;
 	num_ph = (uint64_t)get_params()->num_philo;
-	interval = (uint64_t)((time_to_eat - 5000) / (num_ph / 4));
-	limit = ((time_to_think) / 2) - time_to_think / 7;
-	if (interval >= limit)
-		interval = limit;
+	interval = (uint64_t)((time_to_eat) / (num_ph / 4));
+	// limit = ((time_to_think) / 2) - time_to_think / 7;
+	// if (interval >= limit)
+	// 	interval = limit;
 	return (interval);
 }
 
@@ -82,7 +82,7 @@ void	start_sim_gr_800(t_philo **phs, int32_t ph_cnt)
 
 	i = 0;
 	rev_i = ph_cnt - 2;
-	interval = get_interval();
+	interval = get_interval() - 5;
 	end_time = get_time_stamp_mc() + interval;
 	while (i < ph_cnt / 2)
 	{
