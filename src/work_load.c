@@ -6,7 +6,7 @@
 /*   By: mroy <mroy@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/18 08:44:52 by math              #+#    #+#             */
-/*   Updated: 2023/04/14 10:19:12 by mroy             ###   ########.fr       */
+/*   Updated: 2023/04/14 15:59:44 by mroy             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,16 +27,16 @@ void	lock_all_philos(void)
 	}
 }
 
-uint64_t	get_interval(void)
+int64_t	get_interval(void)
 {
-	uint64_t	interval;
-	uint64_t	time_to_eat;
-	uint64_t	num_ph;
+	int64_t	interval;
+	int64_t	time_to_eat;
+	int64_t	num_ph;
 
-	time_to_eat = (uint64_t)get_params()->time_to_eat * 1000;
-	num_ph = (uint64_t)get_params()->num_philo;
-	interval = (uint64_t)((time_to_eat) / (num_ph / 4));
-	return (interval);
+	time_to_eat = (int64_t)get_params()->time_to_eat * 1000;
+	num_ph = (int64_t)get_params()->num_philo;
+	interval = (int64_t)((time_to_eat) / (num_ph / 4));
+	return ((int64_t)interval);
 }
 
 void	start_sim_lweq_800(t_philo **phs, int32_t ph_cnt)
@@ -55,10 +55,10 @@ void	start_sim_lweq_800(t_philo **phs, int32_t ph_cnt)
 	while (i < ph_cnt / 2)
 	{
 		pthread_mutex_unlock(phs[i]->start_simulation);
-		usleep(50);
 		if (rev_i > i)
 			pthread_mutex_unlock(phs[rev_i]->start_simulation);
 		time = end_time - get_time_stamp_mc();
+		printf("slp time:%i %lli\n", phs[i]->name, time);
 		if (time > 0)
 			usleep(time);
 		end_time += interval;
@@ -74,36 +74,36 @@ void	start_sim_gr_800(t_philo **phs, int32_t ph_cnt)
 	int64_t		end_time;
 	int64_t		interval;
 	int64_t		time;
+	t_data		*data;
 
 	i = 0;
+	data = get_data();
 	rev_i = ph_cnt - 2;
 	interval = get_interval() - 10;
-	end_time = get_time_stamp_mc();
-	end_time += interval;
+	end_time = 0;
 	while (i < ph_cnt / 2)
 	{
-		pthread_mutex_unlock(phs[i]->start_simulation);
-		usleep(50);
+		pthread_mutex_unlock(phs[i]->start_simulation);		
 		if (rev_i > i)
 			pthread_mutex_unlock(phs[rev_i]->start_simulation);
+		pthread_mutex_lock(data->write);
+		printf("last time:%i %lli\n", phs[i]->name, phs[i]->last_think);
+		if (end_time == 0)	
+			end_time = (phs[i]->last_think) + interval;
+		else 
+			end_time += interval;
+		printf("end time:%i %lli\n", phs[i]->name, end_time);
+		pthread_mutex_unlock(data->write);
 		time = end_time - get_time_stamp_mc();
-		if (i == 0)
-		{
-			pthread_mutex_lock(get_data()->write);
-				base_time = get_data()->base_time;
-			pthread_mutex_unlock(get_data()->write);
-		}
-		printf("slp time:%i %lli\n", phs[i]->name, time);
-
+		printf("diff time:%i %lli\n", phs[i]->name, time);
 		if (time > 0)
 			usleep(time);
-		end_time += interval;
 		rev_i -= 2;
 		i += 2;
 	}
 }
 
-void	start_simulation(void)
+void	start_simulation()
 {
 	int32_t		i;
 	int32_t		rev_i;

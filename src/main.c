@@ -6,7 +6,7 @@
 /*   By: mroy <mroy@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/18 08:44:52 by math              #+#    #+#             */
-/*   Updated: 2023/04/14 10:05:38 by mroy             ###   ########.fr       */
+/*   Updated: 2023/04/14 14:21:25 by mroy             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,8 @@ int32_t	main(int32_t argc, char **argv)
 	init_philosophers();
 	if (get_params()->num_philo == 1)
 		hard_code_1philo();
+	init_mutexes();
+	lock_all_philos();
 	init_threads();
 	start_simulation();
 	join_threads();

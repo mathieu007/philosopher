@@ -6,7 +6,7 @@
 /*   By: mroy <mroy@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/28 15:21:35 by mroy              #+#    #+#             */
-/*   Updated: 2023/04/14 10:34:31 by mroy             ###   ########.fr       */
+/*   Updated: 2023/04/14 15:04:16 by mroy             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,13 +27,13 @@
 
 typedef struct s_param
 {
-	int32_t		num_philo;
-	int32_t		time_to_die;
-	int32_t		time_to_eat;
-	int32_t		time_to_sleep;
-	int32_t		time_to_think;
-	int32_t		time_cycle;
-	int32_t		must_eat;
+	int32_t	num_philo;
+	int32_t	time_to_die;
+	int32_t	time_to_eat;
+	int32_t	time_to_sleep;
+	int32_t	time_to_think;
+	int32_t	time_cycle;
+	int32_t	must_eat;
 }					t_param;
 
 typedef struct s_philo
@@ -46,7 +46,7 @@ typedef struct s_philo
 	int32_t				base_time;
 	int32_t				last_meal;
 	int32_t				exit_status;
-	int32_t				last_think;
+	int64_t				last_think;
 	int32_t				eat_count;
 	int32_t				position;
 	t_param				*params;
@@ -73,14 +73,13 @@ int32_t			prev_ph(const int32_t i, const int32_t philo_count);
 t_data			*get_data(void);
 void			take_forks(t_philo *ph);
 void			put_forks_on_table(t_philo *ph);
-uint64_t		get_time_stamp_ms(void);
-uint64_t		get_time_stamp_mc(void);
-int32_t			print_msg(const char *msg, t_philo *ph);
-int32_t			print_die_msg(const char *msg, t_philo *ph);
-int32_t			print_eat_or_die(t_philo *ph, int32_t prev_meal);
-void			two_stage_sleep(int32_t time_to_sleep, int32_t end_time);
+int64_t			get_time_stamp_ms(void);
+int64_t			get_time_stamp_mc(void);
+int32_t			print_msg(const char *msg, t_philo *ph, t_data *data);
+int32_t			print_die_msg(const char *msg, t_philo *ph, t_data *data);
+int32_t			print_eat_or_die(t_philo *ph, t_data *data, int32_t prev_meal);
+void			two_stage_sleep(const t_philo *ph, int32_t time_to_sleep, int32_t end_time);
 bool			exit_threads(bool update_val);
-bool			should_exit(void);
 t_philo			**get_philosophers(void);
 void			*philo_odd_work(void *philo);
 void			*philo_even_work(void *philo);
