@@ -1,22 +1,22 @@
 {
     "tasks": [
-        {
-            "label": "philo",
-            "type": "shell",
-            "command": "make",
-            "args": [],
-            "options": {
-                "cwd": "${workspaceFolder}"
-            },
-            "problemMatcher": [
-                "$gcc"
-            ],
-            "group": {
-                "kind": "build",
-                "isDefault": true
-            },
-            "detail": "philo"
-        }
-    ],
+		{
+			"label": "philo",
+			"type": "shell",
+			"command": "make",
+			"args": [],
+			"options": {
+				"cwd": "${workspaceFolder}"
+			},
+			"problemMatcher": [
+				"$gcc"
+			],
+			"group": {
+				"kind": "build",
+				"isDefault": true
+			},
+			"detail": "philo"
+		}
+	],
     "version": "2.0.0"
 }

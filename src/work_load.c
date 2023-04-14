@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   work_load.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: math <math@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: mroy <mroy@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/18 08:44:52 by math              #+#    #+#             */
-/*   Updated: 2023/04/13 21:05:59 by math             ###   ########.fr       */
+/*   Updated: 2023/04/14 10:19:12 by mroy             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,17 +31,11 @@ uint64_t	get_interval(void)
 {
 	uint64_t	interval;
 	uint64_t	time_to_eat;
-	// uint64_t	time_to_think;
 	uint64_t	num_ph;
-	// uint64_t	limit;
 
 	time_to_eat = (uint64_t)get_params()->time_to_eat * 1000;
-	// time_to_think = (uint64_t)get_params()->time_to_think * 1000;
 	num_ph = (uint64_t)get_params()->num_philo;
 	interval = (uint64_t)((time_to_eat) / (num_ph / 4));
-	// limit = ((time_to_think) / 2) - time_to_think / 7;
-	// if (interval >= limit)
-	// 	interval = limit;
 	return (interval);
 }
 
@@ -49,14 +43,15 @@ void	start_sim_lweq_800(t_philo **phs, int32_t ph_cnt)
 {
 	int32_t		i;
 	int32_t		rev_i;
-	uint64_t	end_time;
-	uint64_t	interval;
-	uint64_t	time;
+	int64_t		end_time;
+	int64_t		interval;
+	int64_t		time;
 
 	i = 0;
 	rev_i = ph_cnt - 2;
 	interval = get_interval();
-	end_time = get_time_stamp_mc() + interval;
+	end_time = get_time_stamp_mc();
+	end_time += interval;
 	while (i < ph_cnt / 2)
 	{
 		pthread_mutex_unlock(phs[i]->start_simulation);
@@ -76,20 +71,30 @@ void	start_sim_gr_800(t_philo **phs, int32_t ph_cnt)
 {
 	int32_t		i;
 	int32_t		rev_i;
-	uint64_t	end_time;
-	uint64_t	interval;
-	uint64_t	time;
+	int64_t		end_time;
+	int64_t		interval;
+	int64_t		time;
 
 	i = 0;
 	rev_i = ph_cnt - 2;
-	interval = get_interval() - 5;
-	end_time = get_time_stamp_mc() + interval;
+	interval = get_interval() - 10;
+	end_time = get_time_stamp_mc();
+	end_time += interval;
 	while (i < ph_cnt / 2)
 	{
 		pthread_mutex_unlock(phs[i]->start_simulation);
+		usleep(50);
 		if (rev_i > i)
 			pthread_mutex_unlock(phs[rev_i]->start_simulation);
 		time = end_time - get_time_stamp_mc();
+		if (i == 0)
+		{
+			pthread_mutex_lock(get_data()->write);
+				base_time = get_data()->base_time;
+			pthread_mutex_unlock(get_data()->write);
+		}
+		printf("slp time:%i %lli\n", phs[i]->name, time);
+
 		if (time > 0)
 			usleep(time);
 		end_time += interval;
@@ -98,14 +103,17 @@ void	start_sim_gr_800(t_philo **phs, int32_t ph_cnt)
 	}
 }
 
-void	start_simulation(t_philo **phs, int32_t ph_cnt)
+void	start_simulation(void)
 {
 	int32_t		i;
 	int32_t		rev_i;
+	t_philo		**phs;
+	int32_t		ph_cnt;
 
+	phs = get_philosophers();
+	ph_cnt = get_params()->num_philo;
 	i = 0;
 	rev_i = ph_cnt - 2;
-	get_data()->base_time = get_time_stamp_mc();
 	if (ph_cnt > 800)
 		start_sim_gr_800(phs, ph_cnt);
 	else
