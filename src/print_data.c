@@ -6,7 +6,7 @@
 /*   By: mroy <mroy@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/18 08:44:52 by math              #+#    #+#             */
-/*   Updated: 2023/04/14 08:03:59 by mroy             ###   ########.fr       */
+/*   Updated: 2023/04/14 13:49:11 by mroy             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 int32_t	print_die_msg(const char *msg, t_philo *ph, t_data *data)
 {	
-	int32_t	time;
+	int32_t					time;
 
 	time = 0;
 	ph->exit_status = 1;
@@ -22,7 +22,7 @@ int32_t	print_die_msg(const char *msg, t_philo *ph, t_data *data)
 	if (!data->exit_threads)
 	{
 		data->exit_threads = true;
-		time = get_relative_time_mc(data);
+		time = get_relative_time_mc(ph);
 		printf(msg, time / 1000, ph->name);
 	}
 	pthread_mutex_unlock(data->write);
@@ -38,7 +38,7 @@ int32_t	print_eat_or_die(t_philo *ph, t_data *data, int32_t prev_meal)
 	pthread_mutex_lock(data->write);
 	if (!data->exit_threads)
 	{
-		time = get_relative_time_mc(data);
+		time = get_relative_time_mc(ph);
 		if (time_to_die < time - prev_meal)
 		{
 			ph->exit_status = 1;
@@ -56,13 +56,13 @@ int32_t	print_eat_or_die(t_philo *ph, t_data *data, int32_t prev_meal)
 
 int32_t	print_msg(const char *msg, t_philo *ph, t_data *data)
 {	
-	int32_t	time;
+	int32_t					time;
 
 	time = 0;
 	pthread_mutex_lock(data->write);
 	if (!data->exit_threads)
 	{
-		time = get_relative_time_mc(data);
+		time = get_relative_time_mc(ph);
 		printf(msg, time / 1000, ph->name);
 	}
 	else

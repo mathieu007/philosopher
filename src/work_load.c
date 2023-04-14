@@ -6,7 +6,7 @@
 /*   By: mroy <mroy@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/18 08:44:52 by math              #+#    #+#             */
-/*   Updated: 2023/04/14 15:59:44 by mroy             ###   ########.fr       */
+/*   Updated: 2023/04/14 17:06:37 by mroy             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,14 +83,14 @@ void	start_sim_gr_800(t_philo **phs, int32_t ph_cnt)
 	end_time = 0;
 	while (i < ph_cnt / 2)
 	{
-		pthread_mutex_unlock(phs[i]->start_simulation);		
+		pthread_mutex_unlock(phs[i]->start_simulation);
 		if (rev_i > i)
 			pthread_mutex_unlock(phs[rev_i]->start_simulation);
 		pthread_mutex_lock(data->write);
 		printf("last time:%i %lli\n", phs[i]->name, phs[i]->last_think);
-		if (end_time == 0)	
+		if (end_time == 0)
 			end_time = (phs[i]->last_think) + interval;
-		else 
+		else
 			end_time += interval;
 		printf("end time:%i %lli\n", phs[i]->name, end_time);
 		pthread_mutex_unlock(data->write);
