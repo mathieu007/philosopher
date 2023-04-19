@@ -3,20 +3,24 @@
 /*                                                        :::      ::::::::   */
 /*   free.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: math <math@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: mroy <mroy@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/18 08:44:52 by math              #+#    #+#             */
-/*   Updated: 2023/04/17 12:20:12 by math             ###   ########.fr       */
+/*   Updated: 2023/04/19 15:18:32 by mroy             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philosopher.h"
 
-
-void	*free_philo(t_philo	*ph)
+void	*free_philo(t_philo	*ph, int32_t i)
 {
-	free(ph->start_simulation);
-	free(ph);
+	if (ph != NULL)
+	{
+		if (ph->start_simulation)
+			free(ph->start_simulation);
+		free(ph);
+		get_data()->philos[i] = NULL;
+	}
 	return (NULL);
 }
 
@@ -27,12 +31,17 @@ void	*free_philos(void)
 
 	phs = get_philosophers();
 	i = 0;
-	while (i < get_params()->num_philo)
+	if (phs)
 	{
-		free_philo(phs[i]);
-		i++;
-	}
-	free(phs);
+		while (i < get_params()->num_philo)
+		{
+			free_philo(phs[i], i);
+			i++;
+		}
+		free(phs);
+		if (get_data()->philos)
+			get_data()->philos = NULL;
+	}	
 	return (NULL);
 }
 
@@ -43,20 +52,27 @@ void	*free_threads(void)
 
 	phs = get_philosophers();
 	i = 0;
-	while (i < get_params()->num_philo)
+	if (phs)
 	{
-		pthread_detach(phs[i]->thread_id);
-		i++;
-	}
-	free(get_data()->thread_ids);
+		while (i < get_params()->num_philo)
+		{
+			if (phs[i] != NULL)
+				pthread_detach(phs[i]->thread_id);
+			i++;
+		}
+		if (get_data()->thread_ids)
+			free(get_data()->thread_ids);
+		get_data()->thread_ids = NULL;
+	}	
 	return (NULL);
 }
 
 void	*free_all(void)
 {
-	//free_threads();
 	free_mutexes();
 	free_philos();
+	free(get_data()->thread_ids);
+	free(get_data()->buffer);
 	free(get_params());
 	return (NULL);
 }	

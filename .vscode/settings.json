@@ -9,6 +9,14 @@
 		"string_view": "c",
 		"initializer_list": "c",
 		"philosopher.h": "c",
-		"pthread.h": "c"
+		"pthread.h": "c",
+		"cstdlib": "c",
+		"locale": "c",
+		"algorithm": "c",
+		"functional": "c",
+		"memory": "c",
+		"streambuf": "c",
+		"__threading_support": "c",
+		"iterator": "c"
 	}
 }

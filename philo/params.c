@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   params.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: math <math@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: mroy <mroy@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/18 08:44:52 by math              #+#    #+#             */
-/*   Updated: 2023/04/18 15:08:25 by math             ###   ########.fr       */
+/*   Updated: 2023/04/19 15:19:14 by mroy             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,23 +44,6 @@ bool	is_valid(char *str)
 		return (true);
 	return (false);
 }
-
-
-void	set_constant_char(const char val, const char *addr)
-{
-	*((char *)addr) = val;
-}
-
-void	set_constant(const int32_t val, const int32_t *addr)
-{
-	*((int32_t *)addr) = val;
-}
-
-void	set_constant64(const int64_t val, const int64_t *addr)
-{
-	*((int64_t *)addr) = val;
-}
-
 
 /// @brief [17.6.5.9/3] A C++ standard library function shall not 
 /// directly or indirectly modify objects (1.10) accessible by threads 

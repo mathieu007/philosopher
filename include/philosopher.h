@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philosopher.h                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: math <math@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: mroy <mroy@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/28 15:21:35 by mroy              #+#    #+#             */
-/*   Updated: 2023/04/18 20:46:44 by math             ###   ########.fr       */
+/*   Updated: 2023/04/19 16:00:12 by mroy             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,8 @@ typedef struct s_print_buffer
 	int32_t				head;
 	const int32_t		len;
 	bool				exit;
+	int32_t				count;
+	pthread_t			thread_id;
 }					t_print_buffer;
 
 typedef struct s_param
@@ -58,7 +60,6 @@ typedef struct s_philo
 	pthread_mutex_t		*left_fork;
 	pthread_mutex_t		*right_fork;
 	pthread_mutex_t		*start_simulation;
-	pthread_mutex_t		*rw_lock;
 	pthread_t			thread_id;
 	const int64_t		base_time;
 	int32_t				last_meal;
@@ -87,11 +88,12 @@ typedef struct s_data
 	t_print_buffer	*buffer;
 }				t_data;
 
-
+int64_t			get_interval(void);
+void			dispatch_philos(t_philo **phs, int32_t ph_cnt);
+void			wait_threads_ready(t_data *data, int32_t ph_cnt);
 t_param			*get_params(void);
 int32_t			get_relative_time_mc(const t_philo *ph);
 int32_t			get_relative_time_ms(const t_philo *ph);
-int32_t			next_ph(const int32_t i, const int32_t philo_count);
 int32_t			prev_ph(const int32_t i, const int32_t philo_count);
 t_data			*get_data(void);
 void			take_forks(t_philo *ph);
@@ -101,7 +103,8 @@ int64_t			get_time_stamp_mc(void);
 int32_t			print_msg(const char *msg, t_philo *ph, t_data *data);
 int32_t			print_die_msg(const char *msg, t_philo *ph, t_data *data);
 int32_t			print_eat_or_die(t_philo *ph, t_data *data, int32_t prev_meal);
-void			two_stage_sleep(const t_philo *ph, int32_t time_to_sleep, int32_t end_time);
+void			two_stage_sleep(const t_philo *ph, int32_t time_to_sleep,
+					int32_t end_time);
 bool			exit_threads(bool update_val);
 t_philo			**get_philosophers(void);
 void			*philo_odd_work(void *philo);
@@ -112,7 +115,7 @@ t_philo			**get_thread_philo(void);
 void			*free_threads(void);
 void			*free_mutexes(void);
 void			*free_all(void);
-void			*free_philo(t_philo	*ph);
+void			*free_philo(t_philo	*ph, int32_t i);
 void			*join_threads(void);
 bool			should_exit_ph(t_philo *ph);
 bool			is_odd(int32_t num);
@@ -133,8 +136,15 @@ void			*free_exit_thread(void);
 void			*free_exit_all_threads(void);
 int				ft_atoi(const char *str);
 size_t			ft_strlen(const char *str);
-void			save_msg(const char *msg, int32_t time, int32_t ph_name, t_print_buffer *buff);
-bool			print_msg_buffer(t_data *data, t_print_buffer *buff);
+void			save_msg(const char *msg, int32_t time, int32_t ph_name,
+					t_print_buffer *buff);
+bool			print_msg_buffer(t_data *data);
 void			init_print_buffer(void);
+
+void			eating(t_philo *ph, t_data *data,
+					const int32_t time_to_eat);
+void			sleeping(t_philo *ph, t_data *data,
+					const int32_t time_to_sleep);
+void			thinking(t_philo *ph, t_data *data);
 
 #endif

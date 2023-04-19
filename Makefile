@@ -5,7 +5,7 @@ CC          	:= cc
 NAME			:= bin/philo
 
 #The Directories, Source, Includes, Objects, Binary and Resources
-SRCDIR			:= src
+SRCDIR			:= philo
 INCDIR			:= include
 BUILDDIR		:= obj
 TARGETDIR		:= bin
@@ -18,19 +18,22 @@ CFLAGS      := -Wall -Wextra -Werror -g -O2
 INCDEP      := -I$(INCDIR)
 
 
-SOURCES     :=	src/free.c	\
-				src/mutexes.c	\
-				src/philosophers.c	\
-				src/utils.c	\
-				src/data.c	\
-				src/msg_queue.c	\
-				src/helper.c	\
-				src/print_data.c	\
-				src/timing.c	\
-				src/work_load.c	\
-				src/params.c	\
-				src/thread.c	\
-				src/main.c	\
+SOURCES     :=	philo/free.c	\
+				philo/actions.c	\
+				philo/mutexes.c	\
+				philo/philosophers.c	\
+				philo/utils.c	\
+				philo/utils2.c	\
+				philo/data.c	\
+				philo/msg_queue.c	\
+				philo/helper.c	\
+				philo/print_data.c	\
+				philo/timing.c	\
+				philo/work_load.c	\
+				philo/dispatch.c	\
+				philo/params.c	\
+				philo/thread.c	\
+				philo/main.c	\
 
 OBJECTS			:= $(patsubst $(SRCDIR)/%,$(BUILDDIR)/%,$(SOURCES:.$(SRCEXT)=.$(OBJEXT)))
 

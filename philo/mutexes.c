@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   mutexes.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: math <math@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: mroy <mroy@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/18 08:44:52 by math              #+#    #+#             */
-/*   Updated: 2023/04/18 20:46:30 by math             ###   ########.fr       */
+/*   Updated: 2023/04/19 15:23:44 by mroy             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,10 +15,18 @@
 void	init_print_buffer(void)
 {
 	t_print_buffer	*buffer;
+	t_data			*data;
 
+	data = get_data();
+	pthread_mutex_lock(data->write);
 	buffer = malloc(sizeof(t_print_buffer));
 	get_data()->buffer = buffer;
 	set_constant(100000, &(buffer->len));
+	buffer->head = 1;
+	buffer->tail = 0;
+	buffer->exit = false;
+	buffer->count = 0;
+	pthread_mutex_unlock(data->write);
 }
 
 void	init_mutexes(void)
@@ -41,12 +49,28 @@ void	init_mutexes(void)
 	{
 		pthread_mutex_init(&(forks_mutexes[i]), NULL);
 		phs[i]->start_simulation = malloc(sizeof(pthread_mutex_t));
-		phs[i]->rw_lock = malloc(sizeof(pthread_mutex_t));
 		pthread_mutex_init(phs[i]->start_simulation, NULL);
-		pthread_mutex_init(phs[i]->rw_lock, NULL);
 		phs[i]->left_fork = &(forks_mutexes[i]);
 		phs[prev_ph(i, params->num_philo)]->right_fork = &(forks_mutexes[i]);
 		i++;
+	}
+}
+
+static void	free_philo_mutex(t_philo *ph)
+{
+	if (ph != NULL)
+	{	
+		if (ph->start_simulation)
+		{
+			pthread_mutex_destroy(ph->start_simulation);
+			free(ph->start_simulation);
+			ph->start_simulation = NULL;
+		}
+		if (ph->left_fork)
+		{
+			pthread_mutex_destroy(ph->left_fork);
+			ph->left_fork = NULL;
+		}
 	}
 }
 
@@ -60,14 +84,20 @@ void	*free_mutexes(void)
 	i = 0;
 	data = get_data();
 	phs = get_philosophers();
-	pthread_mutex_destroy(data->write);
-	free(data->write);
+	if (data->write)
+	{
+		pthread_mutex_destroy(data->write);
+		free(data->write);
+		data->write = NULL;
+	}	
 	count = get_params()->num_philo;
 	while (i < count)
 	{
-		pthread_mutex_destroy(phs[i]->left_fork);
+		free_philo_mutex(phs[i]);
 		i++;
 	}
-	free(data->forks);
+	if (data->forks)
+		free(data->forks);
+	data->forks = NULL;
 	return (NULL);
 }

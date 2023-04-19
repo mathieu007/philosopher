@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: math <math@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: mroy <mroy@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/18 08:44:52 by math              #+#    #+#             */
-/*   Updated: 2023/04/18 20:43:25 by math             ###   ########.fr       */
+/*   Updated: 2023/04/19 14:57:55 by mroy             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,15 +43,14 @@ int32_t	main(int32_t argc, char **argv)
 {
 	handle_parse_n_error(argc, argv);
 	init_philosophers();
-	init_print_buffer();
 	if (get_params()->num_philo == 1)
 		hard_code_1philo();
 	init_mutexes();
-	init_mutexes();
+	init_print_buffer();
 	lock_all_philos();
 	init_threads();
 	start_simulation();
 	join_threads();
+	free_all();
 	return (0);
 }
-

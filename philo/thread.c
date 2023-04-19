@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   thread.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: math <math@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: mroy <mroy@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/18 08:44:52 by math              #+#    #+#             */
-/*   Updated: 2023/04/15 12:27:14 by math             ###   ########.fr       */
+/*   Updated: 2023/04/19 15:54:46 by mroy             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,21 +41,18 @@ void	*init_threads(void)
 	return (NULL);
 }
 
-void	*detach_all_philos(void)
+void	wait_threads_ready(t_data *data, int32_t ph_cnt)
 {
-	t_philo		**phs;
-	int32_t		i;
-	int32_t		num_philo;
-
-	i = 0;
-	phs = get_philosophers();
-	num_philo = get_params()->num_philo;
-	while (i < num_philo)
+	while (true)
 	{
-		pthread_detach(phs[i]->thread_id);
-		i++;
+		pthread_mutex_lock(data->write);
+		if (data->threads_ready == ph_cnt)
+		{
+			pthread_mutex_unlock(data->write);
+			break ;
+		}
+		pthread_mutex_unlock(data->write);
 	}
-	return (NULL);
 }
 
 void	*join_threads(void)
@@ -63,22 +60,19 @@ void	*join_threads(void)
 	pthread_t	*threads;
 	int32_t		i;
 	int32_t		num_philo;
+	t_philo		**phs;
 	void		*status;
 
 	i = 0;
 	status = NULL;
+	phs = get_philosophers();
 	num_philo = get_params()->num_philo;
 	threads = get_data()->thread_ids;
 	while (i < num_philo)
 	{
-		if (pthread_join(threads[i], &status) != 0 || *((int32_t *)status) == 1)
-		{
-			detach_all_philos();
-			free_all();
-			exit(1);
-		}
+		pthread_join(threads[i], &status);
 		i++;
 	}
-	free_all();
+	pthread_join(get_data()->buffer->thread_id, &status);
 	return (NULL);
 }
