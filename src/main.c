@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mroy <mroy@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: math <math@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/18 08:44:52 by math              #+#    #+#             */
-/*   Updated: 2023/04/14 14:21:25 by mroy             ###   ########.fr       */
+/*   Updated: 2023/04/18 20:43:25 by math             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ static void	handle_parse_n_error(int32_t argc, char **argv)
 {
 	if (argc < 5 || argc > 6 || !try_init_params(argc, argv))
 		error_msg("error: invalid arguments.\n");
-	else if (get_params()->num_philo == 0 || get_params()->num_philo > 1800)
+	else if (get_params()->num_philo == 0 || get_params()->num_philo > 5000)
 		error_msg("error: invalid number of philosophers.\n");
 	else if (get_params()->time_to_eat < 60)
 		error_msg("error: time to eat parameter is invalid.\n");
@@ -43,8 +43,10 @@ int32_t	main(int32_t argc, char **argv)
 {
 	handle_parse_n_error(argc, argv);
 	init_philosophers();
+	init_print_buffer();
 	if (get_params()->num_philo == 1)
 		hard_code_1philo();
+	init_mutexes();
 	init_mutexes();
 	lock_all_philos();
 	init_threads();

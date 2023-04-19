@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   params.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mroy <mroy@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: math <math@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/18 08:44:52 by math              #+#    #+#             */
-/*   Updated: 2023/04/14 12:35:57 by mroy             ###   ########.fr       */
+/*   Updated: 2023/04/18 15:08:25 by math             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,30 @@ bool	is_valid(char *str)
 	return (false);
 }
 
+
+void	set_constant_char(const char val, const char *addr)
+{
+	*((char *)addr) = val;
+}
+
+void	set_constant(const int32_t val, const int32_t *addr)
+{
+	*((int32_t *)addr) = val;
+}
+
+void	set_constant64(const int64_t val, const int64_t *addr)
+{
+	*((int64_t *)addr) = val;
+}
+
+
+/// @brief [17.6.5.9/3] A C++ standard library function shall not 
+/// directly or indirectly modify objects (1.10) accessible by threads 
+/// other than the current thread unless the objects are accessed directly 
+/// or indirectly via the function’s non-const arguments, including this.
+/// @param argc 
+/// @param argv 
+/// @return 
 bool	try_init_params(int32_t argc, char **argv)
 {
 	t_param	*params;
@@ -53,21 +77,22 @@ bool	try_init_params(int32_t argc, char **argv)
 	if (!is_valid(argv[1]) || !is_valid(argv[2]) || !is_valid(argv[3])
 		|| !is_valid(argv[4]))
 		return (false);
-	params->num_philo = ft_atoi(argv[1]);
-	params->time_to_die = ft_atoi(argv[2]);
-	params->time_to_eat = ft_atoi(argv[3]);
-	params->time_to_sleep = ft_atoi(argv[4]);
-	params->time_to_think = params->time_to_die - params->time_to_sleep - params->time_to_eat;
-	params->time_cycle = ((params->time_to_think / 2)
-			+ params->time_to_eat + params->time_to_sleep) * 1000;
+	set_constant(ft_atoi(argv[1]), &(params->num_philo));
+	set_constant(ft_atoi(argv[2]), &(params->time_to_die));
+	set_constant(ft_atoi(argv[3]), &(params->time_to_eat));
+	set_constant(ft_atoi(argv[4]), &(params->time_to_sleep));
+	set_constant(params->time_to_die - params->time_to_sleep
+		- params->time_to_eat, &(params->time_to_think));
+	set_constant(((params->time_to_think / 2) + params->time_to_eat
+			+ params->time_to_sleep) * 1000, &(params->time_cycle));
 	if (argc == 6)
 	{
 		if (!is_valid(argv[5]))
 			return (false);
-		params->must_eat = ft_atoi(argv[5]);
+		set_constant(ft_atoi(argv[5]), &(params->must_eat));
 	}
 	else
-		params->must_eat = INT32_MAX;
+		set_constant(INT32_MAX, &(params->must_eat));
 	get_data()->params = params;
 	return (true);
 }

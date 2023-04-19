@@ -23,6 +23,7 @@ SOURCES     :=	src/free.c	\
 				src/philosophers.c	\
 				src/utils.c	\
 				src/data.c	\
+				src/msg_queue.c	\
 				src/helper.c	\
 				src/print_data.c	\
 				src/timing.c	\

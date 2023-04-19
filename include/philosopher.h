@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philosopher.h                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mroy <mroy@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: math <math@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/28 15:21:35 by mroy              #+#    #+#             */
-/*   Updated: 2023/04/14 15:04:16 by mroy             ###   ########.fr       */
+/*   Updated: 2023/04/18 20:46:44 by math             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,15 +25,31 @@
 # include <unistd.h>
 # include <pthread.h>
 
+typedef struct s_msg
+{
+	char		*msg;
+	int32_t		ph_name;
+	int32_t		time;
+}				t_msg;
+
+typedef struct s_print_buffer
+{
+	t_msg				msgs[100000];
+	int32_t				tail;
+	int32_t				head;
+	const int32_t		len;
+	bool				exit;
+}					t_print_buffer;
+
 typedef struct s_param
 {
-	int32_t	num_philo;
-	int32_t	time_to_die;
-	int32_t	time_to_eat;
-	int32_t	time_to_sleep;
-	int32_t	time_to_think;
-	int32_t	time_cycle;
-	int32_t	must_eat;
+	const int32_t	num_philo;
+	const int32_t	time_to_die;
+	const int32_t	time_to_eat;
+	const int32_t	time_to_sleep;
+	const int32_t	time_to_think;
+	const int32_t	time_cycle;
+	const int32_t	must_eat;
 }					t_param;
 
 typedef struct s_philo
@@ -42,11 +58,15 @@ typedef struct s_philo
 	pthread_mutex_t		*left_fork;
 	pthread_mutex_t		*right_fork;
 	pthread_mutex_t		*start_simulation;
+	pthread_mutex_t		*rw_lock;
 	pthread_t			thread_id;
-	int32_t				base_time;
+	const int64_t		base_time;
 	int32_t				last_meal;
 	int32_t				exit_status;
 	int64_t				last_think;
+	const int64_t		start_time;
+	int64_t				adjustement;
+	int64_t				interval;
 	int32_t				eat_count;
 	int32_t				position;
 	t_param				*params;
@@ -57,11 +77,14 @@ typedef struct s_data
 {
 	pthread_mutex_t	*write;
 	pthread_mutex_t	*forks;
-	uint64_t		base_time;
+	const int64_t	base_time;
+	const int64_t	interval;
+	int32_t			threads_ready;
 	t_philo			**philos;
 	pthread_t		*thread_ids;
 	t_param			*params;
 	bool			exit_threads;
+	t_print_buffer	*buffer;
 }				t_data;
 
 
@@ -95,17 +118,23 @@ bool			should_exit_ph(t_philo *ph);
 bool			is_odd(int32_t num);
 bool			is_even(int32_t num);
 
-void	lock_all_philos(void);
-bool	try_init_params(int32_t argc, char **argv);
-void	*init_philosophers(void);
-void	*init_dispatchers(void);
-void	*init_threads(void);
-void	init_mutexes(void);
-void	start_simulation(void);
-void	*free_forks(void);
-void	*free_exit_thread(void);
-void	*free_exit_all_threads(void);
-int		ft_atoi(const char *str);
-size_t	ft_strlen(const char *str);
+void			set_constant_char(const char val, const char *addr);
+void			set_constant(const int32_t val, const int32_t *addr);
+void			set_constant64(const int64_t val, const int64_t *addr);
+void			lock_all_philos(void);
+bool			try_init_params(int32_t argc, char **argv);
+void			*init_philosophers(void);
+void			*init_dispatchers(void);
+void			*init_threads(void);
+void			init_mutexes(void);
+void			start_simulation(void);
+void			*free_forks(void);
+void			*free_exit_thread(void);
+void			*free_exit_all_threads(void);
+int				ft_atoi(const char *str);
+size_t			ft_strlen(const char *str);
+void			save_msg(const char *msg, int32_t time, int32_t ph_name, t_print_buffer *buff);
+bool			print_msg_buffer(t_data *data, t_print_buffer *buff);
+void			init_print_buffer(void);
 
 #endif
