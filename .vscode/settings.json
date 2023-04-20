@@ -1,5 +1,5 @@
 {
-	"terminal.integrated.scrollback": 10000,
+	"terminal.integrated.scrollback": 50000,
 	"files.associations": {
 		"array": "c",
 		"deque": "c",
@@ -17,6 +17,7 @@
 		"memory": "c",
 		"streambuf": "c",
 		"__threading_support": "c",
-		"iterator": "c"
+		"iterator": "c",
+		"bitset": "c"
 	}
 }

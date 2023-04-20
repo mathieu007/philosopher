@@ -6,7 +6,7 @@
 /*   By: mroy <mroy@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/18 08:44:52 by math              #+#    #+#             */
-/*   Updated: 2023/04/19 15:04:33 by mroy             ###   ########.fr       */
+/*   Updated: 2023/04/20 12:16:26 by mroy             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,11 @@ inline void	two_stage_sleep(const t_philo *ph, int32_t time_to_sleep,
 	time = time_to_sleep - 5000;
 	if (time > 0)
 		usleep(time);
-	time = end_time - get_relative_time_mc(ph);
+	while (time - 500 > 0)
+	{
+		time = end_time - get_relative_time_mc(ph);
+		usleep(time / 2);
+	}
 	if (time > 0)
 		usleep(time);
 }
@@ -39,7 +43,7 @@ inline void	sleeping(t_philo *ph, t_data *data,
 {
 	int32_t			sleep_time;
 
-	sleep_time = print_msg("%i %i is sleeping\n", ph, data);
+	sleep_time = print_msg(" is sleeping\n", ph, data);
 	two_stage_sleep(ph, time_to_sleep, sleep_time + time_to_sleep);
 }
 
@@ -48,7 +52,7 @@ inline void	thinking(t_philo *ph, t_data *data)
 	const int32_t	time_cycle = ph->params->time_cycle;
 	int32_t			time;
 
-	print_msg("%i %i is thinking\n", ph, data);
+	print_msg(" is thinking\n", ph, data);
 	ph->last_think += (int64_t)time_cycle;
 	time = ph->last_think - get_time_stamp_mc();
 	if (time > 0)

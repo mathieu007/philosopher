@@ -6,7 +6,7 @@
 /*   By: mroy <mroy@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/18 08:44:52 by math              #+#    #+#             */
-/*   Updated: 2023/04/19 15:57:07 by mroy             ###   ########.fr       */
+/*   Updated: 2023/04/20 13:49:54 by mroy             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ int64_t	get_interval(void)
 	interval = (int64_t)((time_to_eat) / (num_ph / 4));
 	if (interval > ((time_to_think / 2) - (time_to_think / 10)) / 2)
 		interval = ((time_to_think / 2) - (time_to_think / 10)) / 2;
-	return ((int64_t)(interval / 2));
+	return ((int64_t)((interval / 2)));
 }
 
 void	*print_messages(void *val)
@@ -59,7 +59,7 @@ void	*print_messages(void *val)
 			ret = 1;
 			break ;
 		}
-		usleep(1000);
+		usleep(4000);
 	}
 	return (&ret);
 }

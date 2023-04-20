@@ -26,6 +26,7 @@ SOURCES     :=	philo/free.c	\
 				philo/utils2.c	\
 				philo/data.c	\
 				philo/msg_queue.c	\
+				philo/int_to_string.c	\
 				philo/helper.c	\
 				philo/print_data.c	\
 				philo/timing.c	\

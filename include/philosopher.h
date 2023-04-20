@@ -6,7 +6,7 @@
 /*   By: mroy <mroy@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/28 15:21:35 by mroy              #+#    #+#             */
-/*   Updated: 2023/04/19 16:00:12 by mroy             ###   ########.fr       */
+/*   Updated: 2023/04/20 13:25:17 by mroy             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,10 +34,9 @@ typedef struct s_msg
 
 typedef struct s_print_buffer
 {
-	t_msg				msgs[100000];
-	int32_t				tail;
-	int32_t				head;
-	const int32_t		len;
+	char				*read;
+	char				*write;
+	int32_t				capacity;
 	bool				exit;
 	int32_t				count;
 	pthread_t			thread_id;
@@ -88,6 +87,8 @@ typedef struct s_data
 	t_print_buffer	*buffer;
 }				t_data;
 
+
+size_t			uint32_to_str(uint32_t value, char *dst);
 int64_t			get_interval(void);
 void			dispatch_philos(t_philo **phs, int32_t ph_cnt);
 void			wait_threads_ready(t_data *data, int32_t ph_cnt);
