@@ -6,7 +6,7 @@
 /*   By: mroy <mroy@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/18 08:44:52 by math              #+#    #+#             */
-/*   Updated: 2023/04/20 09:16:57 by mroy             ###   ########.fr       */
+/*   Updated: 2023/04/21 08:44:53 by mroy             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,6 @@ void	init_print_buffer(void)
 	buffer->capacity = size;
 	buffer->read = malloc(sizeof(char) * size);
 	buffer->write = malloc(sizeof(char) * size);
-	buffer->exit = false;
 	buffer->count = 0;
 	pthread_mutex_unlock(data->write);
 }

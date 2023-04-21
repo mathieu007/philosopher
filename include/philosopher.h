@@ -6,7 +6,7 @@
 /*   By: mroy <mroy@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/28 15:21:35 by mroy              #+#    #+#             */
-/*   Updated: 2023/04/20 13:25:17 by mroy             ###   ########.fr       */
+/*   Updated: 2023/04/21 12:21:06 by mroy             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,6 @@ typedef struct s_print_buffer
 	char				*read;
 	char				*write;
 	int32_t				capacity;
-	bool				exit;
 	int32_t				count;
 	pthread_t			thread_id;
 }					t_print_buffer;
@@ -147,5 +146,6 @@ void			eating(t_philo *ph, t_data *data,
 void			sleeping(t_philo *ph, t_data *data,
 					const int32_t time_to_sleep);
 void			thinking(t_philo *ph, t_data *data);
+void			sleeper(int32_t end_time);
 
 #endif

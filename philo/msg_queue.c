@@ -6,16 +6,11 @@
 /*   By: mroy <mroy@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/18 08:44:52 by math              #+#    #+#             */
-/*   Updated: 2023/04/20 11:29:21 by mroy             ###   ########.fr       */
+/*   Updated: 2023/04/21 10:47:52 by mroy             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philosopher.h"
-
-int32_t	next(t_print_buffer *buff, const int32_t i)
-{
-	return ((i + 1) % buff->capacity);
-}
 
 void	save_msg(const char *msg, int32_t time, int32_t ph_name,
 	t_print_buffer *buff)
@@ -52,12 +47,10 @@ bool	print_msg_buffer(t_data *data)
 	read_buff = buff->write;
 	buff->write = write_buff;
 	buff->read = read_buff;
-	exit = buff->exit;
+	exit = data->exit_threads;
 	count = buff->count;
 	buff->count = 0;
 	pthread_mutex_unlock(data->write);
-	read_buff[count] = '\0';
 	write(STDOUT_FILENO, read_buff, count);
-	// printf("%s", (const char *)read_buff);
 	return (exit);
 }

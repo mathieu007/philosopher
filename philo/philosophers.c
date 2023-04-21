@@ -6,7 +6,7 @@
 /*   By: mroy <mroy@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/18 08:44:52 by math              #+#    #+#             */
-/*   Updated: 2023/04/20 13:35:08 by mroy             ###   ########.fr       */
+/*   Updated: 2023/04/21 12:20:41 by mroy             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ void	*init_philosophers(void)
 
 static inline void	inner_philo_even(t_philo *ph, t_data *data,
 	const int32_t time_to_eat, const int32_t time_to_sleep)
-{
+{	
 	pthread_mutex_lock(ph->left_fork);
 	print_msg(" has taken a fork\n", ph, data);
 	pthread_mutex_lock(ph->right_fork);
@@ -74,7 +74,7 @@ void	*philo_even_work(void *philo)
 	pthread_mutex_lock(ph->start_simulation);
 	ph->last_think = ph->start_time;
 	while (eat_count > 0 && ph->exit_status != 1)
-	{
+	{	
 		inner_philo_even(ph, data, time_to_eat, time_to_sleep);
 		eat_count--;
 	}

@@ -18,6 +18,7 @@
 		"streambuf": "c",
 		"__threading_support": "c",
 		"iterator": "c",
-		"bitset": "c"
+		"bitset": "c",
+		"memory_resource": "c"
 	}
 }

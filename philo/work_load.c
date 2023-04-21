@@ -6,7 +6,7 @@
 /*   By: mroy <mroy@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/18 08:44:52 by math              #+#    #+#             */
-/*   Updated: 2023/04/20 13:49:54 by mroy             ###   ########.fr       */
+/*   Updated: 2023/04/21 10:34:00 by mroy             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ int64_t	get_interval(void)
 
 	time_to_think = get_params()->time_to_think * 1000;
 	time_to_eat = (int64_t)get_params()->time_to_eat * 1000;
-	num_ph = (int64_t)get_params()->num_philo;
+	num_ph = (int64_t)get_params()->num_philo - 1;
 	if (num_ph < 4)
 		num_ph = 4;
 	interval = (int64_t)((time_to_eat) / (num_ph / 4));

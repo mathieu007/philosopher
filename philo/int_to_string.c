@@ -6,7 +6,7 @@
 /*   By: mroy <mroy@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/18 08:44:52 by math              #+#    #+#             */
-/*   Updated: 2023/04/21 08:28:30 by mroy             ###   ########.fr       */
+/*   Updated: 2023/04/21 09:31:31 by mroy             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ static uint32_t	digits10(uint64_t v)
 }
 
 inline static size_t	convert_loop(size_t next, uint32_t i,
-	uint32_t value, char *dst)
+	uint32_t *value, char *dst)
 {
 	static const char	digits[201]
 		= "0001020304050607080910111213141516171819"
@@ -51,11 +51,12 @@ inline static size_t	convert_loop(size_t next, uint32_t i,
 		"6061626364656667686970717273747576777879"
 		"8081828384858687888990919293949596979899";
 
-	i = (value % 100) * 2;
-	value /= 100;
+	i = (*value % 100) * 2;
+	*value /= 100;
 	dst[next] = digits[i + 1];
 	dst[next - 1] = digits[i];
 	next -= 2;
+	return (next);
 }
 
 size_t	uint32_to_str(uint32_t value, char *dst)
@@ -73,7 +74,7 @@ size_t	uint32_to_str(uint32_t value, char *dst)
 	i = 0;
 	next = length - 1;
 	while (value >= 100)
-		next = convert_loop(next, i, value, dst);
+		next = convert_loop(next, i, &value, dst);
 	if (value < 10)
 		dst[next] = '0' + (value);
 	else

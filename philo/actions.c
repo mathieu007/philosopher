@@ -6,7 +6,7 @@
 /*   By: mroy <mroy@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/18 08:44:52 by math              #+#    #+#             */
-/*   Updated: 2023/04/20 16:46:29 by mroy             ###   ########.fr       */
+/*   Updated: 2023/04/21 12:20:07 by mroy             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,11 +51,8 @@ inline void	sleeping(t_philo *ph, t_data *data,
 inline void	thinking(t_philo *ph, t_data *data)
 {
 	const int32_t	time_cycle = ph->params->time_cycle;
-	int32_t			time;
 
 	print_msg(" is thinking\n", ph, data);
 	ph->last_think += (int64_t)time_cycle;
-	time = ph->last_think - get_time_stamp_mc();
-	if (time > 0)
-		usleep(time);
+	sleeper(ph->last_think);
 }
