@@ -6,7 +6,7 @@
 /*   By: mroy <mroy@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/18 08:44:52 by math              #+#    #+#             */
-/*   Updated: 2023/04/20 12:16:26 by mroy             ###   ########.fr       */
+/*   Updated: 2023/04/20 16:46:29 by mroy             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,8 @@ inline void	two_stage_sleep(const t_philo *ph, int32_t time_to_sleep,
 	while (time - 500 > 0)
 	{
 		time = end_time - get_relative_time_mc(ph);
-		usleep(time / 2);
+		if (time > 0)
+			usleep(time / 2);
 	}
 	if (time > 0)
 		usleep(time);

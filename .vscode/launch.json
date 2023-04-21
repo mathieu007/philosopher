@@ -9,7 +9,7 @@
 			"type": "cppdbg",
 			"request": "launch",
 			"program": "${workspaceFolder}/bin/philo",
-			"args": ["2", "410", "200", "200"],
+			"args": ["5", "800", "200", "200"],
 			"environment": [{ "name": "config", "value": "Debug" }],
 			"cwd": "${workspaceFolder}",
 			"externalConsole": false,
