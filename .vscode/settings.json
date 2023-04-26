@@ -19,6 +19,7 @@
 		"__threading_support": "c",
 		"iterator": "c",
 		"bitset": "c",
-		"memory_resource": "c"
+		"memory_resource": "c",
+		"philo_bonus.h": "c"
 	}
 }

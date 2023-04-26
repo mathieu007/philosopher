@@ -5,6 +5,18 @@
 	"version": "0.2.0",
 	"configurations": [
 		{
+			"name": "philo_bonus",
+			"type": "cppdbg",
+			"request": "launch",
+			"program": "${workspaceFolder}/bin/philo_bonus",
+			"args": ["200", "410", "200", "200"],
+			"environment": [{ "name": "config", "value": "Debug" }],
+			"cwd": "${workspaceFolder}",
+			"externalConsole": false,
+            "MIMode": "lldb",
+			"preLaunchTask": "philo_bonus"
+		},
+		{
 			"name": "philo",
 			"type": "cppdbg",
 			"request": "launch",

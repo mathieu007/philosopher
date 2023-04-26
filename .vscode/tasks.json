@@ -16,6 +16,23 @@
 				"isDefault": true
 			},
 			"detail": "philo"
+		},
+		{
+			"label": "philo_bonus",
+			"type": "shell",
+			"command": "make",
+			"args": [],
+			"options": {
+				"cwd": "${workspaceFolder}"
+			},
+			"problemMatcher": [
+				"$gcc"
+			],
+			"group": {
+				"kind": "build",
+				"isDefault": true
+			},
+			"detail": "philo_bonus"
 		}
 	],
     "version": "2.0.0"

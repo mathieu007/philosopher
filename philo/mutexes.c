@@ -6,7 +6,7 @@
 /*   By: mroy <mroy@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/18 08:44:52 by math              #+#    #+#             */
-/*   Updated: 2023/04/21 08:44:53 by mroy             ###   ########.fr       */
+/*   Updated: 2023/04/26 14:47:09 by mroy             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,11 +37,13 @@ void	init_mutexes(void)
 	pthread_mutex_t		*forks_mutexes;
 	t_data				*data;
 	t_param				*params;
+	bool				*forks;
 
 	data = get_data();
 	params = get_params();
 	data->write = malloc(sizeof(pthread_mutex_t));
 	forks_mutexes = malloc(sizeof(pthread_mutex_t) * params->num_philo);
+	forks = malloc(sizeof(pthread_mutex_t) * params->num_philo);
 	data->forks = forks_mutexes;
 	pthread_mutex_init(data->write, NULL);
 	i = 0;
@@ -52,7 +54,9 @@ void	init_mutexes(void)
 		phs[i]->start_simulation = malloc(sizeof(pthread_mutex_t));
 		pthread_mutex_init(phs[i]->start_simulation, NULL);
 		phs[i]->left_fork = &(forks_mutexes[i]);
+		phs[i]->left_fork_taken = &forks[i];
 		phs[prev_ph(i, params->num_philo)]->right_fork = &(forks_mutexes[i]);
+		phs[prev_ph(i, params->num_philo)]->right_fork_taken = &forks[i];
 		i++;
 	}
 }

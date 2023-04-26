@@ -6,7 +6,7 @@
 /*   By: mroy <mroy@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/28 15:21:35 by mroy              #+#    #+#             */
-/*   Updated: 2023/04/21 12:21:06 by mroy             ###   ########.fr       */
+/*   Updated: 2023/04/26 14:56:50 by mroy             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,8 @@ typedef struct s_print_buffer
 	int32_t				capacity;
 	int32_t				count;
 	pthread_t			thread_id;
+	bool				stop_print;
+	int32_t				stop_count;
 }					t_print_buffer;
 
 typedef struct s_param
@@ -57,6 +59,8 @@ typedef struct s_philo
 	int32_t				name;
 	pthread_mutex_t		*left_fork;
 	pthread_mutex_t		*right_fork;
+	bool				*left_fork_taken;
+	bool				*right_fork_taken;
 	pthread_mutex_t		*start_simulation;
 	pthread_t			thread_id;
 	const int64_t		base_time;
@@ -87,6 +91,8 @@ typedef struct s_data
 }				t_data;
 
 
+void			save_dead_msg(const char *msg, int32_t time, t_philo *ph,
+					t_print_buffer *buff);
 size_t			uint32_to_str(uint32_t value, char *dst);
 int64_t			get_interval(void);
 void			dispatch_philos(t_philo **phs, int32_t ph_cnt);
@@ -101,8 +107,8 @@ void			put_forks_on_table(t_philo *ph);
 int64_t			get_time_stamp_ms(void);
 int64_t			get_time_stamp_mc(void);
 int32_t			print_msg(const char *msg, t_philo *ph, t_data *data);
-int32_t			print_die_msg(const char *msg, t_philo *ph, t_data *data);
-int32_t			print_eat_or_die(t_philo *ph, t_data *data, int32_t prev_meal);
+int32_t			print_die_msg(t_philo *ph, t_data *data);
+int32_t			print_eat(t_philo *ph, t_data *data);
 void			two_stage_sleep(const t_philo *ph, int32_t time_to_sleep,
 					int32_t end_time);
 bool			exit_threads(bool update_val);
@@ -136,7 +142,7 @@ void			*free_exit_thread(void);
 void			*free_exit_all_threads(void);
 int				ft_atoi(const char *str);
 size_t			ft_strlen(const char *str);
-void			save_msg(const char *msg, int32_t time, int32_t ph_name,
+void			save_msg(const char *msg, int32_t time, t_philo *ph,
 					t_print_buffer *buff);
 bool			print_msg_buffer(t_data *data);
 void			init_print_buffer(void);

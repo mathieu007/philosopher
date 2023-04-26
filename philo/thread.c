@@ -6,7 +6,7 @@
 /*   By: mroy <mroy@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/18 08:44:52 by math              #+#    #+#             */
-/*   Updated: 2023/04/19 15:54:46 by mroy             ###   ########.fr       */
+/*   Updated: 2023/04/26 15:28:34 by mroy             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,9 +70,11 @@ void	*join_threads(void)
 	threads = get_data()->thread_ids;
 	while (i < num_philo)
 	{
-		pthread_join(threads[i], &status);
+		pthread_join(threads[i], status);
 		i++;
 	}
-	pthread_join(get_data()->buffer->thread_id, &status);
+	pthread_mutex_lock(get_data()->write);
+	get_data()->buffer->stop_print = true;
+	pthread_mutex_unlock(get_data()->write);
 	return (NULL);
 }

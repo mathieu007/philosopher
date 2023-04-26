@@ -6,7 +6,7 @@
 /*   By: mroy <mroy@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/18 08:44:52 by math              #+#    #+#             */
-/*   Updated: 2023/04/21 12:20:41 by mroy             ###   ########.fr       */
+/*   Updated: 2023/04/26 14:55:23 by mroy             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,15 +35,43 @@ void	*init_philosophers(void)
 		phs[i]->eat_count = 0;
 		phs[i]->last_meal = 0;
 		phs[i]->exit_status = 0;
+		phs[i]->left_fork = false;
+		phs[i]->right_fork_taken = false;
 		i++;
 	}	
 	data->philos = phs;
 	return (NULL);
 }
 
+static bool	is_dead(t_philo *ph, t_data *data)
+{
+	bool			left_fork;
+	bool			right_fork;
+	int32_t			interval;
+	int64_t			max_time;
+	int64_t			curr_time;
+
+	curr_time = get_time_stamp_mc();
+	max_time = ph->last_think + ((data->params->time_to_think * 1000) / 2);
+	interval = (max_time - curr_time) / 5;
+	while (curr_time < max_time)
+	{
+		pthread_mutex_lock(data->write);
+		left_fork = *(ph->left_fork_taken);
+		right_fork = *(ph->right_fork_taken);
+		pthread_mutex_unlock(data->write);
+		if (left_fork || right_fork)
+			usleep(interval);
+		else
+			return (false);
+		curr_time += interval;
+	}
+	return (true);
+}
+
 static inline void	inner_philo_even(t_philo *ph, t_data *data,
 	const int32_t time_to_eat, const int32_t time_to_sleep)
-{	
+{		
 	pthread_mutex_lock(ph->left_fork);
 	print_msg(" has taken a fork\n", ph, data);
 	pthread_mutex_lock(ph->right_fork);
@@ -53,6 +81,8 @@ static inline void	inner_philo_even(t_philo *ph, t_data *data,
 	pthread_mutex_unlock(ph->right_fork);
 	sleeping(ph, data, time_to_sleep);
 	thinking(ph, data);
+	if (is_dead(ph, data))
+		print_die_msg(ph, data);
 }
 
 void	*philo_even_work(void *philo)
@@ -94,6 +124,8 @@ static inline void	inner_philo_odd(t_philo *ph, t_data *data,
 	pthread_mutex_unlock(ph->left_fork);
 	sleeping(ph, data, time_to_sleep);
 	thinking(ph, data);
+	if (is_dead(ph, data))
+		print_die_msg(ph, data);
 }
 
 void	*philo_odd_work(void *philo)
