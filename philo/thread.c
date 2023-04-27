@@ -6,13 +6,22 @@
 /*   By: mroy <mroy@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/18 08:44:52 by math              #+#    #+#             */
-/*   Updated: 2023/04/27 11:06:47 by mroy             ###   ########.fr       */
+/*   Updated: 2023/04/27 16:15:25 by mroy             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philosopher.h"
 
-static void	*set_philo_thread_id(int32_t i, t_philo **phs)
+static void	*set_philo_odd_thread_id(int32_t i, t_philo **phs)
+{
+	if (pthread_create(&get_data()->thread_ids[i], NULL, philo_odd_work,
+			phs[i]) != 0)
+		return (NULL);
+	phs[i]->thread_id = get_data()->thread_ids[i];
+	return (phs);
+}
+
+static void	*set_philo_even_thread_id(int32_t i, t_philo **phs)
 {
 	if (pthread_create(&get_data()->thread_ids[i], NULL, philo_even_work,
 			phs[i]) != 0)
@@ -34,13 +43,13 @@ void	*init_threads(void)
 	i = 0;
 	while (i < get_params()->num_philo)
 	{
-		set_philo_thread_id(i, phs);
+		set_philo_odd_thread_id(i, phs);
 		i += 2;
 	}
 	i = 1;
 	while (i < get_params()->num_philo)
 	{
-		set_philo_thread_id(i, phs);
+		set_philo_even_thread_id(i, phs);
 		i += 2;
 	}
 	usleep(100000);

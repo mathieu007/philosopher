@@ -6,7 +6,7 @@
 /*   By: mroy <mroy@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/28 15:21:35 by mroy              #+#    #+#             */
-/*   Updated: 2023/04/27 11:05:55 by mroy             ###   ########.fr       */
+/*   Updated: 2023/04/27 16:38:05 by mroy             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -161,5 +161,12 @@ void			set_philos_timing(int64_t start_time, int32_t ph_cnt, int32_t i,
 int32_t			set_event_index(int32_t ph_cnt);
 int32_t			set_odd_index(int32_t ph_cnt);
 void			set_philo_start_time(int32_t ph_cnt);
+
+int32_t			hard_code_1philo(void);
+int32_t			hard_code_philo_eat_gr(void);
+int32_t			hard_code_philo_eat_slp_gr(void);
+int32_t			error_msg(const char *msg);
+int32_t			handle_parse_n_error(int32_t argc, char **argv);
+
 
 #endif

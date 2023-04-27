@@ -28,13 +28,14 @@ SOURCES     =	philo/free.c	\
 				philo/msg_queue.c	\
 				philo/int_to_string.c	\
 				philo/helper.c	\
-				philo/print_data.c	\
+				philo/print_data.c	\c
 				philo/timing.c	\
 				philo/work_load.c	\
 				philo/dispatch.c	\
 				philo/dispatch2.c	\
 				philo/params.c	\
 				philo/thread.c	\
+				philo/special_cases.c	\
 				philo/main.c	\
 
 OBJECTS			= $(patsubst $(SRCDIR)/%,$(BUILDDIR)/%,$(SOURCES:.$(SRCEXT)=.$(OBJEXT)))
