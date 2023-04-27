@@ -20,6 +20,10 @@
 		"iterator": "c",
 		"bitset": "c",
 		"memory_resource": "c",
-		"philo_bonus.h": "c"
+		"philo_bonus.h": "c",
+		"__functional_base": "c",
+		"istream": "c",
+		"tuple": "c",
+		"utility": "c"
 	}
 }

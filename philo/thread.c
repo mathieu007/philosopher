@@ -6,7 +6,7 @@
 /*   By: mroy <mroy@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/18 08:44:52 by math              #+#    #+#             */
-/*   Updated: 2023/04/26 15:28:34 by mroy             ###   ########.fr       */
+/*   Updated: 2023/04/27 09:41:21 by mroy             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,5 +76,6 @@ void	*join_threads(void)
 	pthread_mutex_lock(get_data()->write);
 	get_data()->buffer->stop_print = true;
 	pthread_mutex_unlock(get_data()->write);
+	pthread_join(get_data()->buffer->thread_id, status);
 	return (NULL);
 }

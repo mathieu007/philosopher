@@ -6,7 +6,7 @@
 /*   By: mroy <mroy@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/18 08:44:52 by math              #+#    #+#             */
-/*   Updated: 2023/04/26 08:32:52 by mroy             ###   ########.fr       */
+/*   Updated: 2023/04/27 09:55:39 by mroy             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@ static void	hard_code_1philo(void)
 
 static void	error_msg(const char *msg)
 {
+	free_all();
 	if (write(2, msg, ft_strlen(msg)) == -1)
 		exit(EXIT_FAILURE);
 	exit(EXIT_FAILURE);
@@ -29,8 +30,10 @@ static void	error_msg(const char *msg)
 
 static void	handle_parse_n_error(int32_t argc, char **argv)
 {
-	if (argc < 5 || argc > 6 || !try_init_params(argc, argv))
+	if (argc < 5 || argc > 6)
 		error_msg("error: invalid number of arguments.\n");
+	if (!try_init_params(argc, argv))
+		error_msg("error: invalid type of arguments.\n");
 	else if (get_params()->num_philo == 0 || get_params()->num_philo > 3000)
 		error_msg("error: invalid number of philosophers.\n");
 	else if (get_params()->time_to_eat < 60)

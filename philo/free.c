@@ -6,7 +6,7 @@
 /*   By: mroy <mroy@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/18 08:44:52 by math              #+#    #+#             */
-/*   Updated: 2023/04/19 15:18:32 by mroy             ###   ########.fr       */
+/*   Updated: 2023/04/27 09:42:40 by mroy             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,38 +41,27 @@ void	*free_philos(void)
 		free(phs);
 		if (get_data()->philos)
 			get_data()->philos = NULL;
-	}	
+	}
 	return (NULL);
 }
 
-void	*free_threads(void)
+void	free_buffer(void)
 {
-	t_philo	**phs;
-	int32_t	i;
-
-	phs = get_philosophers();
-	i = 0;
-	if (phs)
+	if (get_data()->buffer != NULL)
 	{
-		while (i < get_params()->num_philo)
-		{
-			if (phs[i] != NULL)
-				pthread_detach(phs[i]->thread_id);
-			i++;
-		}
-		if (get_data()->thread_ids)
-			free(get_data()->thread_ids);
-		get_data()->thread_ids = NULL;
-	}	
-	return (NULL);
+		free(get_data()->buffer->read);
+		free(get_data()->buffer->write);
+		free(get_data()->buffer);
+	}
 }
 
 void	*free_all(void)
 {
 	free_mutexes();
 	free_philos();
-	free(get_data()->thread_ids);
-	free(get_data()->buffer);
-	free(get_params());
+	if (get_data()->thread_ids != NULL)
+		free(get_data()->thread_ids);
+	if (get_data()->buffer != NULL)
+		free_buffer();
 	return (NULL);
 }	

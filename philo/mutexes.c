@@ -6,7 +6,7 @@
 /*   By: mroy <mroy@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/18 08:44:52 by math              #+#    #+#             */
-/*   Updated: 2023/04/26 16:19:58 by mroy             ###   ########.fr       */
+/*   Updated: 2023/04/27 09:41:06 by mroy             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,7 @@ void	init_mutexes(void)
 	forks_mutexes = malloc(sizeof(pthread_mutex_t) * get_params()->num_philo);
 	forks = malloc(sizeof(pthread_mutex_t) * get_params()->num_philo);
 	data->forks = forks_mutexes;
+	data->forks_taken = forks;
 	pthread_mutex_init(data->write, NULL);
 	i = 0;
 	phs = get_philosophers();
@@ -68,46 +69,45 @@ void	init_mutexes(void)
 	}
 }
 
-static void	free_philo_mutex(t_philo *ph)
+static void	free_philo_mutexes(t_philo **phs)
 {
-	if (ph != NULL)
-	{	
-		if (ph->start_simulation)
+	int32_t		i;
+	int32_t		count;
+
+	count = get_params()->num_philo;
+	i = 0;
+	if (phs)
+	{
+		while (i < count)
 		{
-			pthread_mutex_destroy(ph->start_simulation);
-			free(ph->start_simulation);
-			ph->start_simulation = NULL;
-		}
-		if (ph->left_fork)
-		{
-			pthread_mutex_destroy(ph->left_fork);
-			ph->left_fork = NULL;
+			if (phs[i]->start_simulation)
+			{
+				pthread_mutex_destroy(phs[i]->start_simulation);
+				free(phs[i]->start_simulation);
+				phs[i]->start_simulation = NULL;
+			}
+			if (phs[i]->left_fork)
+			{
+				pthread_mutex_destroy(phs[i]->left_fork);
+				phs[i]->left_fork = NULL;
+			}
+			i++;
 		}
 	}
 }
 
 void	*free_mutexes(void)
 {
-	t_philo		**phs;
 	t_data		*data;
-	int32_t		i;
-	int32_t		count;
 
-	i = 0;
 	data = get_data();
-	phs = get_philosophers();
 	if (data->write)
 	{
 		pthread_mutex_destroy(data->write);
 		free(data->write);
 		data->write = NULL;
 	}	
-	count = get_params()->num_philo;
-	while (i < count)
-	{
-		free_philo_mutex(phs[i]);
-		i++;
-	}
+	free_philo_mutexes(get_philosophers());
 	if (data->forks)
 		free(data->forks);
 	data->forks = NULL;

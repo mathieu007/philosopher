@@ -6,7 +6,7 @@
 /*   By: mroy <mroy@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/18 08:44:52 by math              #+#    #+#             */
-/*   Updated: 2023/04/19 15:19:14 by mroy             ###   ########.fr       */
+/*   Updated: 2023/04/27 08:54:42 by mroy             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,28 +54,27 @@ bool	is_valid(char *str)
 /// @return 
 bool	try_init_params(int32_t argc, char **argv)
 {
-	t_param	*params;
+	static t_param	params;
 
-	params = malloc(sizeof(t_param));
+	get_data()->params = &params;
 	if (!is_valid(argv[1]) || !is_valid(argv[2]) || !is_valid(argv[3])
 		|| !is_valid(argv[4]))
 		return (false);
-	set_constant(ft_atoi(argv[1]), &(params->num_philo));
-	set_constant(ft_atoi(argv[2]), &(params->time_to_die));
-	set_constant(ft_atoi(argv[3]), &(params->time_to_eat));
-	set_constant(ft_atoi(argv[4]), &(params->time_to_sleep));
-	set_constant(params->time_to_die - params->time_to_sleep
-		- params->time_to_eat, &(params->time_to_think));
-	set_constant(((params->time_to_think / 2) + params->time_to_eat
-			+ params->time_to_sleep) * 1000, &(params->time_cycle));
+	set_constant(ft_atoi(argv[1]), &(params.num_philo));
+	set_constant(ft_atoi(argv[2]), &(params.time_to_die));
+	set_constant(ft_atoi(argv[3]), &(params.time_to_eat));
+	set_constant(ft_atoi(argv[4]), &(params.time_to_sleep));
+	set_constant(params.time_to_die - params.time_to_sleep
+		- params.time_to_eat, &(params.time_to_think));
+	set_constant(((params.time_to_think / 2) + params.time_to_eat
+			+ params.time_to_sleep) * 1000, &(params.time_cycle));
 	if (argc == 6)
 	{
 		if (!is_valid(argv[5]))
 			return (false);
-		set_constant(ft_atoi(argv[5]), &(params->must_eat));
+		set_constant(ft_atoi(argv[5]), &(params.must_eat));
 	}
 	else
-		set_constant(INT32_MAX, &(params->must_eat));
-	get_data()->params = params;
+		set_constant(INT32_MAX, &(params.must_eat));
 	return (true);
 }

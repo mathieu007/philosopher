@@ -6,7 +6,7 @@
 /*   By: mroy <mroy@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/28 15:21:35 by mroy              #+#    #+#             */
-/*   Updated: 2023/04/26 16:21:26 by mroy             ###   ########.fr       */
+/*   Updated: 2023/04/27 09:04:46 by mroy             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,6 +80,7 @@ typedef struct s_data
 {
 	pthread_mutex_t	*write;
 	pthread_mutex_t	*forks;
+	bool			*forks_taken;
 	const int64_t	base_time;
 	const int64_t	interval;
 	int32_t			threads_ready;
