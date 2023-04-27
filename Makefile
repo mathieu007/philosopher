@@ -51,15 +51,13 @@ directories:
 
 #Clean only Objecst
 clean:
-	@$(RM) -rf $(BUILDDIR)
-	@$(RM) $(NAME)
+	@$(RM) -rf $(BUILDDIR)	
 
 fclean: clean
 	@$(RM) -rf $(TARGETDIR)
 	
 re:	fclean all
 
-#Link
 $(NAME): $(OBJECTS) 
 	@$(CC) $(CFLAGS) $(INCDEP) -o $(NAME) $^
 
