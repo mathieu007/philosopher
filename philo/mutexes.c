@@ -6,7 +6,7 @@
 /*   By: mroy <mroy@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/18 08:44:52 by math              #+#    #+#             */
-/*   Updated: 2023/04/26 14:47:09 by mroy             ###   ########.fr       */
+/*   Updated: 2023/04/26 16:19:58 by mroy             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,33 +30,40 @@ void	init_print_buffer(void)
 	pthread_mutex_unlock(data->write);
 }
 
+static void	set_philo_mutexes(t_philo **phs, int32_t i,
+	pthread_mutex_t *forks_mutexes, bool *forks)
+{
+	t_param	*params;
+
+	params = get_params();
+	pthread_mutex_init(&(forks_mutexes[i]), NULL);
+	phs[i]->start_simulation = malloc(sizeof(pthread_mutex_t));
+	pthread_mutex_init(phs[i]->start_simulation, NULL);
+	phs[i]->left_fork = &(forks_mutexes[i]);
+	phs[i]->left_fork_taken = &forks[i];
+	phs[prev_ph(i, params->num_philo)]->right_fork = &(forks_mutexes[i]);
+	phs[prev_ph(i, params->num_philo)]->right_fork_taken = &forks[i];
+}
+
 void	init_mutexes(void)
 {
 	int32_t				i;
 	t_philo				**phs;
 	pthread_mutex_t		*forks_mutexes;
 	t_data				*data;
-	t_param				*params;
 	bool				*forks;
 
 	data = get_data();
-	params = get_params();
 	data->write = malloc(sizeof(pthread_mutex_t));
-	forks_mutexes = malloc(sizeof(pthread_mutex_t) * params->num_philo);
-	forks = malloc(sizeof(pthread_mutex_t) * params->num_philo);
+	forks_mutexes = malloc(sizeof(pthread_mutex_t) * get_params()->num_philo);
+	forks = malloc(sizeof(pthread_mutex_t) * get_params()->num_philo);
 	data->forks = forks_mutexes;
 	pthread_mutex_init(data->write, NULL);
 	i = 0;
 	phs = get_philosophers();
-	while (i < params->num_philo)
+	while (i < get_params()->num_philo)
 	{
-		pthread_mutex_init(&(forks_mutexes[i]), NULL);
-		phs[i]->start_simulation = malloc(sizeof(pthread_mutex_t));
-		pthread_mutex_init(phs[i]->start_simulation, NULL);
-		phs[i]->left_fork = &(forks_mutexes[i]);
-		phs[i]->left_fork_taken = &forks[i];
-		phs[prev_ph(i, params->num_philo)]->right_fork = &(forks_mutexes[i]);
-		phs[prev_ph(i, params->num_philo)]->right_fork_taken = &forks[i];
+		set_philo_mutexes(phs, i, forks_mutexes, forks);
 		i++;
 	}
 }

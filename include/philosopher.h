@@ -6,7 +6,7 @@
 /*   By: mroy <mroy@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/28 15:21:35 by mroy              #+#    #+#             */
-/*   Updated: 2023/04/26 14:56:50 by mroy             ###   ########.fr       */
+/*   Updated: 2023/04/26 16:21:26 by mroy             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,7 +90,6 @@ typedef struct s_data
 	t_print_buffer	*buffer;
 }				t_data;
 
-
 void			save_dead_msg(const char *msg, int32_t time, t_philo *ph,
 					t_print_buffer *buff);
 size_t			uint32_to_str(uint32_t value, char *dst);
@@ -153,5 +152,13 @@ void			sleeping(t_philo *ph, t_data *data,
 					const int32_t time_to_sleep);
 void			thinking(t_philo *ph, t_data *data);
 void			sleeper(int32_t end_time);
+
+void			set_philo_timing(int64_t start_time, t_philo *ph,
+					const t_data *data, const t_param *params);
+void			set_philos_timing(int64_t start_time, int32_t ph_cnt, int32_t i,
+					int32_t rev_i);
+int32_t			set_event_index(int32_t ph_cnt);
+int32_t			set_odd_index(int32_t ph_cnt);
+void			set_philo_start_time(int32_t ph_cnt);
 
 #endif

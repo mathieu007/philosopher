@@ -6,42 +6,11 @@
 /*   By: mroy <mroy@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/18 08:44:52 by math              #+#    #+#             */
-/*   Updated: 2023/04/26 14:55:23 by mroy             ###   ########.fr       */
+/*   Updated: 2023/04/26 16:11:37 by mroy             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philosopher.h"
-
-void	*init_philosophers(void)
-{
-	t_param	*params;
-	int32_t	i;
-	t_philo	**phs;
-	t_data	*data;
-
-	i = 0;
-	data = get_data();
-	params = get_params();
-	phs = malloc(sizeof(t_philo *) * (params->num_philo));
-	while (i < params->num_philo)
-	{
-		phs[i] = malloc(sizeof(t_philo));
-		if (phs[i] == NULL)
-			return (NULL);
-		phs[i]->params = get_params();
-		phs[i]->data = data;
-		phs[i]->position = i;
-		phs[i]->name = i + 1;
-		phs[i]->eat_count = 0;
-		phs[i]->last_meal = 0;
-		phs[i]->exit_status = 0;
-		phs[i]->left_fork = false;
-		phs[i]->right_fork_taken = false;
-		i++;
-	}	
-	data->philos = phs;
-	return (NULL);
-}
 
 static bool	is_dead(t_philo *ph, t_data *data)
 {

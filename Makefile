@@ -22,6 +22,7 @@ SOURCES     :=	philo/free.c	\
 				philo/actions.c	\
 				philo/mutexes.c	\
 				philo/philosophers.c	\
+				philo/init_philosophers.c	\
 				philo/utils.c	\
 				philo/utils2.c	\
 				philo/data.c	\
@@ -32,6 +33,7 @@ SOURCES     :=	philo/free.c	\
 				philo/timing.c	\
 				philo/work_load.c	\
 				philo/dispatch.c	\
+				philo/dispatch2.c	\
 				philo/params.c	\
 				philo/thread.c	\
 				philo/main.c	\
