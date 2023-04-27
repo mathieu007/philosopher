@@ -6,7 +6,7 @@
 /*   By: mroy <mroy@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/18 08:44:52 by math              #+#    #+#             */
-/*   Updated: 2023/04/27 09:42:40 by mroy             ###   ########.fr       */
+/*   Updated: 2023/04/27 10:22:38 by mroy             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,7 @@ void	*free_philos(void)
 		while (i < get_params()->num_philo)
 		{
 			free_philo(phs[i], i);
+			phs[i] = NULL;
 			i++;
 		}
 		free(phs);

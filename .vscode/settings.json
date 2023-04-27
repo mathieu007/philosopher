@@ -24,6 +24,10 @@
 		"__functional_base": "c",
 		"istream": "c",
 		"tuple": "c",
-		"utility": "c"
+		"utility": "c",
+		"__bit_reference": "c",
+		"__functional_03": "c",
+		"__split_buffer": "c",
+		"sstream": "c"
 	}
 }

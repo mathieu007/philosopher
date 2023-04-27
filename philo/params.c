@@ -6,7 +6,7 @@
 /*   By: mroy <mroy@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/18 08:44:52 by math              #+#    #+#             */
-/*   Updated: 2023/04/27 08:54:42 by mroy             ###   ########.fr       */
+/*   Updated: 2023/04/27 12:44:24 by mroy             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,8 +66,8 @@ bool	try_init_params(int32_t argc, char **argv)
 	set_constant(ft_atoi(argv[4]), &(params.time_to_sleep));
 	set_constant(params.time_to_die - params.time_to_sleep
 		- params.time_to_eat, &(params.time_to_think));
-	set_constant(((params.time_to_think / 2) + params.time_to_eat
-			+ params.time_to_sleep) * 1000, &(params.time_cycle));
+	set_constant((params.time_to_think / 2) + params.time_to_die
+		* 1000, &(params.time_cycle));
 	if (argc == 6)
 	{
 		if (!is_valid(argv[5]))

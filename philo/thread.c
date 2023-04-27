@@ -6,39 +6,45 @@
 /*   By: mroy <mroy@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/18 08:44:52 by math              #+#    #+#             */
-/*   Updated: 2023/04/27 09:41:21 by mroy             ###   ########.fr       */
+/*   Updated: 2023/04/27 11:06:47 by mroy             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philosopher.h"
 
+static void	*set_philo_thread_id(int32_t i, t_philo **phs)
+{
+	if (pthread_create(&get_data()->thread_ids[i], NULL, philo_even_work,
+			phs[i]) != 0)
+		return (NULL);
+	phs[i]->thread_id = get_data()->thread_ids[i];
+	return (phs);
+}
+
 void	*init_threads(void)
 {
-	pthread_t	*threads;
 	int32_t		i;
 	t_philo		**phs;
-	int32_t		num_philo;
 
 	phs = get_philosophers();
-	num_philo = get_params()->num_philo;
-	threads = malloc(num_philo * sizeof(pthread_t));
-	get_data()->thread_ids = threads;
+	get_data()->thread_ids = malloc(get_params()->num_philo
+		* sizeof(pthread_t));
+	if (get_data()->thread_ids == NULL)
+		return (NULL);
 	i = 0;
-	while (i < num_philo)
+	while (i < get_params()->num_philo)
 	{
-		pthread_create(&threads[i], NULL, philo_even_work, phs[i]);
-		phs[i]->thread_id = threads[i];
+		set_philo_thread_id(i, phs);
 		i += 2;
 	}
 	i = 1;
-	while (i < num_philo)
+	while (i < get_params()->num_philo)
 	{
-		pthread_create(&threads[i], NULL, philo_odd_work, phs[i]);
-		phs[i]->thread_id = threads[i];
+		set_philo_thread_id(i, phs);
 		i += 2;
 	}
 	usleep(100000);
-	return (NULL);
+	return (get_data()->thread_ids);
 }
 
 void	wait_threads_ready(t_data *data, int32_t ph_cnt)

@@ -6,7 +6,7 @@
 /*   By: mroy <mroy@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/18 08:44:52 by math              #+#    #+#             */
-/*   Updated: 2023/04/26 16:10:58 by mroy             ###   ########.fr       */
+/*   Updated: 2023/04/27 13:07:55 by mroy             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,9 @@ static void	set_philo(t_philo *ph, t_data *data, int32_t i)
 	ph->eat_count = 0;
 	ph->last_meal = 0;
 	ph->exit_status = 0;
+	ph->start_simulation = NULL;
+	ph->left_fork = NULL;
+	ph->right_fork = NULL;
 	ph->right_fork_taken = false;
 	ph->left_fork_taken = false;
 }
@@ -36,6 +39,8 @@ void	*init_philosophers(void)
 	data = get_data();
 	params = get_params();
 	phs = malloc(sizeof(t_philo *) * (params->num_philo));
+	if (phs == NULL)
+		return (NULL);
 	while (i < params->num_philo)
 	{
 		phs[i] = malloc(sizeof(t_philo));
@@ -45,5 +50,5 @@ void	*init_philosophers(void)
 		i++;
 	}	
 	data->philos = phs;
-	return (NULL);
+	return (phs);
 }

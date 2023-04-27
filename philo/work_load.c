@@ -6,7 +6,7 @@
 /*   By: mroy <mroy@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/18 08:44:52 by math              #+#    #+#             */
-/*   Updated: 2023/04/27 09:42:09 by mroy             ###   ########.fr       */
+/*   Updated: 2023/04/27 11:05:48 by mroy             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,12 +59,12 @@ void	*print_messages(void *val)
 			ret = 1;
 			break ;
 		}
-		usleep(4000);
+		usleep(SLEEP_BUFFER);
 	}
 	return (&ret);
 }
 
-void	start_simulation(void)
+void	*start_simulation(void)
 {
 	t_philo		**phs;
 	int32_t		ph_cnt;
@@ -75,6 +75,8 @@ void	start_simulation(void)
 	phs = get_philosophers();
 	ph_cnt = get_params()->num_philo;
 	dispatch_philos(phs, ph_cnt);
-	pthread_create(&print_thread, NULL, print_messages, data);
+	if (pthread_create(&print_thread, NULL, print_messages, data) != 0)
+		return (NULL);
 	data->buffer->thread_id = print_thread;
+	return (data->buffer);
 }
