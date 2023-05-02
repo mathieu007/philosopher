@@ -6,21 +6,13 @@
 /*   By: mroy <mroy@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/18 08:44:52 by math              #+#    #+#             */
-/*   Updated: 2023/04/27 11:20:52 by mroy             ###   ########.fr       */
+/*   Updated: 2023/05/02 08:14:06 by mroy             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philosopher.h"
 
-void	save_dead_msg(const char *msg, int32_t time, t_philo *ph,
-	t_print_buffer *buff)
-{
-	save_msg(msg, time, ph, buff);
-	buff->stop_print = true;
-	buff->stop_count = buff->count;
-}
-
-void	save_msg(const char *msg, int32_t time, t_philo *ph,
+void	save_to_buffer(const char *msg, int32_t time, t_philo *ph,
 	t_print_buffer *buff)
 {
 	char	*write_buff;

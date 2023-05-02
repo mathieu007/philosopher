@@ -6,7 +6,7 @@
 /*   By: mroy <mroy@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/18 08:44:52 by math              #+#    #+#             */
-/*   Updated: 2023/04/26 15:10:08 by mroy             ###   ########.fr       */
+/*   Updated: 2023/05/02 08:12:02 by mroy             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ inline void	sleeping(t_philo *ph, t_data *data,
 {
 	int32_t			sleep_time;
 
-	sleep_time = print_msg(" is sleeping\n", ph, data);
+	sleep_time = save_msg(" is sleeping\n", ph, data);
 	two_stage_sleep(ph, time_to_sleep, sleep_time + time_to_sleep);
 }
 
@@ -53,7 +53,7 @@ inline void	thinking(t_philo *ph, t_data *data)
 {
 	const int32_t	time_cycle = ph->params->time_cycle;
 
-	print_msg(" is thinking\n", ph, data);
+	save_msg(" is thinking\n", ph, data);
 	ph->last_think += (int64_t)time_cycle;
 	sleeper(ph->last_think);
 }

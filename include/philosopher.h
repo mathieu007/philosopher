@@ -6,7 +6,7 @@
 /*   By: mroy <mroy@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/28 15:21:35 by mroy              #+#    #+#             */
-/*   Updated: 2023/04/27 16:38:05 by mroy             ###   ########.fr       */
+/*   Updated: 2023/05/02 08:16:27 by mroy             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,7 +82,6 @@ typedef struct s_data
 	pthread_mutex_t	*forks;
 	bool			*forks_taken;
 	const int64_t	base_time;
-	const int64_t	interval;
 	int32_t			threads_ready;
 	t_philo			**philos;
 	pthread_t		*thread_ids;
@@ -91,8 +90,6 @@ typedef struct s_data
 	t_print_buffer	*buffer;
 }				t_data;
 
-void			save_dead_msg(const char *msg, int32_t time, t_philo *ph,
-					t_print_buffer *buff);
 size_t			uint32_to_str(uint32_t value, char *dst);
 int64_t			get_interval(void);
 void			dispatch_philos(t_philo **phs, int32_t ph_cnt);
@@ -106,7 +103,7 @@ void			take_forks(t_philo *ph);
 void			put_forks_on_table(t_philo *ph);
 int64_t			get_time_stamp_ms(void);
 int64_t			get_time_stamp_mc(void);
-int32_t			print_msg(const char *msg, t_philo *ph, t_data *data);
+int32_t			save_msg(const char *msg, t_philo *ph, t_data *data);
 int32_t			print_die_msg(t_philo *ph, t_data *data);
 int32_t			print_eat(t_philo *ph, t_data *data);
 void			two_stage_sleep(const t_philo *ph, int32_t time_to_sleep,
@@ -142,7 +139,7 @@ void			*free_exit_thread(void);
 void			*free_exit_all_threads(void);
 int				ft_atoi(const char *str);
 size_t			ft_strlen(const char *str);
-void			save_msg(const char *msg, int32_t time, t_philo *ph,
+void			save_to_buffer(const char *msg, int32_t time, t_philo *ph,
 					t_print_buffer *buff);
 bool			print_msg_buffer(t_data *data);
 void			*init_print_buffer(void);
@@ -167,6 +164,5 @@ int32_t			hard_code_philo_eat_gr(void);
 int32_t			hard_code_philo_eat_slp_gr(void);
 int32_t			error_msg(const char *msg);
 int32_t			handle_parse_n_error(int32_t argc, char **argv);
-
 
 #endif

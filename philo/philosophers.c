@@ -6,7 +6,7 @@
 /*   By: mroy <mroy@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/18 08:44:52 by math              #+#    #+#             */
-/*   Updated: 2023/04/27 16:10:22 by mroy             ###   ########.fr       */
+/*   Updated: 2023/05/02 08:12:02 by mroy             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,9 +42,9 @@ static inline void	inner_philo_even(t_philo *ph, t_data *data,
 	const int32_t time_to_eat, const int32_t time_to_sleep)
 {		
 	pthread_mutex_lock(ph->left_fork);
-	print_msg(" has taken a fork\n", ph, data);
+	save_msg(" has taken a fork\n", ph, data);
 	pthread_mutex_lock(ph->right_fork);
-	print_msg(" has taken a fork\n", ph, data);
+	save_msg(" has taken a fork\n", ph, data);
 	eating(ph, data, time_to_eat);
 	pthread_mutex_unlock(ph->left_fork);
 	pthread_mutex_unlock(ph->right_fork);
@@ -85,9 +85,9 @@ static inline void	inner_philo_odd(t_philo *ph, t_data *data,
 	int32_t time_to_eat, int32_t time_to_sleep)
 {
 	pthread_mutex_lock(ph->right_fork);
-	print_msg(" has taken a fork\n", ph, data);
+	save_msg(" has taken a fork\n", ph, data);
 	pthread_mutex_lock(ph->left_fork);
-	print_msg(" has taken a fork\n", ph, data);
+	save_msg(" has taken a fork\n", ph, data);
 	eating(ph, data, time_to_eat);
 	pthread_mutex_unlock(ph->right_fork);
 	pthread_mutex_unlock(ph->left_fork);

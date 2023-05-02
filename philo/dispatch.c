@@ -6,7 +6,7 @@
 /*   By: mroy <mroy@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/18 08:44:52 by math              #+#    #+#             */
-/*   Updated: 2023/04/26 15:43:06 by mroy             ###   ########.fr       */
+/*   Updated: 2023/05/02 08:16:15 by mroy             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,13 +14,10 @@
 
 static void	init_timing(int32_t ph_cnt)
 {
-	int64_t	interval;
 	t_data	*data;
 
 	data = get_data();
-	interval = get_interval();
 	wait_threads_ready(data, ph_cnt);
-	set_constant64(interval, &(data->interval));
 	set_constant64(get_time_stamp_mc() + 200000, &(data->base_time));
 	set_philo_start_time(ph_cnt);
 	usleep(data->base_time - get_time_stamp_mc() - 10000);
