@@ -6,7 +6,7 @@
 /*   By: mroy <mroy@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/18 08:44:52 by math              #+#    #+#             */
-/*   Updated: 2023/05/02 08:12:02 by mroy             ###   ########.fr       */
+/*   Updated: 2023/05/02 08:27:40 by mroy             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ static inline void	inner_philo_even(t_philo *ph, t_data *data,
 	sleeping(ph, data, time_to_sleep);
 	thinking(ph, data);
 	if (is_dead(ph, data))
-		print_die_msg(ph, data);
+		save_die_msg(ph, data);
 }
 
 void	*philo_even_work(void *philo)
@@ -94,7 +94,7 @@ static inline void	inner_philo_odd(t_philo *ph, t_data *data,
 	sleeping(ph, data, time_to_sleep);
 	thinking(ph, data);
 	if (is_dead(ph, data))
-		print_die_msg(ph, data);
+		save_die_msg(ph, data);
 }
 
 void	*philo_odd_work(void *philo)

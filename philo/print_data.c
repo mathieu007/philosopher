@@ -6,13 +6,13 @@
 /*   By: mroy <mroy@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/18 08:44:52 by math              #+#    #+#             */
-/*   Updated: 2023/05/02 08:13:34 by mroy             ###   ########.fr       */
+/*   Updated: 2023/05/02 08:28:28 by mroy             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philosopher.h"
 
-inline int32_t	print_die_msg(t_philo *ph, t_data *data)
+inline int32_t	save_die_msg(t_philo *ph, t_data *data)
 {	
 	int32_t			time;
 
@@ -29,7 +29,7 @@ inline int32_t	print_die_msg(t_philo *ph, t_data *data)
 	return (time);
 }
 
-inline int32_t	print_eat(t_philo *ph, t_data *data)
+inline int32_t	save_eat(t_philo *ph, t_data *data)
 {	
 	int32_t		time;
 

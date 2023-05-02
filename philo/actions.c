@@ -6,7 +6,7 @@
 /*   By: mroy <mroy@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/18 08:44:52 by math              #+#    #+#             */
-/*   Updated: 2023/05/02 08:12:02 by mroy             ###   ########.fr       */
+/*   Updated: 2023/05/02 08:27:29 by mroy             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ inline void	two_stage_sleep(const t_philo *ph, int32_t time_to_sleep,
 
 inline void	eating(t_philo *ph, t_data *data, const int32_t time_to_eat)
 {
-	ph->last_meal = print_eat(ph, data);
+	ph->last_meal = save_eat(ph, data);
 	two_stage_sleep(ph, time_to_eat, ph->last_meal + time_to_eat);
 	pthread_mutex_lock(data->write);
 	*(ph->left_fork_taken) = false;

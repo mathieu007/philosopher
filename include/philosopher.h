@@ -6,7 +6,7 @@
 /*   By: mroy <mroy@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/28 15:21:35 by mroy              #+#    #+#             */
-/*   Updated: 2023/05/02 08:16:27 by mroy             ###   ########.fr       */
+/*   Updated: 2023/05/02 08:28:24 by mroy             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,8 +104,8 @@ void			put_forks_on_table(t_philo *ph);
 int64_t			get_time_stamp_ms(void);
 int64_t			get_time_stamp_mc(void);
 int32_t			save_msg(const char *msg, t_philo *ph, t_data *data);
-int32_t			print_die_msg(t_philo *ph, t_data *data);
-int32_t			print_eat(t_philo *ph, t_data *data);
+int32_t			save_die_msg(t_philo *ph, t_data *data);
+int32_t			save_eat(t_philo *ph, t_data *data);
 void			two_stage_sleep(const t_philo *ph, int32_t time_to_sleep,
 					int32_t end_time);
 bool			exit_threads(bool update_val);
