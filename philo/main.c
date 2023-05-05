@@ -6,7 +6,7 @@
 /*   By: mroy <mroy@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/18 08:44:52 by math              #+#    #+#             */
-/*   Updated: 2023/04/27 16:47:38 by mroy             ###   ########.fr       */
+/*   Updated: 2023/05/05 11:16:25 by mroy             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,11 +20,6 @@ int32_t	main(int32_t argc, char **argv)
 		return (free_all(), error_msg("Error: cannot init philosophers."));
 	if (get_params()->num_philo == 1)
 		return (hard_code_1philo(), free_all(), 0);
-	if (get_params()->time_to_eat >= get_params()->time_to_die)
-		return (hard_code_philo_eat_gr(), free_all(), 0);
-	if (get_params()->time_to_eat + get_params()->time_to_sleep
-		>= get_params()->time_to_die)
-		return (hard_code_philo_eat_slp_gr(), free_all(), 0);
 	if (!init_mutexes())
 		return (free_all(), error_msg("Error: cannot init mutexes."));
 	if (!init_print_buffer())

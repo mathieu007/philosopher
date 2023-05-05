@@ -6,7 +6,7 @@
 /*   By: mroy <mroy@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/18 08:44:52 by math              #+#    #+#             */
-/*   Updated: 2023/04/27 09:58:00 by mroy             ###   ########.fr       */
+/*   Updated: 2023/05/05 14:53:55 by mroy             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,8 +17,10 @@ void	set_philo_timing(int64_t start_time, t_philo *ph,
 {
 	set_constant64(start_time, &(ph->start_time));
 	set_constant64(data->base_time, &(ph->base_time));
-	set_constant((int32_t)(start_time - data->base_time - (params->time_to_eat
-				- params->time_to_sleep) * 1000), &(ph->last_meal));
+	ph->last_meal = (int32_t)(start_time - data->base_time - (params->time_to_eat
+				- params->time_to_sleep) * 1000);
+	ph->last_action = (int32_t)(start_time - data->base_time - (params->time_to_eat
+				- params->time_to_sleep) * 1000);
 }
 
 void	set_philos_timing(int64_t start_time, int32_t ph_cnt, int32_t i,

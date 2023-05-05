@@ -28,6 +28,8 @@
 		"__bit_reference": "c",
 		"__functional_03": "c",
 		"__split_buffer": "c",
-		"sstream": "c"
+		"sstream": "c",
+		"ostream": "c",
+		"chrono": "c"
 	}
 }
