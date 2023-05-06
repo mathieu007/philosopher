@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philosophers.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mroy <mroy@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: math <math@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/18 08:44:52 by math              #+#    #+#             */
-/*   Updated: 2023/05/05 15:33:50 by mroy             ###   ########.fr       */
+/*   Updated: 2023/05/06 13:37:43 by math             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,11 +39,11 @@
 // }
 
 static inline void	inner_philo_even(t_philo *ph, t_data *data,
-	const int32_t time_to_eat, const int32_t time_to_sleep)
+	const int64_t time_to_eat, const int64_t time_to_sleep)
 {	
-	const int32_t time_to_die = (data->params->time_to_die * 1000);
-	int32_t death_time = ph->last_meal + time_to_die;
-	
+	const int64_t time_to_die = (data->params->time_to_die);
+	int64_t death_time = ph->last_meal + time_to_die;
+
 	pthread_mutex_lock(ph->left_fork);
 	save_msg(" has taken a fork\n", ph, data);
 	pthread_mutex_lock(ph->right_fork);
@@ -61,10 +61,10 @@ void	*philo_even_work(void *philo)
 	t_philo			*ph;
 	t_data			*data;
 	int32_t			eat_count;
-	const int32_t	time_to_eat
-		= ((t_philo *)philo)->params->time_to_eat * 1000;
-	const int32_t	time_to_sleep
-		= ((t_philo *)philo)->params->time_to_sleep * 1000;
+	const int64_t	time_to_eat
+		= ((t_philo *)philo)->params->time_to_eat;
+	const int64_t	time_to_sleep
+		= ((t_philo *)philo)->params->time_to_sleep;
 
 	ph = (t_philo *) philo;
 	data = ph->data;
@@ -74,7 +74,7 @@ void	*philo_even_work(void *philo)
 	pthread_mutex_unlock(data->write);
 	pthread_mutex_lock(ph->start_simulation);
 	ph->last_think = ph->start_time;
-	ph->last_action = ph->last_think - ph->base_time;
+	ph->last_action = ph->last_think;
 	while (eat_count > 0 && ph->exit_status != 1)
 	{	
 		inner_philo_even(ph, data, time_to_eat, time_to_sleep);
@@ -85,11 +85,11 @@ void	*philo_even_work(void *philo)
 }
 
 static inline void	inner_philo_odd(t_philo *ph, t_data *data,
-	int32_t time_to_eat, int32_t time_to_sleep)
+	int64_t time_to_eat, int64_t time_to_sleep)
 {
-	const int32_t time_to_die = (data->params->time_to_die * 1000);
-	int32_t death_time = ph->last_meal + time_to_die;
-	
+	const int64_t time_to_die = (data->params->time_to_die);
+	int64_t death_time = ph->last_meal + time_to_die;
+
 	pthread_mutex_lock(ph->right_fork);
 	save_msg(" has taken a fork\n", ph, data);
 	pthread_mutex_lock(ph->left_fork);
@@ -107,10 +107,10 @@ void	*philo_odd_work(void *philo)
 	t_philo			*ph;
 	t_data			*data;
 	int32_t			eat_count;
-	const int32_t	time_to_eat
-		= ((t_philo *)philo)->params->time_to_eat * 1000;
-	const int32_t	time_to_sleep
-		= ((t_philo *)philo)->params->time_to_sleep * 1000;
+	const int64_t	time_to_eat
+		= ((t_philo *)philo)->params->time_to_eat;
+	const int64_t	time_to_sleep
+		= ((t_philo *)philo)->params->time_to_sleep;
 
 	ph = (t_philo *) philo;
 	data = ph->data;
@@ -120,7 +120,7 @@ void	*philo_odd_work(void *philo)
 	pthread_mutex_unlock(data->write);
 	pthread_mutex_lock(ph->start_simulation);
 	ph->last_think = ph->start_time;
-	ph->last_action = ph->last_think - ph->base_time;
+	ph->last_action = ph->last_think;
 	while (eat_count && ph->exit_status != 1)
 	{
 		inner_philo_odd(ph, data, time_to_eat, time_to_sleep);

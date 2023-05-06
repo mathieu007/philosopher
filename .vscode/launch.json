@@ -1,31 +1,14 @@
 {
-	// Utilisez IntelliSense pour en savoir plus sur les attributs possibles.
-	// Pointez pour afficher la description des attributs existants.
-	// Pour plus d'informations, visitez : https://go.microsoft.com/fwlink/?linkid=830387
 	"version": "0.2.0",
 	"configurations": [
-		{
-			"name": "philo_bonus",
-			"type": "cppdbg",
-			"request": "launch",
-			"program": "${workspaceFolder}/bin/philo_bonus",
-			"args": ["200", "410", "200", "200"],
-			"environment": [{ "name": "config", "value": "Debug" }],
-			"cwd": "${workspaceFolder}",
-			"externalConsole": false,
-            "MIMode": "lldb",
-			"preLaunchTask": "philo_bonus"
-		},
 		{
 			"name": "philo",
 			"type": "cppdbg",
 			"request": "launch",
 			"program": "${workspaceFolder}/bin/philo",
-			"args": ["200", "410", "200", "200"],
+			"args": ["1400", "410", "200", "200"],
 			"environment": [{ "name": "config", "value": "Debug" }],
 			"cwd": "${workspaceFolder}",
-			"externalConsole": false,
-            "MIMode": "lldb",
 			"preLaunchTask": "philo"
 		  }
 	]

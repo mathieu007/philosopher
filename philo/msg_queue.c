@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   msg_queue.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mroy <mroy@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: math <math@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/18 08:44:52 by math              #+#    #+#             */
-/*   Updated: 2023/05/05 10:41:31 by mroy             ###   ########.fr       */
+/*   Updated: 2023/05/06 13:19:58 by math             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ void	save_to_buffer(const char *msg, t_philo *ph, t_print_buffer *buff)
 		return ;
 	i = buff->count;
 	write_buff = buff->write;
-	i += uint32_to_str((uint32_t)ph->last_action / 1000, &write_buff[i]);
+	i += uint32_to_str((uint32_t)(ph->last_action - ph->base_time) / 1000, &write_buff[i]);
 	write_buff[i++] = ' ';
 	i += uint32_to_str((uint32_t)ph->name, &write_buff[i]);
 	while (*msg != '\0')

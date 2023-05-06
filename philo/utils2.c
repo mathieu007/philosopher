@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils2.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mroy <mroy@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: math <math@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/24 09:51:17 by math              #+#    #+#             */
-/*   Updated: 2023/04/21 10:41:06 by mroy             ###   ########.fr       */
+/*   Updated: 2023/05/06 08:52:57 by math             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,9 +26,9 @@ bool	is_even(int32_t num)
 	return (false);
 }
 
-inline void	sleeper(int32_t end_time)
+inline void	sleeper(int64_t end_time)
 {	
-	int32_t	time;
+	int64_t	time;
 
 	time = 101;
 	while (time - 100 > 0)

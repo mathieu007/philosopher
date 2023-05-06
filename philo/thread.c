@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   thread.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mroy <mroy@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: math <math@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/18 08:44:52 by math              #+#    #+#             */
-/*   Updated: 2023/04/27 16:15:25 by mroy             ###   ########.fr       */
+/*   Updated: 2023/05/06 09:02:37 by math             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,12 +75,10 @@ void	*join_threads(void)
 	pthread_t	*threads;
 	int32_t		i;
 	int32_t		num_philo;
-	t_philo		**phs;
 	void		*status;
 
 	i = 0;
 	status = NULL;
-	phs = get_philosophers();
 	num_philo = get_params()->num_philo;
 	threads = get_data()->thread_ids;
 	while (i < num_philo)

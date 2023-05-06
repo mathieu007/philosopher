@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philosopher.h                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mroy <mroy@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: math <math@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/28 15:21:35 by mroy              #+#    #+#             */
-/*   Updated: 2023/05/05 14:52:43 by mroy             ###   ########.fr       */
+/*   Updated: 2023/05/06 15:32:55 by math             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,12 +46,12 @@ typedef struct s_print_buffer
 
 typedef struct s_param
 {
-	const int32_t	num_philo;
-	const int32_t	time_to_die;
-	const int32_t	time_to_eat;
-	const int32_t	time_to_sleep;
-	const int32_t	time_to_think;
-	const int32_t	time_cycle;
+	const int64_t	num_philo;
+	const int64_t	time_to_die;
+	const int64_t	time_to_eat;
+	const int64_t	time_to_sleep;
+	const int64_t	time_to_think;
+	const int64_t	time_cycle;
 	const int32_t	must_eat;
 }					t_param;
 
@@ -65,8 +65,8 @@ typedef struct s_philo
 	pthread_mutex_t		*start_simulation;
 	pthread_t			thread_id;
 	const int64_t		base_time;
-	int32_t				last_action;
-	int32_t				last_meal;
+	int64_t				last_action;
+	int64_t				last_meal;
 	int32_t				exit_status;
 	int64_t				last_think;
 	const int64_t		start_time;
@@ -82,6 +82,8 @@ typedef struct s_data
 	pthread_mutex_t	*write;
 	pthread_mutex_t	*forks;
 	bool			*forks_taken;
+	int32_t			*dispatch_order;
+	int32_t			last_philo_index_in_queue;
 	const int64_t	base_time;
 	int32_t			threads_ready;
 	t_philo			**philos;
@@ -106,11 +108,9 @@ int64_t			get_time_stamp_ms(void);
 int64_t			get_time_stamp_mc(void);
 void			save_msg(const char *msg, t_philo *ph, t_data *data);
 void			save_die_msg(t_philo *ph, t_data *data);
-void			save_eat(t_philo *ph, t_data *data, const int32_t time_to_die);
-void			three_stage_sleep(const t_philo *ph, int32_t time_to_sleep,
-					int32_t end_time);
-int32_t			two_stage_sleep(const t_philo *ph, int32_t time_to_sleep,
-					int32_t end_time);
+void			save_eat(t_philo *ph, t_data *data, const int64_t time_to_die);
+void			three_stage_sleep(int64_t time_to_sleep, int64_t end_time);
+int64_t			two_stage_sleep(int64_t time_to_sleep, int64_t end_time);
 bool			exit_threads(bool update_val);
 t_philo			**get_philosophers(void);
 void			*philo_odd_work(void *philo);
@@ -147,11 +147,11 @@ bool			print_msg_buffer(t_data *data);
 void			*init_print_buffer(void);
 
 void			eating(t_philo *ph, t_data *data,
-					const int32_t time_to_eat, const int32_t time_to_die);
+					const int64_t time_to_eat, const int64_t time_to_die);
 void			sleeping(t_philo *ph, t_data *data,
-					const int32_t time_to_sleep, const int32_t time_to_die);
-void			thinking(t_philo *ph, t_data *data, const int32_t death_time);
-void			sleeper(int32_t end_time);
+					const int64_t time_to_sleep, const int64_t time_to_die);
+void			thinking(t_philo *ph, t_data *data, const int64_t death_time);
+void			sleeper(int64_t end_time);
 
 void			set_philo_timing(int64_t start_time, t_philo *ph,
 					const t_data *data, const t_param *params);
