@@ -6,7 +6,7 @@
 /*   By: math <math@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/28 15:21:35 by mroy              #+#    #+#             */
-/*   Updated: 2023/05/07 16:52:20 by math             ###   ########.fr       */
+/*   Updated: 2023/05/08 07:31:17 by math             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,14 +32,6 @@
 # include <unistd.h>
 # include <pthread.h>
 
-typedef struct s_fifo
-{
-	t_philo				**phs;
-	pthread_mutex_t		*lock;
-	int32_t				count;
-	int32_t				head;
-	int32_t				tail;
-}						t_fifo;
 
 typedef struct s_msg
 {
@@ -91,6 +83,16 @@ typedef struct s_philo
 	struct s_data		*data;
 }						t_philo;
 
+
+typedef struct s_fifo
+{
+	t_philo				**phs;
+	pthread_mutex_t		*lock;
+	int32_t				count;
+	int32_t				head;
+	int32_t				tail;
+}						t_fifo;
+
 typedef struct s_data
 {
 	pthread_mutex_t	*cycle;
@@ -133,7 +135,7 @@ int64_t			get_time_stamp_ms(void);
 int64_t			get_time_stamp_mc(void);
 int32_t			save_msg(const char *msg, int32_t msg_len, t_philo *ph, t_data *data);
 void			save_die_msg(t_philo *ph, t_data *data, int32_t msg_index);
-int32_t			save_eat(t_philo *ph, t_data *data, int64_t time_to_die);
+int32_t			save_eat(t_philo *ph, t_data *data);
 void			three_stage_sleep(int64_t time_to_sleep, int64_t end_time);
 int64_t			two_stage_sleep(int64_t time_to_sleep, int64_t end_time);
 bool			exit_threads(bool update_val);
@@ -174,10 +176,10 @@ void			save_to_buffer_at(const char *msg, t_philo *ph,
 					char *write, int32_t msg_index);
 
 void			eating(t_philo *ph, t_data *data,
-					const int64_t time_to_eat, int64_t time_to_die);
+					const int64_t time_to_eat);
 void			sleeping(t_philo *ph, t_data *data,
-					const int64_t time_to_sleep, int64_t time_to_die);
-void			thinking(t_philo *ph, t_data *data, int64_t death_time);
+					const int64_t time_to_sleep);
+void			thinking(t_philo *ph, t_data *data);
 void			sleeper(int64_t end_time);
 
 void			set_philo_timing(int64_t start_time, t_philo *ph,
@@ -189,8 +191,6 @@ int32_t			set_odd_index(int32_t ph_cnt);
 void			set_philo_start_time(int32_t ph_cnt);
 
 int32_t			hard_code_1philo(void);
-int32_t			hard_code_philo_eat_gr(void);
-int32_t			hard_code_philo_eat_slp_gr(void);
 int32_t			error_msg(const char *msg);
 int32_t			handle_parse_n_error(int32_t argc, char **argv);
 

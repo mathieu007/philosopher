@@ -6,7 +6,7 @@
 /*   By: math <math@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/18 08:44:52 by math              #+#    #+#             */
-/*   Updated: 2023/05/07 16:49:52 by math             ###   ########.fr       */
+/*   Updated: 2023/05/08 07:28:34 by math             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,6 @@ static inline void	inner_philo_even(t_philo *ph, t_data *data,
 	const int64_t time_to_eat, const int64_t time_to_sleep)
 {	
 	const int64_t time_to_die = (data->params->time_to_die);
-	int64_t death_time = ph->last_meal + time_to_die;
 
 	fifo_add_pop(data->queue, ph);
 	pthread_mutex_lock(ph->left_fork);
@@ -50,11 +49,10 @@ static inline void	inner_philo_even(t_philo *ph, t_data *data,
 	pthread_mutex_lock(ph->right_fork);
 	save_msg(" has taken a fork\n", TAKE_A_FORK_MSG_LEN, ph, data);
 	eating(ph, data, time_to_eat, time_to_die);
-	death_time = ph->last_meal + time_to_die;
 	pthread_mutex_unlock(ph->left_fork);
 	pthread_mutex_unlock(ph->right_fork);
-	sleeping(ph, data, time_to_sleep, death_time);
-	thinking(ph, data, death_time);
+	sleeping(ph, data, time_to_sleep);
+	thinking(ph, data);
 }
 
 void	*philo_even_work(void *philo)
@@ -89,7 +87,6 @@ static inline void	inner_philo_odd(t_philo *ph, t_data *data,
 	int64_t time_to_eat, int64_t time_to_sleep)
 {
 	const int64_t	time_to_die = (data->params->time_to_die);
-	int64_t			death_time = ph->last_meal + time_to_die;
 
 	fifo_add_pop(data->queue, ph);
 	pthread_mutex_lock(ph->right_fork);
@@ -97,11 +94,10 @@ static inline void	inner_philo_odd(t_philo *ph, t_data *data,
 	pthread_mutex_lock(ph->left_fork);
 	save_msg(" has taken a fork\n", TAKE_A_FORK_MSG_LEN, ph, data);
 	eating(ph, data, time_to_eat, time_to_die);
-	death_time = ph->last_meal + time_to_die;
 	pthread_mutex_unlock(ph->right_fork);
 	pthread_mutex_unlock(ph->left_fork);
-	sleeping(ph, data, time_to_sleep, death_time);
-	thinking(ph, data, death_time);
+	sleeping(ph, data, time_to_sleep);
+	thinking(ph, data);
 }
 
 void	*philo_odd_work(void *philo)

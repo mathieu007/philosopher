@@ -6,7 +6,7 @@
 /*   By: math <math@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/18 08:44:52 by math              #+#    #+#             */
-/*   Updated: 2023/05/08 07:04:00 by math             ###   ########.fr       */
+/*   Updated: 2023/05/08 07:27:43 by math             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ inline void	save_die_msg(t_philo *ph, t_data *data, int32_t msg_index)
 	}
 }
 
-inline int32_t	save_eat(t_philo *ph, t_data *data, int64_t time_to_die)
+inline int32_t	save_eat(t_philo *ph, t_data *data)
 {	
 	bool			exit;
 	int32_t			msg_index;
