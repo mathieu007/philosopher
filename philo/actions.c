@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   actions.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: math <math@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: mroy <mroy@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/18 08:44:52 by math              #+#    #+#             */
-/*   Updated: 2023/05/08 07:14:17 by math             ###   ########.fr       */
+/*   Updated: 2023/05/08 12:50:09 by mroy             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ static inline void	think_sleeper(int64_t end_time)
 {	
 	int64_t	time;
 
-	time = (end_time - get_time_stamp_mc());
+	time = (end_time - get_time_stamp_mc());	
 	if (time > 0)
 	{
 		usleep(time / 2);
@@ -72,7 +72,6 @@ inline int64_t	two_stage_sleep(int64_t time_to_sleep, int64_t end_time)
 inline void	eating(t_philo *ph, t_data *data, int64_t time_to_eat, int64_t time_to_die)
 {
 	int64_t	time;
-	int64_t	death_time;
 	int32_t	msg_index;
 
 	msg_index = save_eat(ph, data, time_to_die);

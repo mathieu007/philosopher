@@ -3,17 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   philosopher.h                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: math <math@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: mroy <mroy@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/28 15:21:35 by mroy              #+#    #+#             */
-/*   Updated: 2023/05/08 07:31:17 by math             ###   ########.fr       */
+/*   Updated: 2023/05/08 11:24:45 by mroy             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef PHILOSOPHER_H
 # define PHILOSOPHER_H
 
-# define SLEEP_BUFFER 5000
+# define SLEEP_BUFFER 2000
 # define EAT_MSG_LEN 12
 # define SLEEP_MSG_LEN 14
 # define THINK_MSG_LEN 14
@@ -89,6 +89,7 @@ typedef struct s_fifo
 	t_philo				**phs;
 	pthread_mutex_t		*lock;
 	int32_t				count;
+	int32_t				len;
 	int32_t				head;
 	int32_t				tail;
 }						t_fifo;
@@ -135,7 +136,7 @@ int64_t			get_time_stamp_ms(void);
 int64_t			get_time_stamp_mc(void);
 int32_t			save_msg(const char *msg, int32_t msg_len, t_philo *ph, t_data *data);
 void			save_die_msg(t_philo *ph, t_data *data, int32_t msg_index);
-int32_t			save_eat(t_philo *ph, t_data *data);
+int32_t			save_eat(t_philo *ph, t_data *data, int32_t time_to_die);
 void			three_stage_sleep(int64_t time_to_sleep, int64_t end_time);
 int64_t			two_stage_sleep(int64_t time_to_sleep, int64_t end_time);
 bool			exit_threads(bool update_val);
@@ -175,8 +176,7 @@ void			*init_print_buffer(void);
 void			save_to_buffer_at(const char *msg, t_philo *ph,
 					char *write, int32_t msg_index);
 
-void			eating(t_philo *ph, t_data *data,
-					const int64_t time_to_eat);
+void			eating(t_philo *ph, t_data *data, int64_t time_to_eat, int64_t time_to_die);
 void			sleeping(t_philo *ph, t_data *data,
 					const int64_t time_to_sleep);
 void			thinking(t_philo *ph, t_data *data);

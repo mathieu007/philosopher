@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   params.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: math <math@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: mroy <mroy@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/18 08:44:52 by math              #+#    #+#             */
-/*   Updated: 2023/05/06 09:04:55 by math             ###   ########.fr       */
+/*   Updated: 2023/05/08 15:44:09 by mroy             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,8 +64,13 @@ bool	try_init_params(int32_t argc, char **argv)
 	set_constant64((int64_t)ft_atoi(argv[2]) * 1000, &(params.time_to_die));
 	set_constant64((int64_t)ft_atoi(argv[3]) * 1000, &(params.time_to_eat));
 	set_constant64((int64_t)ft_atoi(argv[4]) * 1000, &(params.time_to_sleep));
-	set_constant64(params.time_to_die - params.time_to_sleep
-		- params.time_to_eat, &(params.time_to_think));
+	if (params.time_to_die > params.time_to_sleep + params.time_to_eat)
+	{
+		set_constant64(params.time_to_die - params.time_to_sleep -
+			params.time_to_eat, &(params.time_to_think));
+	}
+	else
+		set_constant64(1000, &(params.time_to_think));
 	set_constant64(params.time_to_die - (params.time_to_think / 2),
 		&(params.time_cycle));
 	if (argc == 6)

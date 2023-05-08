@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   msg_queue.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: math <math@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: mroy <mroy@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/18 08:44:52 by math              #+#    #+#             */
-/*   Updated: 2023/05/07 16:53:15 by math             ###   ########.fr       */
+/*   Updated: 2023/05/08 15:44:43 by mroy             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ void	save_to_buffer_at(const char *msg, t_philo *ph, char *write_buff, int32_t m
 	// t_print_buffer	*buff;
 
 	// buff = ph->data->buffer;
-	// if (buff->stop_print)
+	// if (ph->data->buffer->stop_count != 0)
 	// 	return ;
 	len = uint32_to_str((uint32_t)(ph->last_action - ph->base_time) / 1000, &write_buff[msg_index]);
 	msg_index += len;
@@ -68,22 +68,27 @@ bool	print_msg_buffer(t_data *data)
 	char			*write_buff;
 	char			*read_buff;
 	int32_t			count;
-	bool			stop_print;
 	t_print_buffer	*buff;
 	t_philo			*ph;
 
 	ph = fifo_get(data->queue);
-	stop_print = false;
 	pthread_mutex_lock(data->write);
 	buff = data->buffer;
+	count = buff->count;
+	if (count == 0)
+	{
+		pthread_mutex_unlock(data->write);
+		return (data->exit_threads);
+	}
+	if (buff->stop_count == 0 && get_time_stamp_mc() > ph->last_meal + data->params->time_to_die)
+	{
+		save_die_msg(ph, ph->data, buff->count);
+	}		
 	write_buff = buff->read;
 	read_buff = buff->write;
 	buff->write = write_buff;
 	buff->read = read_buff;
-	stop_print = buff->stop_print;
-	if (!stop_print)
-		count = buff->count;
-	else
+	if (buff->stop_count != 0)
 	{
 		data->exit_threads = true;
 		count = buff->stop_count;
@@ -91,5 +96,5 @@ bool	print_msg_buffer(t_data *data)
 	buff->count = 0;
 	pthread_mutex_unlock(data->write);
 	write(STDOUT_FILENO, read_buff, count);
-	return (stop_print);
+	return (data->exit_threads);
 }
