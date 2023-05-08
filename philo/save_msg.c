@@ -6,64 +6,75 @@
 /*   By: math <math@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/18 08:44:52 by math              #+#    #+#             */
-/*   Updated: 2023/05/06 13:19:46 by math             ###   ########.fr       */
+/*   Updated: 2023/05/08 06:59:13 by math             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philosopher.h"
 
-inline void	save_die_msg(t_philo *ph, t_data *data)
+inline void	save_die_msg(t_philo *ph, t_data *data, int32_t msg_index)
 {	
-	pthread_mutex_lock(data->write);
-	if (!data->exit_threads)
+	if (!data->exit_threads && !data->buffer->stop_print)
 	{
 		ph->exit_status = 1;
 		ph->last_action = get_time_stamp_mc();
-		save_to_buffer(" died\n", ph, data->buffer);
-		data->buffer->stop_print = true;
-		data->buffer->stop_count = data->buffer->count;
-	}
-	pthread_mutex_unlock(data->write);
-}
-
-inline void	save_die_msg_unlocked(t_philo *ph, t_data *data)
-{	
-	if (!data->exit_threads)
-	{
-		ph->exit_status = 1;
-		ph->last_action = get_time_stamp_mc();
-		save_to_buffer(" died\n", ph, data->buffer);
+		save_to_buffer_at(" died\n", ph, data->buffer->write, msg_index);
+		data->buffer->count -= DIED_MSG_LEN ;
 		data->buffer->stop_print = true;
 		data->buffer->stop_count = data->buffer->count;
 	}
 }
 
-inline void	save_eat(t_philo *ph, t_data *data, int64_t time_to_die)
+inline int32_t	save_eat(t_philo *ph, t_data *data, int64_t time_to_die)
 {	
-	pthread_mutex_lock(data->write);
-	*(ph->right_fork_taken) = true;
-	*(ph->left_fork_taken) = true;
-	if (!data->exit_threads)
-	{
-		ph->last_action = get_time_stamp_mc();
-		if (ph->last_action > ph->last_meal + time_to_die)
-			save_die_msg_unlocked(ph, data);
-		else
-			save_to_buffer(" is eating\n", ph, data->buffer);
-	}
-	else
-		ph->exit_status = 1;
-	pthread_mutex_unlock(data->write);
-	ph->last_meal = ph->last_action;
-}
+	bool			exit;
+	int32_t			msg_index;
+	char			*write_buff;
+	bool			stop_print;
 
-inline void	save_msg(const char *msg, t_philo *ph, t_data *data)
-{	
 	pthread_mutex_lock(data->write);
+	msg_index = data->buffer->count;
+	data->buffer->count += EAT_MSG_LEN + 16;
+	exit = data->exit_threads;
+	write_buff = data->buffer->write;
 	ph->last_action = get_time_stamp_mc();
-	if (!data->exit_threads)
-		save_to_buffer(msg, ph, data->buffer);
-	else
-		ph->exit_status = 1;
+	if (!exit)
+	{
+		if (ph->last_action > ph->last_meal + time_to_die)
+			save_die_msg(ph, data, msg_index);
+	}
 	pthread_mutex_unlock(data->write);
+	if (!exit)
+		save_to_buffer_at(" is eating\n", ph, write_buff, msg_index);
+	else
+	{
+		ph->exit_status = 1;
+		return (msg_index);
+	}
+	ph->last_meal = ph->last_action;
+	return (msg_index);
+}
+
+inline int32_t	save_msg(const char *msg, int32_t msg_len, t_philo *ph, t_data *data)
+{	
+	bool	exit;
+	int32_t	msg_index;
+	char	*write;
+	bool	stop_print;
+
+	pthread_mutex_lock(data->write);
+	msg_index = data->buffer->count;
+	data->buffer->count += msg_len + 16;
+	exit = data->exit_threads;
+	write = data->buffer->write;
+	ph->last_action = get_time_stamp_mc();
+	pthread_mutex_unlock(data->write);
+	if (!exit)
+		save_to_buffer_at(msg, ph, write, msg_index);
+	else
+	{
+		ph->exit_status = 1;
+		return (msg_index);
+	}
+	return (msg_index);
 }

@@ -6,7 +6,7 @@
 /*   By: math <math@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/18 08:44:52 by math              #+#    #+#             */
-/*   Updated: 2023/05/06 13:37:43 by math             ###   ########.fr       */
+/*   Updated: 2023/05/07 16:49:52 by math             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,10 +44,11 @@ static inline void	inner_philo_even(t_philo *ph, t_data *data,
 	const int64_t time_to_die = (data->params->time_to_die);
 	int64_t death_time = ph->last_meal + time_to_die;
 
+	fifo_add_pop(data->queue, ph);
 	pthread_mutex_lock(ph->left_fork);
-	save_msg(" has taken a fork\n", ph, data);
+	save_msg(" has taken a fork\n", TAKE_A_FORK_MSG_LEN, ph, data);
 	pthread_mutex_lock(ph->right_fork);
-	save_msg(" has taken a fork\n", ph, data);
+	save_msg(" has taken a fork\n", TAKE_A_FORK_MSG_LEN, ph, data);
 	eating(ph, data, time_to_eat, time_to_die);
 	death_time = ph->last_meal + time_to_die;
 	pthread_mutex_unlock(ph->left_fork);
@@ -87,13 +88,14 @@ void	*philo_even_work(void *philo)
 static inline void	inner_philo_odd(t_philo *ph, t_data *data,
 	int64_t time_to_eat, int64_t time_to_sleep)
 {
-	const int64_t time_to_die = (data->params->time_to_die);
-	int64_t death_time = ph->last_meal + time_to_die;
+	const int64_t	time_to_die = (data->params->time_to_die);
+	int64_t			death_time = ph->last_meal + time_to_die;
 
+	fifo_add_pop(data->queue, ph);
 	pthread_mutex_lock(ph->right_fork);
-	save_msg(" has taken a fork\n", ph, data);
+	save_msg(" has taken a fork\n", TAKE_A_FORK_MSG_LEN, ph, data);
 	pthread_mutex_lock(ph->left_fork);
-	save_msg(" has taken a fork\n", ph, data);
+	save_msg(" has taken a fork\n", TAKE_A_FORK_MSG_LEN, ph, data);
 	eating(ph, data, time_to_eat, time_to_die);
 	death_time = ph->last_meal + time_to_die;
 	pthread_mutex_unlock(ph->right_fork);

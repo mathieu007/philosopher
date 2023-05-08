@@ -37,6 +37,11 @@ SOURCES     =	philo/free.c	\
 				philo/thread.c	\
 				philo/special_cases.c	\
 				philo/main.c	\
+				philo/fifo/add.c	\
+				philo/fifo/new.c	\
+				philo/fifo/pop.c	\
+				philo/fifo/get.c	\
+				philo/fifo/utils.c	\
 
 OBJECTS			= $(patsubst $(SRCDIR)/%,$(BUILDDIR)/%,$(SOURCES:.$(SRCEXT)=.$(OBJEXT)))
 

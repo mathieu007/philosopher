@@ -6,11 +6,41 @@
 /*   By: math <math@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/18 08:44:52 by math              #+#    #+#             */
-/*   Updated: 2023/05/06 13:19:58 by math             ###   ########.fr       */
+/*   Updated: 2023/05/07 16:53:15 by math             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philosopher.h"
+
+void	save_to_buffer_at(const char *msg, t_philo *ph, char *write_buff, int32_t msg_index)
+{
+	int32_t			len;
+	// t_print_buffer	*buff;
+
+	// buff = ph->data->buffer;
+	// if (buff->stop_print)
+	// 	return ;
+	len = uint32_to_str((uint32_t)(ph->last_action - ph->base_time) / 1000, &write_buff[msg_index]);
+	msg_index += len;
+	while (len < 11)
+	{
+		write_buff[msg_index++] = ' ';
+		len++;
+	}
+	len = uint32_to_str((uint32_t)ph->name, &write_buff[msg_index]);
+	msg_index += len;
+	while (len < 6)
+	{
+		write_buff[msg_index++] = ' ';
+		len++;
+	}
+	while (*msg != '\0')
+	{
+		write_buff[msg_index] = *msg;
+		msg++;
+		msg_index++;
+	}
+}
 
 void	save_to_buffer(const char *msg, t_philo *ph, t_print_buffer *buff)
 {
@@ -40,7 +70,9 @@ bool	print_msg_buffer(t_data *data)
 	int32_t			count;
 	bool			stop_print;
 	t_print_buffer	*buff;
+	t_philo			*ph;
 
+	ph = fifo_get(data->queue);
 	stop_print = false;
 	pthread_mutex_lock(data->write);
 	buff = data->buffer;

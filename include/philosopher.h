@@ -6,7 +6,7 @@
 /*   By: math <math@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/28 15:21:35 by mroy              #+#    #+#             */
-/*   Updated: 2023/05/06 15:32:55 by math             ###   ########.fr       */
+/*   Updated: 2023/05/07 16:52:20 by math             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,11 @@
 # define PHILOSOPHER_H
 
 # define SLEEP_BUFFER 5000
+# define EAT_MSG_LEN 12
+# define SLEEP_MSG_LEN 14
+# define THINK_MSG_LEN 14
+# define DIED_MSG_LEN 7
+# define TAKE_A_FORK_MSG_LEN 19
 
 # include <fcntl.h>
 # include <stdio.h>
@@ -26,6 +31,15 @@
 # include <sys/time.h>
 # include <unistd.h>
 # include <pthread.h>
+
+typedef struct s_fifo
+{
+	t_philo				**phs;
+	pthread_mutex_t		*lock;
+	int32_t				count;
+	int32_t				head;
+	int32_t				tail;
+}						t_fifo;
 
 typedef struct s_msg
 {
@@ -79,10 +93,12 @@ typedef struct s_philo
 
 typedef struct s_data
 {
+	pthread_mutex_t	*cycle;
 	pthread_mutex_t	*write;
 	pthread_mutex_t	*forks;
 	bool			*forks_taken;
-	int32_t			*dispatch_order;
+	t_fifo			*queue;
+	t_philo			**dispatch_order;
 	int32_t			last_philo_index_in_queue;
 	const int64_t	base_time;
 	int32_t			threads_ready;
@@ -93,6 +109,15 @@ typedef struct s_data
 	t_print_buffer	*buffer;
 }				t_data;
 
+t_fifo			*fifo_new(int32_t count);
+t_fifo			*fifo_add_pop(t_fifo *fifo, t_philo *ph);
+t_fifo			*fifo_add(t_fifo *fifo, t_philo *ph);
+t_fifo			*fifo_pop(t_fifo *fifo);
+t_philo			*fifo_get_pop(t_fifo *fifo);
+t_philo			*fifo_get(t_fifo *fifo);
+int32_t			tail_prev(t_fifo *fifo);
+int32_t			head_prev(t_fifo *fifo);
+int32_t			tail_next(t_fifo *fifo);
 size_t			uint32_to_str(uint32_t value, char *dst);
 int64_t			get_interval(void);
 void			dispatch_philos(t_philo **phs, int32_t ph_cnt);
@@ -100,15 +125,15 @@ void			wait_threads_ready(t_data *data, int32_t ph_cnt);
 t_param			*get_params(void);
 int32_t			get_relative_time_mc(const t_philo *ph);
 int32_t			get_relative_time_ms(const t_philo *ph);
-int32_t			prev_ph(const int32_t i, const int32_t philo_count);
+int32_t			prev_ph(const int32_t i, int32_t philo_count);
 t_data			*get_data(void);
 void			take_forks(t_philo *ph);
 void			put_forks_on_table(t_philo *ph);
 int64_t			get_time_stamp_ms(void);
 int64_t			get_time_stamp_mc(void);
-void			save_msg(const char *msg, t_philo *ph, t_data *data);
-void			save_die_msg(t_philo *ph, t_data *data);
-void			save_eat(t_philo *ph, t_data *data, const int64_t time_to_die);
+int32_t			save_msg(const char *msg, int32_t msg_len, t_philo *ph, t_data *data);
+void			save_die_msg(t_philo *ph, t_data *data, int32_t msg_index);
+int32_t			save_eat(t_philo *ph, t_data *data, int64_t time_to_die);
 void			three_stage_sleep(int64_t time_to_sleep, int64_t end_time);
 int64_t			two_stage_sleep(int64_t time_to_sleep, int64_t end_time);
 bool			exit_threads(bool update_val);
@@ -145,12 +170,14 @@ size_t			ft_strlen(const char *str);
 void			save_to_buffer(const char *msg, t_philo *ph, t_print_buffer *buff);
 bool			print_msg_buffer(t_data *data);
 void			*init_print_buffer(void);
+void			save_to_buffer_at(const char *msg, t_philo *ph,
+					char *write, int32_t msg_index);
 
 void			eating(t_philo *ph, t_data *data,
-					const int64_t time_to_eat, const int64_t time_to_die);
+					const int64_t time_to_eat, int64_t time_to_die);
 void			sleeping(t_philo *ph, t_data *data,
-					const int64_t time_to_sleep, const int64_t time_to_die);
-void			thinking(t_philo *ph, t_data *data, const int64_t death_time);
+					const int64_t time_to_sleep, int64_t time_to_die);
+void			thinking(t_philo *ph, t_data *data, int64_t death_time);
 void			sleeper(int64_t end_time);
 
 void			set_philo_timing(int64_t start_time, t_philo *ph,
