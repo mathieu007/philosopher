@@ -6,7 +6,7 @@
 /*   By: mroy <mroy@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/18 08:44:52 by math              #+#    #+#             */
-/*   Updated: 2023/05/08 15:44:43 by mroy             ###   ########.fr       */
+/*   Updated: 2023/05/08 16:01:53 by mroy             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,14 +22,14 @@ void	save_to_buffer_at(const char *msg, t_philo *ph, char *write_buff, int32_t m
 	// 	return ;
 	len = uint32_to_str((uint32_t)(ph->last_action - ph->base_time) / 1000, &write_buff[msg_index]);
 	msg_index += len;
-	while (len < 11)
+	while (len < 7)
 	{
 		write_buff[msg_index++] = ' ';
 		len++;
 	}
 	len = uint32_to_str((uint32_t)ph->name, &write_buff[msg_index]);
 	msg_index += len;
-	while (len < 6)
+	while (len < 4)
 	{
 		write_buff[msg_index++] = ' ';
 		len++;
