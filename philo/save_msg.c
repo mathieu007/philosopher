@@ -6,7 +6,7 @@
 /*   By: math <math@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/18 08:44:52 by math              #+#    #+#             */
-/*   Updated: 2023/05/08 06:59:13 by math             ###   ########.fr       */
+/*   Updated: 2023/05/08 07:04:00 by math             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,19 +38,14 @@ inline int32_t	save_eat(t_philo *ph, t_data *data, int64_t time_to_die)
 	exit = data->exit_threads;
 	write_buff = data->buffer->write;
 	ph->last_action = get_time_stamp_mc();
-	if (!exit)
-	{
-		if (ph->last_action > ph->last_meal + time_to_die)
-			save_die_msg(ph, data, msg_index);
-	}
-	pthread_mutex_unlock(data->write);
-	if (!exit)
-		save_to_buffer_at(" is eating\n", ph, write_buff, msg_index);
-	else
+	if (exit)
 	{
 		ph->exit_status = 1;
+		pthread_mutex_unlock(data->write);
 		return (msg_index);
 	}
+	pthread_mutex_unlock(data->write);
+	save_to_buffer_at(" is eating\n", ph, write_buff, msg_index);
 	ph->last_meal = ph->last_action;
 	return (msg_index);
 }
@@ -68,13 +63,13 @@ inline int32_t	save_msg(const char *msg, int32_t msg_len, t_philo *ph, t_data *d
 	exit = data->exit_threads;
 	write = data->buffer->write;
 	ph->last_action = get_time_stamp_mc();
-	pthread_mutex_unlock(data->write);
-	if (!exit)
-		save_to_buffer_at(msg, ph, write, msg_index);
-	else
+	if (exit)
 	{
 		ph->exit_status = 1;
+		pthread_mutex_unlock(data->write);
 		return (msg_index);
 	}
+	pthread_mutex_unlock(data->write);
+	save_to_buffer_at(msg, ph, write, msg_index);
 	return (msg_index);
 }
