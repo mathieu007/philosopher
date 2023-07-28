@@ -6,7 +6,7 @@
 /*   By: mroy <mroy@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/18 08:44:52 by math              #+#    #+#             */
-/*   Updated: 2023/05/05 10:41:31 by mroy             ###   ########.fr       */
+/*   Updated: 2023/07/28 12:01:45 by mroy             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ void	save_to_buffer(const char *msg, t_philo *ph, t_print_buffer *buff)
 }
 
 bool	print_msg_buffer(t_data *data)
-{	
+{
 	char			*write_buff;
 	char			*read_buff;
 	int32_t			count;

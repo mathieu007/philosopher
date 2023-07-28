@@ -6,7 +6,7 @@
 /*   By: mroy <mroy@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/18 08:44:52 by math              #+#    #+#             */
-/*   Updated: 2023/04/27 13:07:55 by mroy             ###   ########.fr       */
+/*   Updated: 2023/07/28 12:18:18 by mroy             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ void	*init_philosophers(void)
 			return (NULL);
 		set_philo(phs[i], data, i);
 		i++;
-	}	
+	}
 	data->philos = phs;
 	return (phs);
 }

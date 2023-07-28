@@ -6,14 +6,14 @@
 /*   By: mroy <mroy@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/28 15:21:35 by mroy              #+#    #+#             */
-/*   Updated: 2023/05/05 14:52:43 by mroy             ###   ########.fr       */
+/*   Updated: 2023/07/28 12:19:53 by mroy             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef PHILOSOPHER_H
 # define PHILOSOPHER_H
 
-# define SLEEP_BUFFER 5000
+# define SLEEP_BUFFER 4000
 
 # include <fcntl.h>
 # include <stdio.h>
@@ -32,6 +32,7 @@ typedef struct s_msg
 	char		*msg;
 	int32_t		ph_name;
 	int32_t		time;
+	int32_t		die_time;
 }				t_msg;
 
 typedef struct s_print_buffer
@@ -66,6 +67,11 @@ typedef struct s_philo
 	pthread_t			thread_id;
 	const int64_t		base_time;
 	int32_t				last_action;
+	const int32_t		time_to_eat;
+	const int32_t		time_to_die;
+	const int32_t		time_to_sleep;
+	const int32_t		time_to_think;
+	int32_t				death_time;
 	int32_t				last_meal;
 	int32_t				exit_status;
 	int64_t				last_think;
@@ -106,11 +112,12 @@ int64_t			get_time_stamp_ms(void);
 int64_t			get_time_stamp_mc(void);
 void			save_msg(const char *msg, t_philo *ph, t_data *data);
 void			save_die_msg(t_philo *ph, t_data *data);
-void			save_eat(t_philo *ph, t_data *data, const int32_t time_to_die);
+void			save_eat(t_philo *ph, t_data *data);
 void			three_stage_sleep(const t_philo *ph, int32_t time_to_sleep,
 					int32_t end_time);
-int32_t			two_stage_sleep(const t_philo *ph, int32_t time_to_sleep,
-					int32_t end_time);
+void			save_or_die(t_philo *ph, t_data *data, const char *msg);
+bool			die_in_action(t_philo *ph, t_data *data, int32_t action_time);
+int32_t			two_stage_sleep(const t_philo *ph, int32_t time_to_sleep, int32_t end_time);
 bool			exit_threads(bool update_val);
 t_philo			**get_philosophers(void);
 void			*philo_odd_work(void *philo);
@@ -146,11 +153,9 @@ void			save_to_buffer(const char *msg, t_philo *ph, t_print_buffer *buff);
 bool			print_msg_buffer(t_data *data);
 void			*init_print_buffer(void);
 
-void			eating(t_philo *ph, t_data *data,
-					const int32_t time_to_eat, const int32_t time_to_die);
-void			sleeping(t_philo *ph, t_data *data,
-					const int32_t time_to_sleep, const int32_t time_to_die);
-void			thinking(t_philo *ph, t_data *data, const int32_t death_time);
+void			eating(t_philo *ph, t_data *data);
+void			sleeping(t_philo *ph, t_data *data);
+void			thinking(t_philo *ph, t_data *data);
 void			sleeper(int32_t end_time);
 
 void			set_philo_timing(int64_t start_time, t_philo *ph,

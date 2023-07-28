@@ -6,7 +6,7 @@
 /*   By: mroy <mroy@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/18 08:44:52 by math              #+#    #+#             */
-/*   Updated: 2023/04/27 11:05:48 by mroy             ###   ########.fr       */
+/*   Updated: 2023/07/28 08:11:37 by mroy             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ void	lock_all_philos(void)
 	phs = get_philosophers();
 	i = 0;
 	while (i < ph_cnt)
-	{	
+	{
 		pthread_mutex_lock(phs[i]->start_simulation);
 		i++;
 	}

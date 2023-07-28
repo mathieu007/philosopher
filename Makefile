@@ -13,7 +13,7 @@ SRCEXT			= c
 OBJEXT			= o
 
 #Flags, Libraries and Includes
-# CFLAGS      = -Wall -Wextra -Werror -g -fsanitize=thread
+#CFLAGS      = -Wall -Wextra -Werror -g -fsanitize=thread
 CFLAGS      = -Wall -Wextra -Werror -g -O2
 INCDEP      = -I$(INCDIR)
 
