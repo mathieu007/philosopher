@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   params.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mroy <mroy@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: math <math@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/18 08:44:52 by math              #+#    #+#             */
-/*   Updated: 2023/05/08 15:44:09 by mroy             ###   ########.fr       */
+/*   Updated: 2023/07/27 15:37:41 by math             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,8 +66,8 @@ bool	try_init_params(int32_t argc, char **argv)
 	set_constant64((int64_t)ft_atoi(argv[4]) * 1000, &(params.time_to_sleep));
 	if (params.time_to_die > params.time_to_sleep + params.time_to_eat)
 	{
-		set_constant64(params.time_to_die - params.time_to_sleep -
-			params.time_to_eat, &(params.time_to_think));
+		set_constant64(params.time_to_die - params.time_to_sleep
+			- params.time_to_eat, &(params.time_to_think));
 	}
 	else
 		set_constant64(1000, &(params.time_to_think));

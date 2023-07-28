@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   dispatch2.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mroy <mroy@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: math <math@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/18 08:44:52 by math              #+#    #+#             */
-/*   Updated: 2023/05/08 15:43:07 by mroy             ###   ########.fr       */
+/*   Updated: 2023/07/27 19:14:04 by math             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ void	set_philo_timing(int64_t start_time, t_philo *ph,
 	ph->last_action = ph->last_meal;
 }
 
-void	set_philos_timing(int64_t start_time, int32_t ph_cnt, int32_t i,
+int64_t	set_philos_timing(int64_t start_time, int32_t ph_cnt, int32_t i,
 	int32_t rev_i)
 {
 	int64_t			interval;
@@ -45,9 +45,10 @@ void	set_philos_timing(int64_t start_time, int32_t ph_cnt, int32_t i,
 		rev_i -= 2;
 		i += 2;
 	}
+	return (start_time);
 }
 
-int32_t	set_event_index(int32_t ph_cnt)
+int32_t	set_even_index(int32_t ph_cnt)
 {
 	if (is_odd(ph_cnt))
 		return (ph_cnt - 3);
@@ -73,15 +74,11 @@ void	set_philo_start_time(int32_t ph_cnt)
 	phs = get_philosophers();
 	params = get_params();
 	start_time = get_data()->base_time;
-	rev_i = set_event_index(ph_cnt);
-	set_philos_timing(start_time, ph_cnt, i, rev_i);
-	start_time = start_time + (params->time_to_eat);
+	rev_i = set_even_index(ph_cnt);
+	start_time = set_philos_timing(start_time, ph_cnt, i, rev_i);
 	i = 1;
 	rev_i = set_odd_index(ph_cnt);
-	set_philos_timing(start_time, ph_cnt, i, rev_i);
+	start_time = set_philos_timing(start_time, ph_cnt, i, rev_i);
 	if (is_odd(ph_cnt))
-	{
-		start_time = start_time + (params->time_to_eat);
 		set_philo_timing(start_time, phs[ph_cnt - 1], get_data(), params);
-	}
 }

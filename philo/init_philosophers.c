@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init_philosophers.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mroy <mroy@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: math <math@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/18 08:44:52 by math              #+#    #+#             */
-/*   Updated: 2023/05/08 14:20:20 by mroy             ###   ########.fr       */
+/*   Updated: 2023/07/27 11:06:54 by math             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,7 @@ void	*init_philosophers(void)
 	data->queue = fifo_new(params->num_philo);	
 	while (i < params->num_philo)
 	{
-		phs[i] = malloc(sizeof(t_philo));		
+		phs[i] = malloc(sizeof(t_philo));
 		if (phs[i] == NULL)
 			return (NULL);
 		set_philo(phs[i], data, i);	

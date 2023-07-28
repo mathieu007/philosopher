@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   mutexes.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mroy <mroy@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: math <math@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/18 08:44:52 by math              #+#    #+#             */
-/*   Updated: 2023/04/27 12:21:29 by mroy             ###   ########.fr       */
+/*   Updated: 2023/07/27 15:09:41 by math             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ void	*init_print_buffer(void)
 }
 
 static void	*set_philo_mutexes(t_philo **phs, int32_t i,
-	pthread_mutex_t *forks_mutexes, bool *forks)
+		pthread_mutex_t *forks_mutexes, bool *forks)
 {
 	t_param	*params;
 
@@ -56,17 +56,22 @@ static void	*set_philo_mutexes(t_philo **phs, int32_t i,
 
 void	*init_mutexes(void)
 {
-	int32_t				i;
-	t_philo				**phs;
-	t_data				*data;
+	int32_t	i;
+	t_philo	**phs;
+	t_data	*data;
 
 	data = get_data();
 	data->write = malloc(sizeof(pthread_mutex_t));
+	data->time_stamp = malloc(sizeof(pthread_mutex_t));
+	data->eat = malloc(sizeof(pthread_mutex_t));
+	data->sleep = malloc(sizeof(pthread_mutex_t));
+	data->think = malloc(sizeof(pthread_mutex_t));
 	data->forks = malloc(sizeof(pthread_mutex_t) * get_params()->num_philo);
 	data->forks_taken = malloc(sizeof(pthread_mutex_t)
 			* get_params()->num_philo);
 	if (!data->write || !data->forks || !data->forks_taken)
 		return (NULL);
+	data->buffer_in_use = false;
 	pthread_mutex_init(data->write, NULL);
 	i = 0;
 	phs = get_philosophers();
@@ -80,8 +85,8 @@ void	*init_mutexes(void)
 
 static void	free_philo_mutexes(t_philo **phs)
 {
-	int32_t		i;
-	int32_t		count;
+	int32_t	i;
+	int32_t	count;
 
 	count = get_params()->num_philo;
 	i = 0;
@@ -107,7 +112,7 @@ static void	free_philo_mutexes(t_philo **phs)
 
 void	*free_mutexes(void)
 {
-	t_data		*data;
+	t_data	*data;
 
 	data = get_data();
 	if (data->write)
@@ -115,7 +120,7 @@ void	*free_mutexes(void)
 		pthread_mutex_destroy(data->write);
 		free(data->write);
 		data->write = NULL;
-	}	
+	}
 	free_philo_mutexes(get_philosophers());
 	if (data->forks)
 		free(data->forks);

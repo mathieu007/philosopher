@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   work_load.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mroy <mroy@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: math <math@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/18 08:44:52 by math              #+#    #+#             */
-/*   Updated: 2023/05/08 15:42:55 by mroy             ###   ########.fr       */
+/*   Updated: 2023/07/27 19:02:09 by math             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,13 +15,13 @@
 void	lock_all_philos(void)
 {
 	int32_t			i;
-	const int32_t	ph_cnt = get_params()->num_philo;
+	const int64_t	ph_cnt = get_params()->num_philo;
 	t_philo			**phs;
 
 	phs = get_philosophers();
 	i = 0;
 	while (i < ph_cnt)
-	{	
+	{
 		pthread_mutex_lock(phs[i]->start_simulation);
 		i++;
 	}
@@ -30,19 +30,13 @@ void	lock_all_philos(void)
 int64_t	get_interval(void)
 {
 	int64_t	interval;
-	int64_t	time_to_eat;
 	int64_t	num_ph;
-	int32_t	time_to_think;
 
-	time_to_think = get_params()->time_to_think;
-	time_to_eat = (int64_t)get_params()->time_to_eat;
 	num_ph = (int64_t)get_params()->num_philo - 1;
 	if (num_ph < 4)
 		num_ph = 4;
-	interval = (int64_t)((time_to_eat) / (num_ph / 4));
-	if (interval > ((time_to_think / 2) - (time_to_think / 10)) / 2)
-		interval = ((time_to_think / 2) - (time_to_think / 10)) / 2;
-	return ((int64_t)((interval / 2)));
+	interval = (int64_t)get_params()->time_cycle / num_ph;
+	return (interval);
 }
 
 void	*print_messages(void *val)

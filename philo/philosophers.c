@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philosophers.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mroy <mroy@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: math <math@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/18 08:44:52 by math              #+#    #+#             */
-/*   Updated: 2023/05/08 12:51:01 by mroy             ###   ########.fr       */
+/*   Updated: 2023/07/27 19:22:24 by math             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,6 +74,13 @@ void	*philo_even_work(void *philo)
 	pthread_mutex_lock(ph->start_simulation);
 	ph->last_think = ph->start_time;
 	ph->last_action = ph->last_think;
+	ph->last_meal = ph->start_time;
+	while (true)
+	{
+		if (ph->start_time <= get_time_stamp_mc() + 25)
+			break ;
+		usleep(100);
+	}
 	while (eat_count > 0 && ph->exit_status != 1)
 	{	
 		inner_philo_even(ph, data, time_to_eat, time_to_sleep);
@@ -97,7 +104,7 @@ static inline void	inner_philo_odd(t_philo *ph, t_data *data,
 	pthread_mutex_unlock(ph->right_fork);
 	pthread_mutex_unlock(ph->left_fork);
 	sleeping(ph, data, time_to_sleep);
-	thinking(ph, data);	
+	thinking(ph, data);
 }
 
 void	*philo_odd_work(void *philo)
@@ -119,6 +126,13 @@ void	*philo_odd_work(void *philo)
 	pthread_mutex_lock(ph->start_simulation);
 	ph->last_think = ph->start_time;
 	ph->last_action = ph->last_think;
+	ph->last_meal = ph->start_time;
+	while (true)
+	{
+		if (ph->start_time <= get_time_stamp_mc() + 25)
+			break ;
+		usleep(50);
+	}
 	while (eat_count && ph->exit_status != 1)
 	{
 		inner_philo_odd(ph, data, time_to_eat, time_to_sleep);
