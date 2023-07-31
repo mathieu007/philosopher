@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   save_msg.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mroy <mroy@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: math <math@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/18 08:44:52 by math              #+#    #+#             */
-/*   Updated: 2023/07/28 11:00:19 by mroy             ###   ########.fr       */
+/*   Updated: 2023/07/29 13:05:54 by math             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ inline void	save_die_msg(t_philo *ph, t_data *data)
 	}
 }
 
-inline void	save_or_die(t_philo *ph, t_data *data, const char *msg)
+inline void	action_or_die(t_philo *ph, t_data *data, const char *msg)
 {
 	ph->last_action = get_relative_time_mc(ph);
 	if (ph->last_action > ph->death_time)
@@ -41,7 +41,7 @@ inline void	save_eat(t_philo *ph, t_data *data)
 	*(ph->right_fork_taken) = true;
 	*(ph->left_fork_taken) = true;
 	if (!data->exit_threads)
-		save_or_die(ph, data, " is eating\n");
+		action_or_die(ph, data, " is eating\n");
 	else
 		ph->exit_status = 1;
 	pthread_mutex_unlock(data->write);
@@ -55,7 +55,7 @@ inline void	save_msg(const char *msg, t_philo *ph, t_data *data)
 		return ;
 	pthread_mutex_lock(data->write);
 	if (!data->exit_threads)
-		save_or_die(ph, data, msg);
+		action_or_die(ph, data, msg);
 	else
 		ph->exit_status = 1;
 	pthread_mutex_unlock(data->write);

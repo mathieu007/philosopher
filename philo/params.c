@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   params.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mroy <mroy@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: math <math@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/18 08:44:52 by math              #+#    #+#             */
-/*   Updated: 2023/05/03 10:31:46 by mroy             ###   ########.fr       */
+/*   Updated: 2023/07/30 21:08:15 by math             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,13 +45,26 @@ bool	is_valid(char *str)
 	return (false);
 }
 
-/// @brief [17.6.5.9/3] A C++ standard library function shall not 
-/// directly or indirectly modify objects (1.10) accessible by threads 
-/// other than the current thread unless the objects are accessed directly 
-/// or indirectly via the function’s non-const arguments, including this.
-/// @param argc 
-/// @param argv 
-/// @return 
+void	set_time_to_think(t_param	*params)
+{
+	if (is_odd(params->num_philo))
+	{
+		if (params->time_to_eat * 3 < params->time_to_die)
+			set_constant(params->time_to_die - params->time_to_eat * 3,
+				&(params->time_to_think));
+		else
+			set_constant(0, &(params->time_to_think));
+	}
+	else if (!is_odd(params->num_philo))
+	{
+		if (params->time_to_eat * 2 < params->time_to_die)
+			set_constant(params->time_to_die - params->time_to_eat * 2,
+				&(params->time_to_think));
+		else
+			set_constant(0, &(params->time_to_think));
+	}
+}
+
 bool	try_init_params(int32_t argc, char **argv)
 {
 	static t_param	params;
@@ -64,10 +77,10 @@ bool	try_init_params(int32_t argc, char **argv)
 	set_constant(ft_atoi(argv[2]), &(params.time_to_die));
 	set_constant(ft_atoi(argv[3]), &(params.time_to_eat));
 	set_constant(ft_atoi(argv[4]), &(params.time_to_sleep));
-	set_constant(params.time_to_die - params.time_to_sleep
-		- params.time_to_eat, &(params.time_to_think));
-	set_constant((params.time_to_die * 1000) - ((params.time_to_think * 1000) / 2)
-		, &(params.time_cycle));
+	set_time_to_think(&params);
+	set_constant((params.time_to_die * 1000)
+		- ((params.time_to_think * 1000) / 2),
+		&(params.time_cycle));
 	if (argc == 6)
 	{
 		if (!is_valid(argv[5]))

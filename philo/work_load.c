@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   work_load.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mroy <mroy@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: math <math@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/18 08:44:52 by math              #+#    #+#             */
-/*   Updated: 2023/07/28 08:11:37 by mroy             ###   ########.fr       */
+/*   Updated: 2023/07/30 12:46:49 by math             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,18 +31,21 @@ int64_t	get_interval(void)
 {
 	int64_t	interval;
 	int64_t	time_to_eat;
+	int64_t	time_to_think;
 	int64_t	num_ph;
-	int32_t	time_to_think;
+	t_param	*params;
 
-	time_to_think = get_params()->time_to_think * 1000;
-	time_to_eat = (int64_t)get_params()->time_to_eat * 1000;
-	num_ph = (int64_t)get_params()->num_philo - 1;
+	params = get_params();
+	time_to_think = (int64_t)params->time_to_think * 1000;
+	time_to_eat = (int64_t)params->time_to_eat * 1000;
+	num_ph = (int64_t)params->num_philo - 1;
 	if (num_ph < 4)
 		num_ph = 4;
-	interval = (int64_t)((time_to_eat) / (num_ph / 4));
-	if (interval > ((time_to_think / 2) - (time_to_think / 10)) / 2)
-		interval = ((time_to_think / 2) - (time_to_think / 10)) / 2;
-	return ((int64_t)((interval / 2)));
+	interval = (time_to_eat / (num_ph / 2));
+	interval = ((time_to_eat - 1000) / (num_ph / 2));
+	if (interval > (time_to_think / 5) - (time_to_think / 10))
+		interval = (time_to_think / 5) - (time_to_think / 10);
+	return (interval);
 }
 
 void	*print_messages(void *val)

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   special_cases.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mroy <mroy@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: math <math@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/18 08:44:52 by math              #+#    #+#             */
-/*   Updated: 2023/04/27 16:37:16 by mroy             ###   ########.fr       */
+/*   Updated: 2023/07/30 21:01:30 by math             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,28 +16,6 @@ int32_t	hard_code_1philo(void)
 {
 	printf("%i %i has taken a fork\n", 0, 1);
 	usleep(get_params()->time_to_die * 1000);
-	printf("%i %i died\n", get_params()->time_to_die, 1);
-	return (0);
-}
-
-int32_t	hard_code_philo_eat_gr(void)
-{
-	printf("%i %i has taken a fork\n", 0, 1);
-	printf("%i %i has taken a fork\n", 0, 1);
-	printf("%i %i is eating\n", 0, 1);
-	usleep(get_params()->time_to_die * 1000);
-	printf("%i %i died\n", get_params()->time_to_die, 1);
-	return (0);
-}
-
-int32_t	hard_code_philo_eat_slp_gr(void)
-{
-	printf("%i %i has taken a fork\n", 0, 1);
-	printf("%i %i has taken a fork\n", 0, 1);
-	printf("%i %i is eating\n", 0, 1);
-	usleep(get_params()->time_to_eat * 1000);
-	printf("%i %i is sleeping\n", get_params()->time_to_eat, 1);
-	usleep(get_params()->time_to_die - get_params()->time_to_eat);
 	printf("%i %i died\n", get_params()->time_to_die, 1);
 	return (0);
 }
@@ -61,5 +39,7 @@ int32_t	handle_parse_n_error(int32_t argc, char **argv)
 		return (error_msg("error: time to eat parameter is invalid.\n"));
 	else if (get_params()->time_to_sleep < 60)
 		return (error_msg("error: time to sleep parameter is invalid.\n"));
+	else if (get_params()->time_to_die < 60)
+		return (error_msg("error: time to die parameter is invalid.\n"));
 	return (0);
 }
