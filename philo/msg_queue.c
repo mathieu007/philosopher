@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   msg_queue.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mroy <mroy@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: math <math@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/18 08:44:52 by math              #+#    #+#             */
-/*   Updated: 2023/07/28 12:01:45 by mroy             ###   ########.fr       */
+/*   Updated: 2023/07/28 18:19:40 by math             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,7 @@ bool	print_msg_buffer(t_data *data)
 	}
 	buff->count = 0;
 	pthread_mutex_unlock(data->write);
-	write(STDOUT_FILENO, read_buff, count);
+	if (write(STDOUT_FILENO, read_buff, count) == -1)
+		return (true);
 	return (stop_print);
 }

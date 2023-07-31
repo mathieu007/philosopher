@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philosophers.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mroy <mroy@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: math <math@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/18 08:44:52 by math              #+#    #+#             */
-/*   Updated: 2023/07/28 12:13:29 by mroy             ###   ########.fr       */
+/*   Updated: 2023/07/30 20:24:09 by math             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,23 +15,23 @@
 static inline void	inner_philo_even(t_philo *ph, t_data *data)
 {
 	pthread_mutex_lock(ph->left_fork);
-	save_msg(" has taken a fork\n", ph, data);
 	pthread_mutex_lock(ph->right_fork);
 	save_msg(" has taken a fork\n", ph, data);
+	save_msg(" has taken a fork\n", ph, data);
 	eating(ph, data);
-	pthread_mutex_unlock(ph->left_fork);
 	pthread_mutex_unlock(ph->right_fork);
+	pthread_mutex_unlock(ph->left_fork);
 	sleeping(ph, data);
 	thinking(ph, data);
 }
 
 void	*philo_even_work(void *philo)
 {
-	t_philo			*ph;
-	t_data			*data;
-	int32_t			eat_count;
+	t_philo	*ph;
+	t_data	*data;
+	int32_t	eat_count;
 
-	ph = (t_philo *) philo;
+	ph = (t_philo *)philo;
 	data = ph->data;
 	eat_count = ph->params->must_eat;
 	pthread_mutex_lock(data->write);
@@ -53,23 +53,23 @@ void	*philo_even_work(void *philo)
 static inline void	inner_philo_odd(t_philo *ph, t_data *data)
 {
 	pthread_mutex_lock(ph->right_fork);
-	save_msg(" has taken a fork\n", ph, data);
 	pthread_mutex_lock(ph->left_fork);
 	save_msg(" has taken a fork\n", ph, data);
+	save_msg(" has taken a fork\n", ph, data);
 	eating(ph, data);
-	pthread_mutex_unlock(ph->right_fork);
 	pthread_mutex_unlock(ph->left_fork);
+	pthread_mutex_unlock(ph->right_fork);
 	sleeping(ph, data);
 	thinking(ph, data);
 }
 
 void	*philo_odd_work(void *philo)
 {
-	t_philo			*ph;
-	t_data			*data;
-	int32_t			eat_count;
+	t_philo	*ph;
+	t_data	*data;
+	int32_t	eat_count;
 
-	ph = (t_philo *) philo;
+	ph = (t_philo *)philo;
 	data = ph->data;
 	eat_count = ph->params->must_eat;
 	pthread_mutex_lock(data->write);
@@ -85,5 +85,6 @@ void	*philo_odd_work(void *philo)
 		eat_count--;
 	}
 	pthread_mutex_unlock(ph->start_simulation);
+
 	return (&(ph->exit_status));
 }

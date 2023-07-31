@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   dispatch.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mroy <mroy@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: math <math@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/18 08:44:52 by math              #+#    #+#             */
-/*   Updated: 2023/05/02 08:18:26 by mroy             ###   ########.fr       */
+/*   Updated: 2023/07/30 13:32:49 by math             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,13 +23,12 @@ static void	init_timing(int32_t ph_cnt)
 	usleep(data->base_time - get_time_stamp_mc() - 10000);
 }
 
-static void	dispatch_philos_timing(t_philo **phs, int32_t ph_cnt,
-	int32_t i, int32_t rev_i)
+static void	dispatch_philos_timing(t_philo **phs, int32_t ph_cnt, int32_t i,
+		int32_t rev_i)
 {
-	int64_t		interval;
+	int64_t	interval;
 
 	interval = get_interval();
-	sleeper(phs[i]->start_time);
 	while (i <= ph_cnt / 2)
 	{
 		pthread_mutex_unlock(phs[i]->start_simulation);
@@ -40,7 +39,7 @@ static void	dispatch_philos_timing(t_philo **phs, int32_t ph_cnt,
 			sleeper(phs[rev_i]->start_time + interval);
 		}
 		else
-			break ;
+			return ;
 		rev_i -= 2;
 		i += 2;
 	}
@@ -48,8 +47,8 @@ static void	dispatch_philos_timing(t_philo **phs, int32_t ph_cnt,
 
 void	dispatch_philos(t_philo **phs, int32_t ph_cnt)
 {
-	int32_t		i;
-	int32_t		rev_i;
+	int32_t	i;
+	int32_t	rev_i;
 
 	init_timing(ph_cnt);
 	i = 0;
@@ -57,6 +56,7 @@ void	dispatch_philos(t_philo **phs, int32_t ph_cnt)
 		rev_i = ph_cnt - 3;
 	else
 		rev_i = ph_cnt - 2;
+	sleeper(phs[i]->start_time);
 	dispatch_philos_timing(phs, ph_cnt, i, rev_i);
 	i = 1;
 	if (is_odd(ph_cnt))
