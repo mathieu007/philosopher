@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   msg_queue.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: math <math@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: mroy <mroy@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/18 08:44:52 by math              #+#    #+#             */
-/*   Updated: 2023/07/28 18:19:40 by math             ###   ########.fr       */
+/*   Updated: 2023/07/31 08:30:14 by mroy             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,21 +33,12 @@ void	save_to_buffer(const char *msg, t_philo *ph, t_print_buffer *buff)
 	buff->count = i;
 }
 
-bool	print_msg_buffer(t_data *data)
+int32_t	count_buffer(t_print_buffer	*buff, t_data *data)
 {
-	char			*write_buff;
-	char			*read_buff;
-	int32_t			count;
-	bool			stop_print;
-	t_print_buffer	*buff;
+	int32_t		count;
+	bool		stop_print;
 
 	stop_print = false;
-	pthread_mutex_lock(data->write);
-	buff = data->buffer;
-	write_buff = buff->read;
-	read_buff = buff->write;
-	buff->write = write_buff;
-	buff->read = read_buff;
 	stop_print = buff->stop_print;
 	if (!stop_print)
 		count = buff->count;
@@ -57,6 +48,24 @@ bool	print_msg_buffer(t_data *data)
 		count = buff->stop_count;
 	}
 	buff->count = 0;
+	return (count);
+}
+
+bool	print_msg_buffer(t_data *data)
+{
+	char			*write_buff;
+	char			*read_buff;
+	int32_t			count;
+	bool			stop_print;
+	t_print_buffer	*buff;
+
+	pthread_mutex_lock(data->write);
+	buff = data->buffer;
+	write_buff = buff->read;
+	read_buff = buff->write;
+	buff->write = write_buff;
+	buff->read = read_buff;
+	count = count_buffer(buff, data);
 	pthread_mutex_unlock(data->write);
 	if (write(STDOUT_FILENO, read_buff, count) == -1)
 		return (true);

@@ -6,7 +6,7 @@
 /*   By: mroy <mroy@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/18 08:44:52 by math              #+#    #+#             */
-/*   Updated: 2023/04/27 12:21:29 by mroy             ###   ########.fr       */
+/*   Updated: 2023/07/31 08:26:28 by mroy             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,7 +115,7 @@ void	*free_mutexes(void)
 		pthread_mutex_destroy(data->write);
 		free(data->write);
 		data->write = NULL;
-	}	
+	}
 	free_philo_mutexes(get_philosophers());
 	if (data->forks)
 		free(data->forks);

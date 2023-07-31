@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   sleeper.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: math <math@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: mroy <mroy@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/30 20:59:45 by math              #+#    #+#             */
-/*   Updated: 2023/07/30 20:59:47 by math             ###   ########.fr       */
+/*   Updated: 2023/07/31 07:56:21 by mroy             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ inline void	three_stage_sleep(const t_philo *ph, int32_t end_time)
 		usleep(time);
 }
 
-static inline void	think_sleeper(const t_philo *ph, int32_t end_time)
+inline void	think_sleeper(const t_philo *ph, int32_t end_time)
 {
 	int32_t	time;
 

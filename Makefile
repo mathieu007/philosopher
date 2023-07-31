@@ -14,10 +14,11 @@ OBJEXT			= o
 
 #Flags, Libraries and Includes
 #CFLAGS      = -Wall -Wextra -Werror -g -fsanitize=thread
-CFLAGS      = -Wall -Wextra -Werror -g -O2
-INCDEP      = -I$(INCDIR)
+CFLAGS      = -Wall -Wextra -Werror -g
+INCDEP      = -I$(INCDIR) 
 
 SOURCES     =	philo/free.c	\
+				philo/sleeper.c	\
 				philo/actions.c	\
 				philo/mutexes.c	\
 				philo/philosophers.c	\

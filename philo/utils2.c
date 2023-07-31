@@ -6,7 +6,7 @@
 /*   By: mroy <mroy@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/24 09:51:17 by math              #+#    #+#             */
-/*   Updated: 2023/04/21 10:41:06 by mroy             ###   ########.fr       */
+/*   Updated: 2023/07/31 08:25:52 by mroy             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ bool	is_even(int32_t num)
 }
 
 inline void	sleeper(int32_t end_time)
-{	
+{
 	int32_t	time;
 
 	time = 101;
