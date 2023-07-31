@@ -6,7 +6,7 @@
 /*   By: mroy <mroy@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/28 15:21:35 by mroy              #+#    #+#             */
-/*   Updated: 2023/07/31 08:00:41 by mroy             ###   ########.fr       */
+/*   Updated: 2023/07/31 09:52:41 by mroy             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,6 +121,7 @@ void				three_stage_sleep(const t_philo *ph, int32_t end_time);
 void				action_or_die(t_philo *ph, t_data *data, const char *msg);
 bool				die_in_action(t_philo *ph, t_data *data,
 						int32_t action_time);
+bool				die_thinking(t_philo *ph, t_data *data);
 int32_t				two_stage_sleep(const t_philo *ph, int32_t time_to_sleep,
 						int32_t end_time);
 bool				exit_threads(bool update_val);
