@@ -6,7 +6,7 @@
 /*   By: mroy <mroy@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/18 08:44:52 by math              #+#    #+#             */
-/*   Updated: 2023/07/31 11:00:07 by mroy             ###   ########.fr       */
+/*   Updated: 2023/08/02 15:14:14 by mroy             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,9 +41,12 @@ inline bool	die_thinking(t_philo *ph, t_data *data)
 
 inline void	eating(t_philo *ph, t_data *data)
 {
-	save_eat(ph, data);
-	if (die_in_action(ph, data, ph->time_to_eat))
+	printf("last action: %d\n", ph->last_action);
+	printf("death time: %d\n", ph->death_time);
+	printf("time_to_eat: %d\n", ph->time_to_eat);
+	if (die_in_action(ph, data, ph->time_to_die))
 		return ;
+	save_eat(ph, data);
 	three_stage_sleep(ph, ph->last_meal + ph->time_to_eat);
 }
 
