@@ -6,7 +6,7 @@
 /*   By: mroy <mroy@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/18 08:44:52 by math              #+#    #+#             */
-/*   Updated: 2023/07/31 10:23:23 by mroy             ###   ########.fr       */
+/*   Updated: 2023/08/03 13:04:16 by mroy             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ void	set_philo_timing(int64_t start_time, t_philo *ph, const t_data *data,
 			- (params->time_to_eat - params->time_to_sleep) * 1000);
 }
 
-int32_t	set_philos_timing(int64_t start_time, int32_t ph_cnt, int32_t i,
+int64_t	set_philos_timing(int64_t start_time, int32_t ph_cnt, int32_t i,
 		int32_t rev_i)
 {
 	int64_t			interval;
@@ -45,7 +45,7 @@ int32_t	set_philos_timing(int64_t start_time, int32_t ph_cnt, int32_t i,
 	data = get_data();
 	phs = get_philosophers();
 	interval = get_interval();
-	while (i <= ph_cnt / 2)
+	while (i < ph_cnt / 2)
 	{
 		set_philo_timing(start_time, phs[i], data, params);
 		start_time += interval;
@@ -76,6 +76,26 @@ int32_t	set_odd_index(int32_t ph_cnt)
 	return (ph_cnt - 1);
 }
 
+int64_t	set_timings(int32_t ph_cnt, int32_t i, int32_t rev_i, int64_t start_time)
+{
+	t_param	*params;
+	t_philo	**phs;
+	int32_t	interval;
+
+	params = get_params();
+	phs = get_philosophers();
+	interval = get_interval();
+	start_time += interval;
+	if (params->time_to_die > params->time_to_eat)
+	{
+		start_time = start_time + (params->time_to_eat * 1000);
+		set_philos_timing(start_time, ph_cnt, i, rev_i);
+	}
+	else
+		start_time = set_philos_timing(start_time, ph_cnt, i, rev_i);
+	return (start_time);
+}
+
 void	set_philo_start_time(int32_t ph_cnt)
 {
 	int32_t	i;
@@ -89,14 +109,17 @@ void	set_philo_start_time(int32_t ph_cnt)
 	params = get_params();
 	start_time = get_data()->base_time;
 	rev_i = set_even_index(ph_cnt);
-	set_philos_timing(start_time, ph_cnt, i, rev_i);
+	if (params->time_to_die > params->time_to_eat)
+		set_philos_timing(start_time, ph_cnt, i, rev_i);
+	else
+		start_time = set_philos_timing(start_time, ph_cnt, i, rev_i);
 	i = 1;
 	rev_i = set_odd_index(ph_cnt);
-	start_time = start_time + params->time_to_eat * 1000;
-	set_philos_timing(start_time, ph_cnt, i, rev_i);
+	start_time = set_timings(ph_cnt, i, rev_i, start_time);
 	if (is_odd(ph_cnt))
 	{
-		start_time = start_time + (params->time_to_eat * 1000);
+		if (params->time_to_die > params->time_to_eat)
+			start_time = start_time + (params->time_to_eat * 1000);
 		set_philo_timing(start_time, phs[ph_cnt - 1], get_data(), params);
 	}
 }

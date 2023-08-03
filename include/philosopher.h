@@ -6,7 +6,7 @@
 /*   By: mroy <mroy@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/28 15:21:35 by mroy              #+#    #+#             */
-/*   Updated: 2023/07/31 09:52:41 by mroy             ###   ########.fr       */
+/*   Updated: 2023/08/03 11:53:20 by mroy             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,6 +121,7 @@ void				three_stage_sleep(const t_philo *ph, int32_t end_time);
 void				action_or_die(t_philo *ph, t_data *data, const char *msg);
 bool				die_in_action(t_philo *ph, t_data *data,
 						int32_t action_time);
+bool				die_sleeping(t_philo *ph, t_data *data);
 bool				die_thinking(t_philo *ph, t_data *data);
 int32_t				two_stage_sleep(const t_philo *ph, int32_t time_to_sleep,
 						int32_t end_time);
@@ -166,7 +167,7 @@ void				sleeper(int32_t end_time);
 
 void				set_philo_timing(int64_t start_time, t_philo *ph,
 						const t_data *data, const t_param *params);
-int32_t				set_philos_timing(int64_t start_time, int32_t ph_cnt,
+int64_t				set_philos_timing(int64_t start_time, int32_t ph_cnt,
 						int32_t i, int32_t rev_i);
 int32_t				set_even_index(int32_t ph_cnt);
 int32_t				set_odd_index(int32_t ph_cnt);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   save_msg.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: math <math@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: mroy <mroy@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/18 08:44:52 by math              #+#    #+#             */
-/*   Updated: 2023/07/29 13:05:54 by math             ###   ########.fr       */
+/*   Updated: 2023/08/03 12:44:35 by mroy             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,8 +38,6 @@ inline void	save_eat(t_philo *ph, t_data *data)
 	if (ph->exit_status == 1)
 		return ;
 	pthread_mutex_lock(data->write);
-	*(ph->right_fork_taken) = true;
-	*(ph->left_fork_taken) = true;
 	if (!data->exit_threads)
 		action_or_die(ph, data, " is eating\n");
 	else

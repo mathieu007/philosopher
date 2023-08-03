@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   dispatch.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: math <math@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: mroy <mroy@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/18 08:44:52 by math              #+#    #+#             */
-/*   Updated: 2023/07/30 13:32:49 by math             ###   ########.fr       */
+/*   Updated: 2023/08/03 12:33:39 by mroy             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,14 +29,14 @@ static void	dispatch_philos_timing(t_philo **phs, int32_t ph_cnt, int32_t i,
 	int64_t	interval;
 
 	interval = get_interval();
-	while (i <= ph_cnt / 2)
+	while (i < ph_cnt / 2)
 	{
+		sleeper(phs[i]->start_time);
 		pthread_mutex_unlock(phs[i]->start_simulation);
-		sleeper(phs[i]->start_time + interval);
 		if (rev_i > i)
 		{
+			sleeper(phs[rev_i]->start_time);
 			pthread_mutex_unlock(phs[rev_i]->start_simulation);
-			sleeper(phs[rev_i]->start_time + interval);
 		}
 		else
 			return ;
@@ -56,7 +56,6 @@ void	dispatch_philos(t_philo **phs, int32_t ph_cnt)
 		rev_i = ph_cnt - 3;
 	else
 		rev_i = ph_cnt - 2;
-	sleeper(phs[i]->start_time);
 	dispatch_philos_timing(phs, ph_cnt, i, rev_i);
 	i = 1;
 	if (is_odd(ph_cnt))

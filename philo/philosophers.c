@@ -6,7 +6,7 @@
 /*   By: mroy <mroy@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/18 08:44:52 by math              #+#    #+#             */
-/*   Updated: 2023/07/31 08:30:50 by mroy             ###   ########.fr       */
+/*   Updated: 2023/08/03 12:38:24 by mroy             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,8 @@ static inline void	inner_philo_even(t_philo *ph, t_data *data)
 	save_msg(" has taken a fork\n", ph, data);
 	save_msg(" has taken a fork\n", ph, data);
 	eating(ph, data);
-	pthread_mutex_unlock(ph->right_fork);
 	pthread_mutex_unlock(ph->left_fork);
+	pthread_mutex_unlock(ph->right_fork);
 	sleeping(ph, data);
 	thinking(ph, data);
 }
@@ -57,8 +57,8 @@ static inline void	inner_philo_odd(t_philo *ph, t_data *data)
 	save_msg(" has taken a fork\n", ph, data);
 	save_msg(" has taken a fork\n", ph, data);
 	eating(ph, data);
-	pthread_mutex_unlock(ph->left_fork);
 	pthread_mutex_unlock(ph->right_fork);
+	pthread_mutex_unlock(ph->left_fork);
 	sleeping(ph, data);
 	thinking(ph, data);
 }

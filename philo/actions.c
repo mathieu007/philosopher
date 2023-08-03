@@ -6,15 +6,16 @@
 /*   By: mroy <mroy@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/18 08:44:52 by math              #+#    #+#             */
-/*   Updated: 2023/08/02 15:14:14 by mroy             ###   ########.fr       */
+/*   Updated: 2023/08/03 11:13:13 by mroy             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philosopher.h"
 
-inline bool	die_in_action(t_philo *ph, t_data *data, int32_t action_time)
+inline bool	die_sleeping(t_philo *ph, t_data *data)
 {
-	if (ph->exit_status == 0 && ph->death_time < ph->last_action + action_time)
+	if ((ph->exit_status == 0
+			&& ph->death_time < ph->last_action + ph->time_to_sleep))
 	{
 		three_stage_sleep(ph, ph->death_time);
 		pthread_mutex_lock(data->write);
@@ -22,6 +23,8 @@ inline bool	die_in_action(t_philo *ph, t_data *data, int32_t action_time)
 		pthread_mutex_unlock(data->write);
 		return (true);
 	}
+	if (ph->time_to_sleep > ph->time_to_die)
+		return (true);
 	return (false);
 }
 
@@ -39,21 +42,34 @@ inline bool	die_thinking(t_philo *ph, t_data *data)
 	return (false);
 }
 
+static inline bool	die_eating(t_philo *ph, t_data *data)
+{
+	if ((ph->exit_status == 0
+			&& ph->death_time < ph->last_action + ph->time_to_eat))
+	{
+		three_stage_sleep(ph, ph->death_time);
+		pthread_mutex_lock(data->write);
+		save_die_msg(ph, data);
+		pthread_mutex_unlock(data->write);
+		return (true);
+	}
+	if (ph->time_to_eat > ph->time_to_die)
+		return (true);
+	return (false);
+}
+
 inline void	eating(t_philo *ph, t_data *data)
 {
-	printf("last action: %d\n", ph->last_action);
-	printf("death time: %d\n", ph->death_time);
-	printf("time_to_eat: %d\n", ph->time_to_eat);
-	if (die_in_action(ph, data, ph->time_to_die))
-		return ;
 	save_eat(ph, data);
+	if (die_eating(ph, data))
+		return ;
 	three_stage_sleep(ph, ph->last_meal + ph->time_to_eat);
 }
 
 inline void	sleeping(t_philo *ph, t_data *data)
 {
 	save_msg(" is sleeping\n", ph, data);
-	if (die_in_action(ph, data, ph->time_to_sleep))
+	if (die_sleeping(ph, data))
 		return ;
 	three_stage_sleep(ph, ph->last_action + ph->time_to_sleep);
 }
