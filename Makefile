@@ -18,6 +18,7 @@ CFLAGS      = -Wall -Wextra -Werror -g -O2
 INCDEP      = -I$(INCDIR) 
 
 SOURCES     =	philo/free.c	\
+				philo/ft_strfind.c	\
 				philo/sleeper.c	\
 				philo/actions.c	\
 				philo/mutexes.c	\

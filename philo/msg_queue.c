@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   msg_queue.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mroy <mroy@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: math <math@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/18 08:44:52 by math              #+#    #+#             */
-/*   Updated: 2023/07/31 08:36:06 by mroy             ###   ########.fr       */
+/*   Updated: 2023/08/03 18:42:33 by math             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,8 +17,6 @@ void	save_to_buffer(const char *msg, t_philo *ph, t_print_buffer *buff)
 	char	*write_buff;
 	int32_t	i;
 
-	if (buff->stop_print)
-		return ;
 	i = buff->count;
 	write_buff = buff->write;
 	i += uint32_to_str((uint32_t)ph->last_action / 1000, &write_buff[i]);
@@ -33,10 +31,10 @@ void	save_to_buffer(const char *msg, t_philo *ph, t_print_buffer *buff)
 	buff->count = i;
 }
 
-int32_t	count_buffer(t_print_buffer	*buff, t_data *data)
+int32_t	count_buffer(t_print_buffer *buff, t_data *data)
 {
-	int32_t		count;
-	bool		stop_print;
+	int32_t	count;
+	bool	stop_print;
 
 	stop_print = buff->stop_print;
 	if (!stop_print)
@@ -67,6 +65,8 @@ bool	print_msg_buffer(t_data *data)
 	count = count_buffer(buff, data);
 	stop_print = buff->stop_print;
 	pthread_mutex_unlock(data->write);
+	if (stop_print)
+		count = ft_strfind(read_buff, "died\n") - read_buff + 5;
 	if (write(STDOUT_FILENO, read_buff, count) == -1)
 		return (true);
 	return (stop_print);
