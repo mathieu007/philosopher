@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   dispatch.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mroy <mroy@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: math <math@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/18 08:44:52 by math              #+#    #+#             */
-/*   Updated: 2023/08/03 14:08:23 by mroy             ###   ########.fr       */
+/*   Updated: 2023/08/03 16:28:11 by math             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,9 +26,6 @@ static void	init_timing(int32_t ph_cnt)
 static void	dispatch_philos_timing(t_philo **phs, int32_t ph_cnt, int32_t i,
 		int32_t rev_i)
 {
-	int64_t	interval;
-
-	interval = get_interval();
 	while (i < ph_cnt / 2)
 	{
 		sleeper(phs[i]->start_time);
