@@ -6,7 +6,7 @@
 /*   By: math <math@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/18 08:44:52 by math              #+#    #+#             */
-/*   Updated: 2023/08/03 16:47:07 by math             ###   ########.fr       */
+/*   Updated: 2023/08/03 16:58:31 by math             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,9 +42,9 @@ inline void	save_eat(t_philo *ph, t_data *data)
 		action_or_die(ph, data, " is eating\n");
 	else
 		ph->exit_status = 1;
+	pthread_mutex_unlock(data->write);
 	ph->last_meal = ph->last_action;
 	ph->death_time = ph->last_meal + ph->time_to_die;
-	pthread_mutex_unlock(data->write);
 }
 
 inline void	save_msg(const char *msg, t_philo *ph, t_data *data)
