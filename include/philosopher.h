@@ -6,14 +6,14 @@
 /*   By: math <math@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/28 15:21:35 by mroy              #+#    #+#             */
-/*   Updated: 2023/08/03 18:38:39 by math             ###   ########.fr       */
+/*   Updated: 2023/08/03 18:46:03 by math             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef PHILOSOPHER_H
 # define PHILOSOPHER_H
 
-# define SLEEP_BUFFER 4000
+# define SLEEP_BUFFER 5000
 
 # include <fcntl.h>
 # include <pthread.h>
