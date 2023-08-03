@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   dispatch2.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mroy <mroy@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: math <math@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/18 08:44:52 by math              #+#    #+#             */
-/*   Updated: 2023/08/03 14:07:44 by mroy             ###   ########.fr       */
+/*   Updated: 2023/08/03 16:28:38 by math             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,11 +79,9 @@ int32_t	set_odd_index(int32_t ph_cnt)
 int64_t	set_timings(int32_t ph_cnt, int32_t i, int32_t rev_i, int64_t start_time)
 {
 	t_param	*params;
-	t_philo	**phs;
 	int32_t	interval;
 
 	params = get_params();
-	phs = get_philosophers();
 	interval = get_interval();
 	start_time += interval;
 	if (params->time_to_die > params->time_to_eat)
