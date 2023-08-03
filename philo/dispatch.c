@@ -6,7 +6,7 @@
 /*   By: mroy <mroy@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/18 08:44:52 by math              #+#    #+#             */
-/*   Updated: 2023/08/03 12:33:39 by mroy             ###   ########.fr       */
+/*   Updated: 2023/08/03 14:08:23 by mroy             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,10 @@ void	dispatch_philos(t_philo **phs, int32_t ph_cnt)
 		rev_i = ph_cnt - 2;
 	else
 		rev_i = ph_cnt - 1;
-	dispatch_philos_timing(phs, ph_cnt, i, rev_i);
+	if (ph_cnt < 4)
+		dispatch_philos_timing(phs, 4, i, rev_i);
+	else
+		dispatch_philos_timing(phs, ph_cnt, i, rev_i);
 	if (is_odd(ph_cnt))
 		dispatch_philos_timing(phs, ph_cnt * 2, ph_cnt - 1, ph_cnt - 1);
 }

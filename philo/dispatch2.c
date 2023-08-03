@@ -6,7 +6,7 @@
 /*   By: mroy <mroy@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/18 08:44:52 by math              #+#    #+#             */
-/*   Updated: 2023/08/03 13:04:16 by mroy             ###   ########.fr       */
+/*   Updated: 2023/08/03 14:07:44 by mroy             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,7 +115,10 @@ void	set_philo_start_time(int32_t ph_cnt)
 		start_time = set_philos_timing(start_time, ph_cnt, i, rev_i);
 	i = 1;
 	rev_i = set_odd_index(ph_cnt);
-	start_time = set_timings(ph_cnt, i, rev_i, start_time);
+	if (ph_cnt < 4)
+		start_time = set_timings(4, i, rev_i, start_time);
+	else
+		start_time = set_timings(ph_cnt, i, rev_i, start_time);
 	if (is_odd(ph_cnt))
 	{
 		if (params->time_to_die > params->time_to_eat)
