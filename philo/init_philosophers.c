@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init_philosophers.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mroy <mroy@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: math <math@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/18 08:44:52 by math              #+#    #+#             */
-/*   Updated: 2023/07/28 12:18:18 by mroy             ###   ########.fr       */
+/*   Updated: 2023/08/04 10:18:34 by math             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@ static void	set_philo(t_philo *ph, t_data *data, int32_t i)
 	ph->params = get_params();
 	ph->data = data;
 	ph->position = i;
+	ph->dispatched = false;
 	ph->name = i + 1;
 	ph->eat_count = 0;
 	ph->last_meal = 0;

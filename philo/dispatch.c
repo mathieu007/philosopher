@@ -6,7 +6,7 @@
 /*   By: math <math@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/18 08:44:52 by math              #+#    #+#             */
-/*   Updated: 2023/08/03 16:28:11 by math             ###   ########.fr       */
+/*   Updated: 2023/08/04 10:17:17 by math             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,14 +26,22 @@ static void	init_timing(int32_t ph_cnt)
 static void	dispatch_philos_timing(t_philo **phs, int32_t ph_cnt, int32_t i,
 		int32_t rev_i)
 {
-	while (i < ph_cnt / 2)
+	while (i <= ph_cnt / 2)
 	{
-		sleeper(phs[i]->start_time);
-		pthread_mutex_unlock(phs[i]->start_simulation);
+		if (!phs[i]->dispatched)
+		{
+			phs[i]->dispatched = true;
+			sleeper(phs[i]->start_time);
+			pthread_mutex_unlock(phs[i]->start_simulation);
+		}
 		if (rev_i > i)
 		{
-			sleeper(phs[rev_i]->start_time);
-			pthread_mutex_unlock(phs[rev_i]->start_simulation);
+			if (!phs[rev_i]->dispatched)
+			{
+				phs[rev_i]->dispatched = true;
+				sleeper(phs[rev_i]->start_time);
+				pthread_mutex_unlock(phs[rev_i]->start_simulation);
+			}
 		}
 		else
 			return ;

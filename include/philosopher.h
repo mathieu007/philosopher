@@ -6,7 +6,7 @@
 /*   By: math <math@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/28 15:21:35 by mroy              #+#    #+#             */
-/*   Updated: 2023/08/03 18:46:03 by math             ###   ########.fr       */
+/*   Updated: 2023/08/04 10:15:14 by math             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,6 +81,7 @@ typedef struct s_philo
 	int32_t			eat_count;
 	int32_t			position;
 	t_param			*params;
+	bool			dispatched;
 	struct s_data	*data;
 }					t_philo;
 

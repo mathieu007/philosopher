@@ -6,7 +6,7 @@
 /*   By: math <math@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/18 08:44:52 by math              #+#    #+#             */
-/*   Updated: 2023/08/03 16:28:38 by math             ###   ########.fr       */
+/*   Updated: 2023/08/04 10:32:36 by math             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,10 +23,10 @@ void	set_philo_timing(int64_t start_time, t_philo *ph, const t_data *data,
 	set_constant(data->params->time_to_think * 1000, &(ph->time_to_think));
 	if (is_odd(params->num_philo))
 		set_constant((ph->time_to_eat * 3) - ph->time_to_eat
-			- ph->time_to_sleep, &(ph->next_time_cycle));
+				- ph->time_to_sleep, &(ph->next_time_cycle));
 	else
 		set_constant((ph->time_to_eat * 2) - ph->time_to_eat
-			- ph->time_to_sleep, &(ph->next_time_cycle));
+				- ph->time_to_sleep, &(ph->next_time_cycle));
 	ph->last_meal = (int32_t)(start_time - data->base_time
 			- (params->time_to_eat - params->time_to_sleep) * 1000);
 	ph->last_action = (int32_t)(start_time - data->base_time
@@ -45,7 +45,7 @@ int64_t	set_philos_timing(int64_t start_time, int32_t ph_cnt, int32_t i,
 	data = get_data();
 	phs = get_philosophers();
 	interval = get_interval();
-	while (i < ph_cnt / 2)
+	while (i <= ph_cnt / 2)
 	{
 		set_philo_timing(start_time, phs[i], data, params);
 		start_time += interval;
@@ -76,7 +76,8 @@ int32_t	set_odd_index(int32_t ph_cnt)
 	return (ph_cnt - 1);
 }
 
-int64_t	set_timings(int32_t ph_cnt, int32_t i, int32_t rev_i, int64_t start_time)
+int64_t	set_timings(int32_t ph_cnt, int32_t i, int32_t rev_i,
+		int64_t start_time)
 {
 	t_param	*params;
 	int32_t	interval;
