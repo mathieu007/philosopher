@@ -6,7 +6,7 @@
 /*   By: mroy <mroy@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/18 08:44:52 by math              #+#    #+#             */
-/*   Updated: 2023/07/31 08:26:28 by mroy             ###   ########.fr       */
+/*   Updated: 2023/08/07 09:41:10 by mroy             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,6 +83,8 @@ static void	free_philo_mutexes(t_philo **phs)
 	int32_t		i;
 	int32_t		count;
 
+	if (!get_params() || !phs)
+		return ;
 	count = get_params()->num_philo;
 	i = 0;
 	if (phs)

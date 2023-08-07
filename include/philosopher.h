@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philosopher.h                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: math <math@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: mroy <mroy@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/28 15:21:35 by mroy              #+#    #+#             */
-/*   Updated: 2023/08/04 10:15:14 by math             ###   ########.fr       */
+/*   Updated: 2023/08/07 11:01:54 by mroy             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,6 +99,12 @@ typedef struct s_data
 	t_print_buffer	*buffer;
 }					t_data;
 
+bool				die_eating(t_philo *ph, t_data *data);
+int64_t				set_timings(int32_t ph_cnt, int32_t i, int32_t rev_i,
+						int64_t start_time);
+int64_t				set_philos_timing(int64_t start_time, int32_t ph_cnt,
+						int32_t i, int32_t rev_i);
+long				ft_atoi_long(const char *str);
 char				*ft_strfind(char *src, const char *to_search);
 void				three_stage_sleep(const t_philo *ph, int32_t end_time);
 void				thinking(t_philo *ph, t_data *data);

@@ -1,0 +1,5 @@
+This philosopher follow the Happens-Before Relationship:
+
+Happens-Before Relationship: If there is a consistent order in which the threads are executing (either due to thread scheduling or other factors), it might create an implicit "happens-before" relationship, which ensures that the threads do not concurrently access the same section of the array. This happens-before relationship can effectively prevent data races in your specific scenario.
+
+It can handle more than 2000 threads on Mac and more than twice on ubuntu linux.

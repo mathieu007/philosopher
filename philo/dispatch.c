@@ -3,14 +3,56 @@
 /*                                                        :::      ::::::::   */
 /*   dispatch.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: math <math@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: mroy <mroy@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/18 08:44:52 by math              #+#    #+#             */
-/*   Updated: 2023/08/04 10:17:17 by math             ###   ########.fr       */
+/*   Updated: 2023/08/07 10:28:04 by mroy             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philosopher.h"
+
+
+void	set_odd_start_time(int32_t ph_cnt, t_philo **phs, int64_t start_time)
+{
+	t_param	*params;
+	int32_t	i;
+	int32_t	rev_i;
+
+	params = get_params();
+	i = 1;
+	rev_i = set_odd_index(ph_cnt);
+	if (ph_cnt < 4)
+		start_time = set_timings(4, i, rev_i, start_time);
+	else
+		start_time = set_timings(ph_cnt, i, rev_i, start_time);
+	if (is_odd(ph_cnt))
+	{
+		if (params->time_to_die > params->time_to_eat)
+			start_time = start_time + (params->time_to_eat * 1000);
+		set_philo_timing(start_time, phs[ph_cnt - 1], get_data(), params);
+	}
+}
+
+void	set_philo_start_time(int32_t ph_cnt)
+{
+	int32_t	i;
+	int32_t	rev_i;
+	int64_t	start_time;
+	t_param	*params;
+	t_philo	**phs;
+
+	i = 0;
+	phs = get_philosophers();
+	params = get_params();
+	start_time = get_data()->base_time;
+	rev_i = set_even_index(ph_cnt);
+	if (params->time_to_die > params->time_to_eat)
+		set_philos_timing(start_time, ph_cnt, i, rev_i);
+	else
+		start_time = set_philos_timing(start_time, ph_cnt, i, rev_i);
+	set_odd_start_time(ph_cnt, phs, start_time);
+}
 
 static void	init_timing(int32_t ph_cnt)
 {

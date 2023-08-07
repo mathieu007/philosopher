@@ -6,7 +6,7 @@
 /*   By: mroy <mroy@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/18 08:44:52 by math              #+#    #+#             */
-/*   Updated: 2023/07/31 10:59:03 by mroy             ###   ########.fr       */
+/*   Updated: 2023/08/07 10:36:25 by mroy             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,11 +65,38 @@ void	set_time_to_think(t_param	*params)
 	}
 }
 
+bool	is_valid_integer_value(int32_t argc, char **argv)
+{
+	int64_t	val;
+
+	val = ft_atoi_long(argv[1]) * 1000;
+	if (val > INT32_MAX || val < 0)
+		return (false);
+	val = ft_atoi_long(argv[2]) * 1000;
+	if (val > INT32_MAX || val < 0)
+		return (false);
+	val = ft_atoi_long(argv[3]) * 1000;
+	if (val > INT32_MAX || val < 0)
+		return (false);
+	val = ft_atoi_long(argv[4]) * 1000;
+	if (val > INT32_MAX || val < 0)
+		return (false);
+	if (argc == 6)
+	{
+		val = ft_atoi_long(argv[5]);
+		if (val > INT32_MAX || val < 0)
+			return (false);
+	}
+	return (true);
+}
+
 bool	try_init_params(int32_t argc, char **argv)
 {
 	static t_param	params;
 
 	get_data()->params = &params;
+	if (!is_valid_integer_value(argc, argv))
+		return (false);
 	if (!is_valid(argv[1]) || !is_valid(argv[2]) || !is_valid(argv[3])
 		|| !is_valid(argv[4]))
 		return (false);

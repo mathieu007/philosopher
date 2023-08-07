@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   msg_queue.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: math <math@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: mroy <mroy@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/18 08:44:52 by math              #+#    #+#             */
-/*   Updated: 2023/08/03 18:42:33 by math             ###   ########.fr       */
+/*   Updated: 2023/08/07 09:03:25 by mroy             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,7 @@ int32_t	count_buffer(t_print_buffer *buff, t_data *data)
 	{
 		data->exit_threads = true;
 		count = buff->stop_count;
+		buff->stop_count = 0;
 	}
 	buff->count = 0;
 	return (count);
@@ -66,7 +67,11 @@ bool	print_msg_buffer(t_data *data)
 	stop_print = buff->stop_print;
 	pthread_mutex_unlock(data->write);
 	if (stop_print)
-		count = ft_strfind(read_buff, "died\n") - read_buff + 5;
+	{
+		write_buff = ft_strfind(read_buff, "died\n");
+		if (write_buff != read_buff)
+			count = write_buff - read_buff + 5;
+	}
 	if (write(STDOUT_FILENO, read_buff, count) == -1)
 		return (true);
 	return (stop_print);

@@ -6,7 +6,7 @@
 /*   By: mroy <mroy@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/24 09:51:17 by math              #+#    #+#             */
-/*   Updated: 2023/08/03 08:18:00 by mroy             ###   ########.fr       */
+/*   Updated: 2023/08/07 08:41:09 by mroy             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,26 @@ int	ft_atoi(const char *str)
 {
 	int	neg;
 	int	n;
+
+	neg = 1;
+	n = 0;
+	while (*str != '\0' && iswhitespace(*str) == 1)
+		str++;
+	if (*str == '-' || *str == '+')
+	{
+		if (*str == '-')
+			neg = -1;
+		str++;
+	}
+	while (ft_isdigit(*str) == 1)
+		n = (n * 10) + (*str++ - 48);
+	return (n * neg);
+}
+
+long	ft_atoi_long(const char *str)
+{
+	int		neg;
+	long	n;
 
 	neg = 1;
 	n = 0;

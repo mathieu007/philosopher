@@ -21,6 +21,7 @@ SOURCES     =	philo/free.c	\
 				philo/ft_strfind.c	\
 				philo/sleeper.c	\
 				philo/actions.c	\
+				philo/actions2.c	\
 				philo/mutexes.c	\
 				philo/philosophers.c	\
 				philo/init_philosophers.c	\
